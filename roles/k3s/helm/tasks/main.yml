@@ -7,7 +7,7 @@
     - kubectl get sa tiller -n kube-system
   register: helm_sa_result
   environment:
-    KUBECONFIG: "{{ base }}/setup/kubeconfig"
+    KUBECONFIG: "{{ base }}/kubeconfig"
 
 - name: Deploy Helm Service Account
   command: "{{ item }}"
@@ -15,7 +15,7 @@
     - kubectl create sa tiller -n kube-system
   register: helm_result
   environment:
-    KUBECONFIG: "{{ base }}/setup/kubeconfig"
+    KUBECONFIG: "{{ base }}/kubeconfig"
   changed_when: "'created' in helm_result.stdout"
   when: ( 'NotFound' in helm_sa_result.results[0].stderr )
 
@@ -27,7 +27,7 @@
     - kubectl get clusterrolebinding tiller-cluster-rule
   register: helm_clusterbinding_result
   environment:
-    KUBECONFIG: "{{ base }}/setup/kubeconfig"
+    KUBECONFIG: "{{ base }}/kubeconfig"
 
 - name: Deploy Helm Cluster Role Binding
   command: "{{ item }}"
@@ -35,7 +35,7 @@
     - kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
   register: helm_result
   environment:
-    KUBECONFIG: "{{ base }}/setup/kubeconfig"
+    KUBECONFIG: "{{ base }}/kubeconfig"
   changed_when: "'created' in helm_result.stdout"
   when: ( 'NotFound' in helm_clusterbinding_result.results[0].stderr )
 
@@ -45,5 +45,5 @@
     - helm init --upgrade --wait --service-account tiller
   register: helm_result
   environment:
-    KUBECONFIG: "{{ base }}/setup/kubeconfig"
+    KUBECONFIG: "{{ base }}/kubeconfig"
   changed_when: "'created' in helm_result.stdout"

@@ -12,7 +12,7 @@
     - kubectl apply -f {{ kubernetes_prometheus_servicemonitor_manifest_file }}
   register: prometheus_result
   environment:
-    KUBECONFIG: "{{ base }}/setup/kubeconfig"
+    KUBECONFIG: "{{ base }}/kubeconfig"
   #until: "'created' in calico_result.stdout or 'unchanged' in calico_result.stdout"
   # until: prometheus_result is succeeded
   retries: 6

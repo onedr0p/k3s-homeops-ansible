@@ -6,7 +6,7 @@
     - helm repo add fluxcd https://charts.fluxcd.io
   register: flux_repo_results
   environment:
-    KUBECONFIG: "{{ base }}/setup/kubeconfig"
+    KUBECONFIG: "{{ base }}/kubeconfig"
   changed_when: "'has been added to your repositories' in flux_repo_results.stdout"
   until: "'has been added to your repositories' in flux_repo_results.stdout"
   retries: 6
@@ -19,7 +19,7 @@
     - helm upgrade --install helm-operator --values {{ base }}/devops/flux/helm-operator/flux-helm-operator-values.yaml --namespace flux fluxcd/helm-operator
   register: flux_results
   environment:
-    KUBECONFIG: "{{ base }}/setup/kubeconfig"
+    KUBECONFIG: "{{ base }}/kubeconfig"
   changed_when: "'has been upgraded' in flux_results.stdout"
   until: "'has been upgraded' in flux_results.stdout"
   retries: 10
@@ -31,7 +31,7 @@
     - fluxctl identity
   register: flux_identity
   environment:
-    KUBECONFIG: "{{ base }}/setup/kubeconfig"
+    KUBECONFIG: "{{ base }}/kubeconfig"
     FLUX_FORWARD_NAMESPACE: flux
   until: "'ssh-rsa' in flux_identity.stdout"
   retries: 10

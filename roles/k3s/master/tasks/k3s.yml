@@ -105,7 +105,7 @@
   run_once: yes
   fetch:
     src: /etc/rancher/k3s/k3s.yaml
-    dest: '{{ base }}/setup/kubeconfig'
+    dest: '{{ base }}/kubeconfig'
     owner: '{{ ansible_user }}'
     flat: yes
   when: ( k3sfile.changed == True )
@@ -125,7 +125,7 @@
   become: no
   delegate_to: localhost
   replace:
-    path: '{{ base }}/setup/kubeconfig'
+    path: '{{ base }}/kubeconfig'
     regexp: 'https://127.0.0.1:6443'
     replace: 'https://{{ k3s_master }}:6443'
   when: ( k3sfile.changed == True )
