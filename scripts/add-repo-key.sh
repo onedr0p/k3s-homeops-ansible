@@ -5,18 +5,23 @@
 # 1. delete any existing repo keys
 # 2. add a new repo key from the input passed-in
 
-github_username=carpenike
-
 if [ ! -f "$HOME/.secret/github_access_token" ]; then
   echo "$HOME/.secret/github_access_token needs to exist with a GitHub personal access token"
   exit 1
 fi
 
 if [ -z "$1" ]; then
+  echo "This script requires a github username passed in as an argument"
+  exit 1
+else
+  github_username="$1"
+fi
+
+if [ -z "$2" ]; then
   echo "This script requires an ssh-key passed in as an argument"
   exit 1
 else
-  KEY="$1"
+  KEY="$2"
 fi
 
 need() {
@@ -28,7 +33,6 @@ need "curl"
 need "jq"
 
 github_access_token=$(cat "$HOME"/.secret/github_access_token)
-
 
 rp=$(git rev-parse --is-inside-work-tree 2>/dev/null)
 
