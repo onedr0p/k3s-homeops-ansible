@@ -19,8 +19,7 @@ A lot of this is a combination of various other playbooks that people have put t
 
 ## Requirements
 - Ansible
-- jq
-`sudo apt install jq`
+- jq: `sudo apt install jq`
 - curl
 - kubectl
 - fluxctl
