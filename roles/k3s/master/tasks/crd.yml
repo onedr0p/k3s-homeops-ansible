@@ -1,5 +1,6 @@
 ---
 
+### Flux CRDs require Prometheus CRDs in order to deploy properly. ###
 - name: Deploy Prometheus ServiceMonitor CRD
   delegate_to: localhost
   command: "{{ item }}"
