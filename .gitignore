@@ -1,3 +1,3 @@
 test/vagrant/.vagrant
 *tfstate*
-.terraform/*
+test/terraform/.terraform/*
