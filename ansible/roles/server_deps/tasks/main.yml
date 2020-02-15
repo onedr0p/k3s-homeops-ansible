@@ -1,0 +1,6 @@
+---
+- include: basics.yml
+# - include: firewall.yml
+- include: docker.yml
+  when: k3s_use_docker == true
+- include: network.yml

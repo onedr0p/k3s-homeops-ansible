@@ -1,0 +1,6 @@
+---
+- include: labels_taints.yml
+- include: objects.yml
+- include: ceph.yml
+- include: cert_manager.yml
+  # - include: istio.yml

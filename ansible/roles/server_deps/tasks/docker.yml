@@ -1,0 +1,47 @@
+---
+- name: Install docker dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+
+- name: Add apt-key for docker repository
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add docker repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: Install docker
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: true
+
+- name: Enable docker on startup
+  service:
+    name: docker
+    enabled: true
+
+- name: Create group for docker
+  group:
+    name: docker
+    state: present
+
+- name: Add install_user to docker group
+  user:
+    name: "{{ install_user }}"
+    groups: docker
+    append: yes
+
+- name: Restart docker
+  service:
+    name: docker
+    state: reloaded
