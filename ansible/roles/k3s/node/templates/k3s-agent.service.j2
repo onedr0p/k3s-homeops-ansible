@@ -21,5 +21,9 @@ RestartSec=5s
 ExecStartPre=-/sbin/modprobe br_netfilter
 ExecStartPre=-/sbin/modprobe overlay
 ExecStart=/usr/local/bin/k3s \
+{% if k3s_use_docker == true %}
     agent \
-        '--docker'
+    '--docker'
+{% else %}
+    agent
+{% endif %}

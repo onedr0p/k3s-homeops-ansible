@@ -28,6 +28,8 @@ ExecStart=/usr/local/bin/k3s \
         'servicelb' \
         '--no-deploy' \
         'traefik' \
+{% if k3s_use_docker == true %}
         '--docker' \
+{% endif %}
         '--flannel-backend=none' \
         '--default-local-storage-path=/dev/shm'
