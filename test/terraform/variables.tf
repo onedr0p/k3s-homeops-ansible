@@ -2,8 +2,12 @@ variable "rg_name" {
   default = "k3s-bootstrap"
 }
 
-variable "names" {
-  default = ["k3s-0","k3s-1","k3s-2"]
+variable "name_prefix" {
+  default = "k3s"
+}
+
+variable "vm_count" {
+  default = "3"
 }
 
 variable "rg_network_name" {

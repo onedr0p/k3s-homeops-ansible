@@ -25,7 +25,8 @@ module azure-network {
 
 module azure-vms {
   source = "./modules/azure-vms"
-  names = "${var.names}"
+  name_prefix = "${var.name_prefix}"
+  vm_count = "${var.vm_count}"
   location = "${var.location}"
   rg_name = "${var.rg_name}"
   vm_size = "${var.vm_size}"

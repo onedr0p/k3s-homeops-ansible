@@ -1,7 +1,12 @@
-variable "names" {
+variable "name_prefix" {
   description = "VM Name to be deployed"
-  type = list
+  type = string 
 } 
+
+variable "vm_count" {
+  description = "Number of VMs to deploy matching prefix"
+  type = string
+}
 
 variable "location" {
   description = "Azure Location where resources will be deployed"
