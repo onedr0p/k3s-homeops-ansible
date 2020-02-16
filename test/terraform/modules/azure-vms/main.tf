@@ -73,7 +73,7 @@ resource "azurerm_virtual_machine" "k3s-bootstrap-vm" {
     }
   }
   tags = {
-    type = "${count.index == 0 ? "master" : "worker"}"
+    type = "${count.index == 0 ? "master" : "nodes"}"
   }
 }
 
