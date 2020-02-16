@@ -1,8 +1,15 @@
 ---
+
+# k3s options
 k3s_version: v1.17.2+k3s1
-k3s_use_docker: false
+k3s_master_cli: "--docker --default-local-storage-path=/dev/shm --flannel-backend=none --no-deploy servicelb --no-deploy traefik"
+k3s_worker_cli: "--docker"
+
+# github options
 github_user: carpenike
 github_k8s_reponame: k8s-gitops
+
+# server options
 ansible_user: ryan
 install_user: ryan
 systemd_dir: /etc/systemd/system

@@ -20,16 +20,4 @@ Restart=always
 RestartSec=5s
 ExecStartPre=-/sbin/modprobe br_netfilter
 ExecStartPre=-/sbin/modprobe overlay
-ExecStart=/usr/local/bin/k3s \
-    server \
-        '--tls-san' \
-        '{{ k3s_master }}' \
-        '--no-deploy' \
-        'servicelb' \
-        '--no-deploy' \
-        'traefik' \
-{% if k3s_use_docker == true %}
-        '--docker' \
-{% endif %}
-        '--flannel-backend=none' \
-        '--default-local-storage-path=/dev/shm'
+ExecStart=/usr/local/bin/k3s server --tls-san {{ k3s_master }} {{ k3s_master_cli }}

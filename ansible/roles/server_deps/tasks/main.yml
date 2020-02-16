@@ -2,5 +2,5 @@
 - include: basics.yml
 # - include: firewall.yml
 - include: docker.yml
-  when: k3s_use_docker == true
+  when: k3s_master_cli is search("--docker") and k3s_worker_cli is search("--docker")
 - include: network.yml
