@@ -20,11 +20,5 @@ Restart=always
 RestartSec=5s
 ExecStartPre=-/sbin/modprobe br_netfilter
 ExecStartPre=-/sbin/modprobe overlay
-ExecStart=/usr/local/bin/k3s \
-    agent \
-{% if k3s_use_docker == true %}
-        '--docker' \
-{% endif %}
-        '--node-taint' \
-        'arm=true:NoExecute' \
+ExecStart=/usr/local/bin/k3s agent --node-taint 'arm=true:NoExecute' {{ k3s_worker_cli }}
         
