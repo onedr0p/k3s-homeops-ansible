@@ -1,0 +1,6 @@
+- hosts: localhost
+  tasks:
+  - name: Add hosts to Master group
+    add_host:
+      name: '{{ k3s_type_master }}'
+      groups: 'master'

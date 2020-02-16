@@ -28,7 +28,7 @@ module azure-vms {
   name_prefix = "${var.name_prefix}"
   vm_count = "${var.vm_count}"
   location = "${var.location}"
-  rg_name = "${var.rg_name}"
+  rg_name = azurerm_resource_group.k3s-bootstrap-rg.name 
   vm_size = "${var.vm_size}"
   os_publisher = "${var.os_publisher}"
   os_offer = "${var.os_offer}"

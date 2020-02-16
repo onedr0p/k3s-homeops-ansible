@@ -17,7 +17,7 @@ resource "azurerm_virtual_network_peering" "k3s-bootstrap-vnet" {
   resource_group_name = var.rg_name
   virtual_network_name = azurerm_virtual_network.k3s-bootstrap-vnet.name
   remote_virtual_network_id = var.vnet_parent_id
-  use_remote_gateways = true
+  use_remote_gateways = false 
   allow_virtual_network_access = true
   allow_forwarded_traffic = true
 }
