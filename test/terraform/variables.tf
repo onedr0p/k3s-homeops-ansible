@@ -38,10 +38,6 @@ variable "vnet_parent_name" {
   default = "vNET_EAST"
 }
 
-# Comes from Environment Variable, sensitive :)
-variable "vnet_parent_id" {
-}
-
 variable "location" {
   default = "eastus2"
 }

@@ -27,18 +27,3 @@ variable "vnet_subnet_prefix" {
   description = "Subnet Prefix"
   type = string
 }
-
-variable "vnet_parent_rg_name" {
-  description = "RG name containing partner vNet to peer with"
-  type = string
-}
-
-variable "vnet_parent_name" {
-  description = "vNet name for partner vNet peer"
-  type = string
-}
-
-variable "vnet_parent_id" {
-  description = "ID for vNET to peer with"
-  type = string
-}

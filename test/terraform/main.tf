@@ -15,11 +15,7 @@ module azure-network {
   vnet_subnet_name = "${var.vnet_subnet_name}"
   vnet_subnet_prefix = "${var.vnet_subnet_prefix}"
   rg_name = azurerm_resource_group.k3s-bootstrap-rg.name
-  vnet_parent_rg_name = "${var.vnet_parent_rg_name}"
-  vnet_parent_name = "${var.vnet_parent_name}"
-  vnet_parent_id = "${var.vnet_parent_id}"
 }
-
 
 // Create VMs
 
