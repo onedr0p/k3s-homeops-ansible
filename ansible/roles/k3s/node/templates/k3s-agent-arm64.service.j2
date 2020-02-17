@@ -21,4 +21,3 @@ RestartSec=5s
 ExecStartPre=-/sbin/modprobe br_netfilter
 ExecStartPre=-/sbin/modprobe overlay
 ExecStart=/usr/local/bin/k3s agent --node-taint 'arm=true:NoExecute' {{ k3s_worker_cli }}
-        

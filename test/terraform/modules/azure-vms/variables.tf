@@ -1,7 +1,7 @@
 variable "name_prefix" {
   description = "VM Name to be deployed"
-  type = string 
-} 
+  type = string
+}
 
 variable "vm_count" {
   description = "Number of VMs to deploy matching prefix"
@@ -19,7 +19,7 @@ variable "rg_name" {
 }
 
 variable "vm_size" {
-  description = "VM Size to be used for deployment" 
+  description = "VM Size to be used for deployment"
   type = string
 }
 
