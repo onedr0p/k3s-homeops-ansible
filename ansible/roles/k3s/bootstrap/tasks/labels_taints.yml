@@ -7,7 +7,7 @@
     - r610-1
     - r610-2
   environment:
-    KUBECONFIG: "{{ base }}/kubeconfig"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Apply worker annotations
   ignore_errors: yes
@@ -18,7 +18,7 @@
     - r610-2
     - n2-0
   environment:
-    KUBECONFIG: "{{ base }}/kubeconfig"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Apply master annotations
   ignore_errors: yes
@@ -26,4 +26,4 @@
   with_items:
     - k3s-master-a
   environment:
-    KUBECONFIG: "{{ base }}/kubeconfig"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"

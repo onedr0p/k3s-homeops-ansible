@@ -7,9 +7,9 @@
     - kubectl apply -f {{ kubernetes_calico_manifest_file }}
   register: calico_result
   environment:
-    KUBECONFIG: "{{ base }}/kubeconfig"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
     CALICO_DATASTORE_TYPE: kubernetes
-    CALICO_KUBECONFIG: "{{ base }}/kubeconfig"
+    CALICO_KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   changed_when: "'created' in calico_result.stdout"
   #until: "'created' in calico_result.stdout or 'unchanged' in calico_result.stdout"
   until: calico_result is succeeded
@@ -29,4 +29,4 @@
       asNumber: {{ calico_bgp_as }}
   environment: 
     CALICO_DATASTORE_TYPE: kubernetes
-    CALICO_KUBECONFIG: "{{ base }}/kubeconfig"
+    CALICO_KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"

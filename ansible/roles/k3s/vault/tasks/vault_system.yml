@@ -5,7 +5,7 @@
     - kubectl -n kube-system wait --for condition=Initialized pod/vault-0
   register: vault_pod_status
   environment:
-    KUBECONFIG: "{{ base }}/kubeconfig"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   changed_when: "'pod/vault-0 condition met' in vault_pod_status.stdout"
   until: "'pod/vault-0 condition met' in vault_pod_status.stdout"
   retries: 30
@@ -76,7 +76,7 @@
   with_items:
     - kubectl get -n kube-system svc/vault -o jsonpath='{.spec.clusterIP}'
   environment:
-    KUBECONFIG: "{{ base }}/kubeconfig"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: vault_service_IP
 
 - name: Set Vault_Service_IP to Fact
@@ -89,7 +89,7 @@
     - vault login $VAULT_ROOT_TOKEN
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
-    KUBECONFIG: "{{ base }}/kubeconfig"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: vault_login
   when: ( initialized_vault_status.results[0].stdout == "true" )
 
@@ -99,7 +99,7 @@
     - vault login $VAULT_ROOT_TOKEN
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
-    KUBECONFIG: "{{ base }}/kubeconfig"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
     VAULT_ROOT_TOKEN: "{{ VAULT_ROOT_TOKEN }}"
   register: vault_login
   when: ( initialized_vault_status.results[0].stdout == "false" )
@@ -110,7 +110,7 @@
 #     - vault auth list
 #   environment:
 #     VAULT_ADDR: "{{ VAULT_ADDR }}"
-#     KUBECONFIG: "{{ base }}/kubeconfig"
+#     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 #   register: vault_auth_list
 
 - name: Enable Vault Secrets on Path "Secrets"
@@ -135,7 +135,7 @@
   with_items:
     - kubectl -n kube-system get sa vault-secrets-operator
   environment:
-    KUBECONFIG: "{{ base }}/kubeconfig"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: sa_present
   changed_when: "sa_present is succeeded"
   until: "sa_present is succeeded"
