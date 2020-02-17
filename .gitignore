@@ -1,3 +1,4 @@
 test/vagrant/.vagrant
 *tfstate*
 test/terraform/.terraform/*
+kubeconfig
