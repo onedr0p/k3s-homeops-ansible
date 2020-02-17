@@ -4,7 +4,7 @@ This is my take on using Ansible to deploy both K3S and then also bootstrap the 
 
 There are points that are opinionated for my environment. For example, I keep all my secrets in code, but use encryption to limit access to them. This enables my environment to be portable and also secure.
 
-This is also serving as a learning environment for Ansible too. PRs welcome and comments also welcome. :)
+This is also serving as a learning environment for Ansible too. PRs and comments welcome. :)
 
 ## Sources:
 
