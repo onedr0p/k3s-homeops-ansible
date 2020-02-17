@@ -5,7 +5,6 @@
   become: no
   with_items:
     - kubectl apply -f {{ kubernetes_calico_manifest_file }}
-    - calicoctl apply -f {{ kubernetes_calico_bgp_file }}
   register: calico_result
   environment:
     KUBECONFIG: "{{ base }}/kubeconfig"
@@ -16,4 +15,18 @@
   until: calico_result is succeeded
   retries: 6
   delay: 10
-  when: kubernetes_pod_network.cni == 'calico'
+
+- name: Configure BGP Settings for Calico
+  delegate_to: localhost
+  shell: |
+    cat << EOF | calicoctl apply -f -
+    apiVersion: projectcalico.org/v3
+    kind: BGPPeer
+    metadata:
+      name: bgppeer-global-2001
+    spec:
+      peerIP: {{ calico_bgp_peer }}
+      asNumber: {{ calico_bgp_as }}
+  environment: 
+    CALICO_DATASTORE_TYPE: kubernetes
+    CALICO_KUBECONFIG: "{{ base }}/kubeconfig"
