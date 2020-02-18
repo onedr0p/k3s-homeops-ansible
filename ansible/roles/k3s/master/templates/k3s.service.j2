@@ -20,4 +20,4 @@ Restart=always
 RestartSec=5s
 ExecStartPre=-/sbin/modprobe br_netfilter
 ExecStartPre=-/sbin/modprobe overlay
-ExecStart=/usr/local/bin/k3s server --tls-san {{ k3s_master }} {{ k3s_master_cli }}
+ExecStart=/usr/local/bin/k3s server --tls-san {{ k3s_master_lb }} {{ k3s_master_cli }}
