@@ -30,3 +30,4 @@
   environment: 
     CALICO_DATASTORE_TYPE: kubernetes
     CALICO_KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+  when: "{{ kubernetes_pod_network.bgp }} == 'enabled'"
