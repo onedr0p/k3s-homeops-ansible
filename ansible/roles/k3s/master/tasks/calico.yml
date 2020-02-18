@@ -4,7 +4,7 @@
   command: "{{ item }}"
   become: no
   with_items:
-    - kubectl apply -f {{ kubernetes_calico_manifest_file }}
+    - kubectl apply -f {{ kubernetes_pod_network.calico_manifest_file }}
   register: calico_result
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
@@ -27,7 +27,7 @@
     spec:
       peerIP: {{ calico_bgp_peer }}
       asNumber: {{ calico_bgp_as }}
-  environment: 
+  environment:
     CALICO_DATASTORE_TYPE: kubernetes
     CALICO_KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   when: "{{ kubernetes_pod_network.bgp }} == 'enabled'"
