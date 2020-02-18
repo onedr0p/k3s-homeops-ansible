@@ -27,9 +27,7 @@ allowed_kubernetes_access:
   - 10.9.18.225
   - 2601:154:c101:5801:8005:69ff:fe55:bc21
   - 10.20.100.46
-kubernetes_calico_manifest_file: "{{ REPO_ROOT }}/devops/kube-system/calico/calico.yaml"
-kubernetes_calico_bgp_file: "{{ REPO_ROOT }}/devops/kube-system/calico/bgp-fw.yaml"
-kubernetes_helm_: "{{ REPO_ROOT }}/devops/kube-system/calico/bgp-fw.yaml"
+kubernetes_calico_manifest_file: https://raw.githubusercontent.com/carpenike/k8s-gitops/master/devops/kube-system/calico/calico.yaml
 kubernetes_prometheus_alertmanager_manifest_file: https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-alertmanager.yaml
 kubernetes_prometheus_podmonitor_manifest_file: https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-podmonitor.yaml
 kubernetes_prometheus_prometheus_manifest_file: https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheus.yaml
