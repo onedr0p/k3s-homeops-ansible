@@ -19,7 +19,7 @@ install_user: ryan
 systemd_dir: /etc/systemd/system
 master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
 k3s_master: "k3s-master-a"
-k3s_master_lb: "{{ k3s-master }}"
+k3s_master_lb: "{{ k3s_master }}"
 REPO_ROOT: "{{ lookup('pipe', 'git rev-parse --show-toplevel') }}"
 kubernetes_pod_network:
   cni: calico
