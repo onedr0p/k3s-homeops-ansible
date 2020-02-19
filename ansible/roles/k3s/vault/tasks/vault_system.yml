@@ -84,7 +84,7 @@
   shell: kubectl -n kube-system port-forward svc/vault 8200:8200 >/dev/null 2>&1 &
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-  when: kubernetese_pod_network.cni == "flannel"
+  when: kubernetes_pod_network.cni == "flannel"
 
 - name: Set Vault_Service_IP to Fact (Calico)
   set_fact:
