@@ -3,3 +3,5 @@ test/vagrant/.vagrant
 test/terraform/.terraform/*
 kubeconfig
 ansible/group_vars/all.yml
+/hosts.ini
+/hosts.yaml
