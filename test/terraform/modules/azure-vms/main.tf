@@ -70,7 +70,7 @@ resource "azurerm_virtual_machine" "k3s-bootstrap-vm" {
     caching           = "ReadWrite"
     create_option     = "Empty"
     disk_size_gb      = 1024
-    lun               = 1
+    lun               = 0
     managed_disk_type = "Premium_LRS"
 
   }
