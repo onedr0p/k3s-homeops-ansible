@@ -59,14 +59,13 @@ curl \
 echo
 echo "+ deploy key:"
 echo -n ">> "
+curl \
+    -i\
+    -H"Authorization: token $github_access_token"\
+    --data @- https://api.github.com/repos/"$github_username"/"$reponame"/keys << EOF
 {
-    curl \
-        -i\
-        -H"Authorization: token $github_access_token"\
-        --data @- https://api.github.com/repos/"$github_username"/"$reponame"/keys << EOF
-{
-    "title" : "$repo_id $(date)",
-    "key" : "$KEY",
-    "read_only" : false
+"title" : "$repo_id $(date)",
+"key" : "$KEY",
+"read_only" : false
 }
 EOF

@@ -37,5 +37,5 @@
   delay: 10
 
 - name: Register Flux Identity with GitHub
-  script: "{{ REPO_ROOT }}/setup/add-repo-key.sh '{{ flux_identity.results[0].stdout }}' {{ github_user }} {{ github_k8s_reponame }}"
+  script: "{{ REPO_ROOT }}/hack/add-repo-key.sh {{ github_username }} '{{ flux_identity.results[0].stdout }}' {{ github_k8s_reponame }}"
   register: register_result

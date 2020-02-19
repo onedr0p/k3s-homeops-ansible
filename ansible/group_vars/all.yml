@@ -10,7 +10,7 @@ calico_bgp_peer: 10.20.0.1
 calico_bgp_as: 64512
 
 # github options
-github_user: carpenike
+github_username: carpenike
 github_k8s_reponame: k8s-gitops
 
 # server options
