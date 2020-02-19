@@ -12,6 +12,14 @@ k3s_copy_config_local: false
 github_username: carpenike
 github_k8s_reponame: k8s-gitops
 
+# ceph options
+ceph:
+  zap_disks: false
+  disks:
+    - /dev/sdb
+    - /dev/sdc
+    - /dev/sdd
+
 # server options
 #ansible_user: "{{ ansible_user }}"
 timezone: America/New_York
