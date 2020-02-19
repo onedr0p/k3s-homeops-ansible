@@ -1,4 +1,4 @@
-resource "azurerm_public_ip" "k3s-bootstrap-publicip" {
+resource azurerm_public_ip "k3s-bootstrap-publicip" {
   for_each            = var.hosts
   name                = "${each.value.name}-ip"
   location            = var.location
@@ -6,7 +6,7 @@ resource "azurerm_public_ip" "k3s-bootstrap-publicip" {
   allocation_method   = "Dynamic"
 }
 
-resource "azurerm_network_security_group" "k3s-bootstrap-nsg" {
+resource azurerm_network_security_group "k3s-bootstrap-nsg" {
   name                = "k3s-bootstrap"
   location            = var.location
   resource_group_name = var.rg_name
@@ -35,7 +35,7 @@ resource "azurerm_network_security_group" "k3s-bootstrap-nsg" {
   }
 }
 
-resource "azurerm_network_interface" "k3s-bootstrap-nic" {
+resource azurerm_network_interface "k3s-bootstrap-nic" {
   for_each                  = var.hosts
   name                      = "${each.value.name}-nic"
   location                  = var.location
@@ -50,7 +50,7 @@ resource "azurerm_network_interface" "k3s-bootstrap-nic" {
   }
 }
 
-resource "azurerm_virtual_machine" "k3s-bootstrap-vm" {
+resource azurerm_virtual_machine "k3s-bootstrap-vm" {
   for_each              = var.hosts
   name                  = each.value.name
   location              = var.location
@@ -95,7 +95,7 @@ resource "azurerm_virtual_machine" "k3s-bootstrap-vm" {
     }
   }
   tags = {
-    type = each.value.type
+    type    = each.value.type
     storage = "${each.value.type == "nodes"}" ? "ceph" : null
   }
 }

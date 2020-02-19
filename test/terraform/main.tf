@@ -1,6 +1,6 @@
 // Create Resource Group
 
-resource "azurerm_resource_group" "k3s-bootstrap-rg" {
+resource azurerm_resource_group "k3s-bootstrap-rg" {
   name     = var.rg_name
   location = var.location
 }
@@ -35,7 +35,7 @@ module azure-vms {
 
 }
 
-resource "null_resource" "ansible-playbook" {
+resource null_resource "ansible-playbook" {
   provisioner "local-exec" {
     command = <<EOT
               ansible-playbook ../../ansible/main.yml --extra-vars "@overrides.yaml"
