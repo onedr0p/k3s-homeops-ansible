@@ -16,12 +16,16 @@
   with_items:
     - kubectl -n kube-system exec "vault-0" -- vault status -format=json 2> /dev/null | jq -r '.initialized'
   register: initialized_vault_status
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Check Vault Sealed Status
   shell: "{{ item }}"
   with_items:
     - kubectl -n kube-system exec "vault-0" -- vault status -format=json 2> /dev/null | jq -r '.sealed'
   register: sealed_vault_status
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Initialize Vault
   shell: "{{ item }}"
@@ -29,6 +33,8 @@
     - kubectl -n kube-system exec "vault-0" -- vault operator init -format json -recovery-shares=1 -recovery-threshold=1
   register: initialize_vault_status
   when: ( initialized_vault_status.results[0].stdout == "false" )
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Store Recovery & Root Token
   set_fact:
@@ -68,6 +74,7 @@
     - kubectl -n kube-system exec "vault-0" -- vault operator unseal $VAULT_RECOVERY_TOKEN
   environment:
     VAULT_RECOVERY_TOKEN: "{{ VAULT_RECOVERY_TOKEN }}"
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: unseal_vault_status
   when: ( sealed_vault_status.results[0].stdout == "true" )
 
@@ -159,26 +166,36 @@
   shell: kubectl -n kube-system get sa vault-secrets-operator -o jsonpath="{.metadata.namespace}"
   register: vault_secrets_operator_namespace
   when: ( initialized_vault_status.results[0].stdout == "false" )
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Get Vault Secret Name
   shell: kubectl -n kube-system get sa vault-secrets-operator -o jsonpath="{.secrets[*]['name']}"
   register: vault_secret_name
   when: ( initialized_vault_status.results[0].stdout == "false" )
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Get SA_JWT_TOKEN
   shell: kubectl -n kube-system get secret {{ vault_secret_name.stdout }} -o jsonpath="{.data.token}" | base64 --decode; echo
   register: sa_jwt_token
   when: ( initialized_vault_status.results[0].stdout == "false" )
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Get SA_CA_CRT
   shell: kubectl -n kube-system get secret {{ vault_secret_name.stdout }} -o jsonpath="{.data['ca\.crt']}" | base64 --decode; echo
   register: sa_ca_crt
   when: ( initialized_vault_status.results[0].stdout == "false" )
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Get K8S_HOST
   shell: kubectl -n kube-system config view --minify -o jsonpath='{.clusters[0].cluster.server}'
   register: k8s_host
   when: ( initialized_vault_status.results[0].stdout == "false" )
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Enable Kubernetes Authentication on Vault
   shell: vault auth enable kubernetes

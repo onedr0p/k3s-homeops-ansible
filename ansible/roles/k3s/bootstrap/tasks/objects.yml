@@ -9,6 +9,8 @@
     - kubectl delete secret restic-backup-credentials
     - kubectl delete -n kube-system secret digicert-ingress-tls
   register: delete_bootstrap_results
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Bootstrap Kubernetes Secrets
   shell: "{{ item }}"
@@ -22,3 +24,5 @@
     # - kubectl -n k8up create secret generic backup-repo --from-literal=password=$K8UP_ENCRYPTION_KEY
   register: bootstrap_results
   # changed_when: "'All items completed' in kms_secret_results.msg"
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"

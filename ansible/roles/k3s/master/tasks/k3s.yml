@@ -118,7 +118,7 @@
     dest: '~/.kube/config'
     owner: '{{ ansible_user }}'
     flat: yes
-  when: ( k3sfile.changed == True )
+  when: ( k3sfile.changed == True and k3s_copy_config_local == true )
 
 - name: Replace https://localhost:6443 by https://{{ k3s_master_lb }}:6443
   run_once: yes
@@ -138,4 +138,4 @@
     path: '~/.kube/config'
     regexp: 'https://127.0.0.1:6443'
     replace: 'https://{{ k3s_master_lb }}:6443'
-  when: ( k3sfile.changed == True )
+  when: ( k3sfile.changed == True and k3s_copy_config_local == true )
