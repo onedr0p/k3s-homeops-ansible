@@ -1,3 +1,7 @@
+# all:
+#   vars:
+#     ansible_user: ryan
+
 master:
   hosts:
     k3s-master-a:
