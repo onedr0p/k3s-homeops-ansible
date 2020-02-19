@@ -2,28 +2,20 @@
 - name: Apply storage annotations
   ignore_errors: yes
   command: kubectl label node {{ item }} node-role.kubernetes.io/storage=true
-  with_items:
-    - r610-0
-    - r610-1
-    - r610-2
+  loop: "{{ groups['storage'] }}"
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Apply worker annotations
   ignore_errors: yes
   command: kubectl label node {{ item }} node-role.kubernetes.io/worker=true
-  with_items:
-    - r610-0
-    - r610-1
-    - r610-2
-    - n2-0
+  loop: "{{ groups['nodes'] }}"
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Apply master annotations
   ignore_errors: yes
   command: kubectl taint --overwrite node {{ item }} node-role.kubernetes.io/master=true:NoSchedule
-  with_items:
-    - k3s-master-a
+  loop: "{{ groups['master'] }}"
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
