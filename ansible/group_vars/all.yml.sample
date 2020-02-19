@@ -3,9 +3,10 @@
 # k3s options
 k3s_version: v1.17.2+k3s1
 #k3s_master_cli: "--docker --default-local-storage-path=/dev/shm --flannel-backend=none --no-deploy servicelb --no-deploy traefik"
-k3s_master_cli: --default-local-storage-path=/dev/shm --flannel-backend=none --no-deploy servicelb --no-deploy traefik
+k3s_master_cli: --default-local-storage-path=/dev/shm --no-deploy servicelb --no-deploy traefik
 #k3s_worker_cli: "--docker"
 k3s_worker_cli:
+k3s_copy_config_local: false
 
 # calico options
 calico_bgp_peer: 10.20.0.1
@@ -24,8 +25,8 @@ k3s_master: "k3s-master-a"
 k3s_master_lb: "{{ k3s_master }}"
 REPO_ROOT: "{{ lookup('pipe', 'git rev-parse --show-toplevel') }}"
 kubernetes_pod_network:
-  cni: calico
-  bgp: enabled # Enabled / Disabled
+  cni: flannel
+  bgp: disabled # Enabled / Disabled
   calico_manifest_file: https://raw.githubusercontent.com/carpenike/k8s-gitops/master/devops/kube-system/calico/calico.yaml
   cidr: '10.244.0.0/16'
 allowed_kubernetes_access:
