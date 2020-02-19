@@ -2,8 +2,10 @@
 
 # k3s options
 k3s_version: v1.17.2+k3s1
-k3s_master_cli: "--docker --default-local-storage-path=/dev/shm --flannel-backend=none --no-deploy servicelb --no-deploy traefik"
-k3s_worker_cli: "--docker"
+#k3s_master_cli: "--docker --default-local-storage-path=/dev/shm --flannel-backend=none --no-deploy servicelb --no-deploy traefik"
+k3s_master_cli: --default-local-storage-path=/dev/shm --flannel-backend=none --no-deploy servicelb --no-deploy traefik
+#k3s_worker_cli: "--docker"
+k3s_worker_cli:
 
 # calico options
 calico_bgp_peer: 10.20.0.1
@@ -14,7 +16,7 @@ github_username: carpenike
 github_k8s_reponame: k8s-gitops
 
 # server options
-ansible_user: "{{ ansible_ssh_user }}"
+#ansible_user: "{{ ansible_user }}"
 systemd_dir: /etc/systemd/system
 master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
 k3s_master: "k3s-master-a"
@@ -22,7 +24,7 @@ k3s_master_lb: "{{ k3s_master }}"
 REPO_ROOT: "{{ lookup('pipe', 'git rev-parse --show-toplevel') }}"
 kubernetes_pod_network:
   cni: calico
-  bgp: disabled # Enabled / Disabled
+  bgp: enabled # Enabled / Disabled
   calico_manifest_file: https://raw.githubusercontent.com/carpenike/k8s-gitops/master/devops/kube-system/calico/calico.yaml
   cidr: '10.244.0.0/16'
 allowed_kubernetes_access:
