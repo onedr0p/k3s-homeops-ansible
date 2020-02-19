@@ -1,5 +1,8 @@
 ---
 
+# ansible options
+ansible_user: "ryan"
+
 # k3s options
 k3s_version: v1.17.2+k3s1
 #k3s_master_cli: "--docker --default-local-storage-path=/dev/shm --flannel-backend=none --no-deploy servicelb --no-deploy traefik"
@@ -21,7 +24,6 @@ ceph:
     - /dev/sdd
 
 # server options
-#ansible_user: "{{ ansible_user }}"
 timezone: America/New_York
 systemd_dir: /etc/systemd/system
 master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
