@@ -8,10 +8,6 @@ k3s_master_cli: --default-local-storage-path=/dev/shm --no-deploy servicelb --no
 k3s_worker_cli:
 k3s_copy_config_local: false
 
-# calico options
-calico_bgp_peer: 10.20.0.1
-calico_bgp_as: 64512
-
 # github options
 github_username: carpenike
 github_k8s_reponame: k8s-gitops
@@ -28,6 +24,8 @@ kubernetes_pod_network:
   cni: flannel
   bgp: disabled # Enabled / Disabled
   calico_manifest_file: https://raw.githubusercontent.com/carpenike/k8s-gitops/master/devops/kube-system/calico/calico.yaml
+  calico_bgp_peer: 10.20.0.1
+  calico_bgp_as: 64512
   cidr: '10.244.0.0/16'
 allowed_kubernetes_access:
   - 10.9.18.225
