@@ -78,10 +78,23 @@
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: vault_service_IP
+  when: kubernetes_pod_network.cni == "calico"
 
-- name: Set Vault_Service_IP to Fact
+- name: Port Forward Vault Service
+  shell: kubectl -n kube-system port-forward svc/vault 8200:8200 >/dev/null 2>&1 &
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+  when: kubernetese_pod_network.cni == "flannel"
+
+- name: Set Vault_Service_IP to Fact (Calico)
   set_fact:
     VAULT_ADDR: "http://{{ vault_service_IP.results[0].stdout }}:8200"
+  when: kubernetes_pod_network.cni == "calico"
+
+- name: Set Vault_Service_IP to Fact (Flannel)
+  set_fact:
+    VAULT_ADDR: "http://127.0.0.1:8200"
+  when: kubernetes_pod_network.cni == "flannel"
 
 - name: Login to Vault
   shell: "{{ item }}"
