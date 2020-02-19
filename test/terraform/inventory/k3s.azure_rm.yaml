@@ -1,10 +1,14 @@
 plugin: azure_rm
 include_vm_resource_groups:
 - k3s-bootstrap
-auth_source: env 
+auth_source: env
 plain_host_names: yes
 
 keyed_groups:
-- prefix: "" 
+- prefix: ""
   separator: ""
   key: tags.type | default('none')
+
+- prefix: ""
+  separator: ""
+  key: tags.storage | default('none')

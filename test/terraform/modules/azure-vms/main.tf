@@ -96,5 +96,6 @@ resource "azurerm_virtual_machine" "k3s-bootstrap-vm" {
   }
   tags = {
     type = each.value.type
+    storage = "${each.value.type == "nodes"}" ? "ceph" : null
   }
 }

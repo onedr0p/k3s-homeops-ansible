@@ -8,17 +8,25 @@ nodes:
   vars:
     type: worker
 
-storage:
+ceph:
   hosts:
   vars:
     storage: ceph
 
+nfs:
+  hosts:
+  vars:
+    storage: nfs
+
 k3s_cluster:
   children:
-    other_group:
-      children:
-        master:
-        nodes:
+    master:
+    nodes:
+
+storage:
+  children:
+    ceph:
+    nfs:
 
 vault:
   hosts:
