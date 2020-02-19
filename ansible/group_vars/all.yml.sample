@@ -1,7 +1,7 @@
 ---
 
 # ansible options
-ansible_user: "ryan"
+ansible_user: "ubuntu"
 
 # k3s options
 k3s_version: v1.17.2+k3s1
