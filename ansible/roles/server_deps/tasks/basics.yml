@@ -3,6 +3,11 @@
   command: "timedatectl set-timezone {{ timezone }}"
   become: true
 
+- name: Add the rbd module
+  modprobe:
+    name: rbd
+    state: present
+
 - name: Copy unattended-upgrades configuration files in place
   copy:
     src: "{{ item }}"
@@ -54,7 +59,7 @@
     - glances
     - iotop
     - jq
-    - ceph-common
+    - lvm2
     - nethogs
     - iperf3
     - nfs-common
