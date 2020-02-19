@@ -1,6 +1,6 @@
 ---
-- name: Sets timezone to New_York.
-  command: timedatectl set-timezone America/New_York
+- name: Set timezone
+  command: "timedatectl set-timezone {{ timezone }}"
   become: true
 
 - name: Copy unattended-upgrades configuration files in place

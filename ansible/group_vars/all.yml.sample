@@ -17,6 +17,7 @@ github_k8s_reponame: k8s-gitops
 
 # server options
 #ansible_user: "{{ ansible_user }}"
+timezone: America/New_York
 systemd_dir: /etc/systemd/system
 master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
 k3s_master: "k3s-master-a"
