@@ -2,12 +2,22 @@ variable "rg_name" {
   default = "k3s-bootstrap"
 }
 
-variable "name_prefix" {
-  default = "k3s"
-}
-
-variable "vm_count" {
-  default = "3"
+variable "hosts" {
+  description = "Key-Value of VM Names to Type"
+  default = {
+    "k3s-bootstrap-0" = {
+      "name" = "k3s-bootstrap-0",
+      "type" = "master"
+    },
+    "k3s-bootstrap-1" = {
+      "name" = "k3s-bootstrap-1",
+      "type" = "nodes"
+    },
+    "k3s-bootstrap-2" = {
+      "name" = "k3s-bootstrap-2",
+      "type" = "nodes"
+    }
+  }
 }
 
 variable "rg_network_name" {

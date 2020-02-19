@@ -2,3 +2,4 @@ test/vagrant/.vagrant
 *tfstate*
 test/terraform/.terraform/*
 kubeconfig
+ansible/group_vars/all.yml
