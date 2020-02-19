@@ -14,8 +14,8 @@
 - name: Deploy Flux
   command: "{{ item }}"
   with_items:
-    - helm upgrade --install flux --values {{ kubernetes_flux_values }} --namespace flux fluxcd/flux
-    - helm upgrade --install helm-operator --values {{ kubernetes_helm_operator_values }} --namespace flux fluxcd/helm-operator
+    - "helm upgrade --install flux --values {{ kubernetes_flux_values }} --namespace flux fluxcd/flux"
+    - "helm upgrade --install helm-operator --values {{ kubernetes_helm_operator_values }} --namespace flux fluxcd/helm-operator"
   register: flux_results
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
