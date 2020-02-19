@@ -6,6 +6,13 @@
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
+- name: Apply ceph annotations
+  ignore_errors: yes
+  command: kubectl label node {{ item }} node-role.kubernetes.io/ceph=true
+  loop: "{{ groups['ceph'] }}"
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+
 - name: Apply worker annotations
   ignore_errors: yes
   command: kubectl label node {{ item }} node-role.kubernetes.io/worker=true
