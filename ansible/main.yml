@@ -4,4 +4,4 @@
 - include: k3s_master.yml
 - include: k3s_nodes.yml
 - include: k3s_bootstrap.yml
-- include: vault.yml
+# - include: vault.yml
