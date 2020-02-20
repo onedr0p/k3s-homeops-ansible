@@ -1,12 +1,97 @@
 # Overview
 
-This is my take on using Ansible to deploy both K3S and then also bootstrap the cluster to the point that it's able to use Flux to deploy additional services from a git repository.
+The purpose of this project is to provision your machines (VM or bare metal) for running [k3s](https://github.com/rancher/k3s)
 
-There are points that are opinionated for my environment. For example, I keep all my secrets in code, but use encryption to limit access to them. This enables my environment to be portable and also secure.
+Utilizing Ansible, the current coverage of playbooks will:
 
-This is also serving as a learning environment for Ansible too. PRs and comments welcome. :)
+- Provision your servers for running k3s
+- Install k3s
+- ...
 
-## Sources:
+## Install Local Dependancies
+
+Before getting started make sure you have these following packages installed on your local machine
+
+### Ubuntu
+
+...
+
+### Mac
+
+```bash
+brew install ansible curl jq kubernetes-cli kubectl kubernetes-helm git calicoctl git-crypt pre-commit terraform
+```
+
+## Running the Playbook
+
+1) Update the Ansible vars and host inventory
+
+    ```bash
+    # Copy and update the variables to your liking
+    cp ./ansible/group_vars/all.sample.yml ./ansible/group_vars/all.yml
+
+    # Copy and update the hosts to your liking
+    cp ./ansible/hosts.sample.yml ./ansible/hosts.yml
+    ```
+
+2) Run the playbook
+
+    ```bash
+    ansible ansible-playbook \
+        -i ansible/hosts.yml \
+        ansible/main.yml --ask-become-pass
+    ```
+
+## Running Tests
+
+### Terraform
+
+...
+
+### Vagrant
+
+#### Install Vagrant and Virtualbox On Mac
+
+1) Install Vagrant
+
+    ```bash
+    brew cask install vagrant
+    ```
+
+2) Install Virtualbox 6.0
+
+    ```bash
+    # There's a bug with the latest version of Vagrant so it is recommended to install this version of Virtualbox
+    brew cask install https://raw.githubusercontent.com/Homebrew/homebrew-cask/7e703e0466a463fe26ab4e253e28baa9c20d5f36/Casks/virtualbox.rb
+    ```
+
+3) Change Vagrant permissions
+
+    ```bash
+    sudo chown -R <YOUR_USERNAME>: /opt/vagrant/embedded/gems/2.2.6/gems/vagrant-2.2.6
+    ```
+
+#### Run Tests
+
+1) Change to Vagrant directory
+
+    ```bash
+    cd test/vagrant
+    ```
+
+2) Run Vagrant
+
+    ```bash
+    vagrant up
+    ```
+
+3) Stop and remove Virtualbox VMs
+
+    ```bash
+    vagrant destroy -f
+    ```
+
+## Sources
 
 A lot of this is a combination of various other playbooks that people have put together. See below for a handful of helpful source materials I used when piecing it together.
 
@@ -16,13 +101,3 @@ A lot of this is a combination of various other playbooks that people have put t
 - https://github.com/onedr0p/k3s-gitops
 - https://coderwall.com/p/13lh6w/dump-all-variables
 - https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#best-practices-for-variables-and-vaults
-
-## Requirements
-- Ansible
-- jq: `sudo apt install jq`
-- curl
-- kubectl
-- fluxctl
-- calicoctl
-- git-crypt
-- pre-commit
