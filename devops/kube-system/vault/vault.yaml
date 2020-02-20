@@ -10,30 +10,10 @@ spec:
     enabled: false
   chart:
     git: https://github.com/hashicorp/vault-helm
-    ref: v0.3.3
+    ref: v0.3.1
     path: .
   values:
-    injector:
-      enabled: false
     server:
-      extraVolumes:
-        - type: secret
-          name: kms-vault
-      extraArgs: -config=/vault/userconfig/kms-vault/config.hcl
-      tolerations: |
-        - key: "arm"
-          operator: "Exists"
-      ingress:
-        enabled: true
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-        hosts:
-          - host: vault.holthome.net
-            paths:
-              - /
-        # tls:
-        #   hosts:
-        #     - vault.holthome.net
       resources:
         requests:
           memory: 256Mi
