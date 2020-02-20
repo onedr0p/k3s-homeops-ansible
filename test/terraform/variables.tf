@@ -16,6 +16,10 @@ variable "hosts" {
     "k3s-bootstrap-2" = {
       "name" = "k3s-bootstrap-2",
       "type" = "nodes"
+    },
+    "k3s-bootstrap-3" = {
+      "name" = "k3s-bootstrap-3",
+      "type" = "nodes"
     }
   }
 }
