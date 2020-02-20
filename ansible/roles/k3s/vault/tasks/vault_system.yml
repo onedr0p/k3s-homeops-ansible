@@ -1,4 +1,17 @@
 ---
+
+- name: Wait for Consul to be ready
+  command: "{{ item }}"
+  with_items:
+    - kubectl -n kube-system wait --for condition=Ready pod/consul-consul-server-0
+  register: consul_pod_status
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+  changed_when: "'pod/consul-consul-server-0 condition met' in consul_pod_status.stdout"
+  until: "'pod/consul-consul-server-0 condition met' in consul_pod_status.stdout"
+  retries: 30
+  delay: 60
+
 - name: Wait for Vault to be ready
   command: "{{ item }}"
   with_items:
