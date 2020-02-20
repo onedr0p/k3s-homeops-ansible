@@ -15,7 +15,6 @@ The terraform process follows the below steps:
 3. Terraform kicks off the ansible bootstrap playbook with command line overrides (@overrides.yaml) to ensure that the configuration will deploy in Azure
 4. Ansible uses dynamic inventory to find all the nodes and build host groups based on the VM's tags -- type (Worker/Node), and Storage (Ceph/NFS)
 
-
 # Requirements
 
 Ensure that the following environment variables are set within your shell session. There are a total of 4 values that need to be set. Ansible looks for the same data in a different variable than Terraform.
