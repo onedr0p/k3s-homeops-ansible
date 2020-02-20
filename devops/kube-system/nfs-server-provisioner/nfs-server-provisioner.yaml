@@ -26,6 +26,6 @@ spec:
       default: false
     nodeSelector:
       node-role.kubernetes.io/nfs: "true"
-    tolerations: |
+    tolerations:
       - key: "node-role.kubernetes.io/master"
         operator: "Exists"
