@@ -4,4 +4,4 @@ test/terraform/.terraform/*
 kubeconfig
 /ansible/bootstrap/group_vars/all.yml
 /ansible/bootstrap/hosts.ini
-/ansible/bootstrap/hosts.yaml
+/ansible/bootstrap/hosts.yml
