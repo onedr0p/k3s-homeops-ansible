@@ -25,35 +25,42 @@
   delay: 60
 
 - name: Check Vault Initialized Status
-  shell: "{{ item }}"
-  with_items:
-    - kubectl -n kube-system exec "vault-0" -- vault status -format=json 2> /dev/null | jq -r '.initialized'
+  shell: kubectl -n kube-system exec "vault-0" -- vault status -format=json 2> /dev/null | jq -r '.initialized'
   register: initialized_vault_status
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Check Vault Sealed Status
-  shell: "{{ item }}"
-  with_items:
-    - kubectl -n kube-system exec "vault-0" -- vault status -format=json 2> /dev/null | jq -r '.sealed'
+  shell: kubectl -n kube-system exec "vault-0" -- vault status -format=json 2> /dev/null | jq -r '.sealed'
   register: sealed_vault_status
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
+- debug:
+    var: initialized_vault_status
+
+- debug:
+    var: sealed_vault_status
+
 - name: Initialize Vault
-  shell: "{{ item }}"
-  with_items:
-    - kubectl -n kube-system exec "vault-0" -- vault operator init -format json -recovery-shares=1 -recovery-threshold=1
+  shell: kubectl -n kube-system exec "vault-0" -- vault operator init -format json -recovery-shares=1 -recovery-threshold=1
   register: initialize_vault_status
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Store Recovery & Root Token
   set_fact:
-    VAULT_RECOVERY_TOKEN: "{{ (initialize_vault_status.results[0].stdout | from_json).recovery_keys_b64 | first }}"
-    VAULT_ROOT_TOKEN: "{{ (initialize_vault_status.results[0].stdout | from_json).root_token }}"
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+    VAULT_RECOVERY_TOKEN: "{{ (initialize_vault_status.stdout | from_json).unseal_keys_b64 | first }}"
+    VAULT_ROOT_TOKEN: "{{ (initialize_vault_status.stdout | from_json).root_token }}"
+    KUBECTL_PID_FILE: "/tmp/kubectl.pid"
+  when: ( initialized_vault_status.stdout == "false" )
+
+- debug:
+    var: VAULT_RECOVERY_TOKEN
+
+- debug:
+    var: VAULT_ROOT_TOKEN
 
 #- name: Decrypt Vault Secret File
 #  ignore_errors: yes
@@ -63,17 +70,17 @@
 
 - name: Update ansible-vault secret with root token
   lineinfile:
-   dest: "{{ playbook_dir }}/variables/encrypted-vault.yml"
+   dest: "{{ REPO_ROOT }}/ansible/variables/encrypted-vault.yml"
    regexp: '^vault_VAULT_ROOT_TOKEN'
    line: "vault_VAULT_ROOT_TOKEN: {{ VAULT_ROOT_TOKEN }}"
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
 
 - name: Update ansible-vault secret wtih recovery token
   lineinfile:
-   dest: "{{ playbook_dir }}/variables/encrypted-vault.yml"
+   dest: "{{ REPO_ROOT }}/ansible/variables/encrypted-vault.yml"
    regexp: '^vault_VAULT_RECOVERY_TOKEN:'
    line: "vault_VAULT_RECOVERY_TOKEN: {{ VAULT_RECOVERY_TOKEN }}"
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
 
 #- name: Encrypt Vault Secret File
 #  command: "ansible-vault encrypt group_vars/vault/encrypted-vault.yaml"
@@ -89,7 +96,7 @@
     VAULT_RECOVERY_TOKEN: "{{ VAULT_RECOVERY_TOKEN }}"
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: unseal_vault_status
-  when: ( sealed_vault_status.results[0].stdout == "true" )
+  when: ( sealed_vault_status.stdout == "true" )
 
 - name: Get Vault Service
   shell: "{{ item }}"
@@ -101,14 +108,18 @@
   when: kubernetes_pod_network.cni == "calico"
 
 - name: Port Forward Vault Service
-  shell: kubectl -n kube-system port-forward svc/vault 8200:8200 >/dev/null 2>&1 &
+  shell: |
+    nohup kubectl -n kube-system port-forward svc/vault 8200:8200 >/dev/null 2>&1 &
+    echo "$!" >{{ KUBECTL_PID_FILE |quote }}
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+  args:
+    creates: "{{ KUBECTL_PID_FILE }}"
   when: kubernetes_pod_network.cni == "flannel"
 
 - name: Set Vault_Service_IP to Fact (Calico)
   set_fact:
-    VAULT_ADDR: "http://{{ vault_service_IP.results[0].stdout }}:8200"
+    VAULT_ADDR: "http://{{ vault_service_IP.stdout }}:8200"
   when: kubernetes_pod_network.cni == "calico"
 
 - name: Set Vault_Service_IP to Fact (Flannel)
@@ -124,7 +135,7 @@
     VAULT_ADDR: "{{ VAULT_ADDR }}"
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: vault_login
-  when: ( initialized_vault_status.results[0].stdout == "true" )
+  when: ( initialized_vault_status.stdout == "true" )
 
 - name: Login to Vault (New Install)
   shell: "{{ item }}"
@@ -135,7 +146,7 @@
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
     VAULT_ROOT_TOKEN: "{{ VAULT_ROOT_TOKEN }}"
   register: vault_login
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
 
 # - name: Show Vault Auth Providers
 #   shell: "{{ item }}"
@@ -150,7 +161,7 @@
   shell: vault secrets enable -path=secrets -version=2 kv
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
 
 - name: Create Kubernetes Auth Policy
   shell: |
@@ -161,7 +172,7 @@
     EOF
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
 
 - name: Wait for Vault-Secret-Operator Service Account
   command: "{{ item }}"
@@ -178,35 +189,35 @@
 - name: Get Vault Secrets Operator Namespace
   shell: kubectl -n kube-system get sa vault-secrets-operator -o jsonpath="{.metadata.namespace}"
   register: vault_secrets_operator_namespace
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Get Vault Secret Name
   shell: kubectl -n kube-system get sa vault-secrets-operator -o jsonpath="{.secrets[*]['name']}"
   register: vault_secret_name
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Get SA_JWT_TOKEN
   shell: kubectl -n kube-system get secret {{ vault_secret_name.stdout }} -o jsonpath="{.data.token}" | base64 --decode; echo
   register: sa_jwt_token
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Get SA_CA_CRT
   shell: kubectl -n kube-system get secret {{ vault_secret_name.stdout }} -o jsonpath="{.data['ca\.crt']}" | base64 --decode; echo
   register: sa_ca_crt
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
 - name: Get K8S_HOST
   shell: kubectl -n kube-system config view --minify -o jsonpath='{.clusters[0].cluster.server}'
   register: k8s_host
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
 
@@ -215,7 +226,7 @@
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
   register: k8s_auth_enable
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
 
 - name: Tell Vault how to Auth with K8S Cluster
   shell: |
@@ -225,7 +236,7 @@
       kubernetes_ca_cert="{{ sa_ca_crt.stdout }}"
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
 
 - name: Create Vault-Secrets-Operator Role in Vault
   shell: |
@@ -236,4 +247,11 @@
       ttl=24h
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
-  when: ( initialized_vault_status.results[0].stdout == "false" )
+  when: ( initialized_vault_status.stdout == "false" )
+
+- name: Kill kubectl tunnel
+  shell: |
+    kill "$(cat {{ KUBECTL_PID_FILE|quote }})" || true
+    rm -f {{ KUBECTL_PID_FILE }}
+  args:
+    removes: "{{ KUBECTL_PID_FILE }}"

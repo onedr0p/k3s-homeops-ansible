@@ -21,8 +21,6 @@ spec:
         limits:
           memory: 256Mi
       standalone:
-        enabled: "false"
-      ha:
         enabled: "true"
         config: |
           ui = true
@@ -35,3 +33,5 @@ spec:
             path = "vault"
             address = "HOST_IP:8500"
           }
+      ha:
+        enabled: "false"
