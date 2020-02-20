@@ -69,7 +69,7 @@ resource azurerm_virtual_machine "k3s-bootstrap-vm" {
     name              = "${each.value.name}-data"
     caching           = "ReadWrite"
     create_option     = "Empty"
-    disk_size_gb      = 1024
+    disk_size_gb      = 10
     lun               = 0
     managed_disk_type = "Premium_LRS"
 
