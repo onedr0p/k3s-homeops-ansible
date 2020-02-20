@@ -38,7 +38,7 @@ module azure-vms {
 resource null_resource "ansible-playbook" {
   provisioner "local-exec" {
     command = <<EOT
-              ansible-playbook ../../ansible/main.yml --extra-vars "@overrides.yaml"
+              ansible-playbook ../../ansible/bootstrap/main.yml --extra-vars "@overrides.yaml"
               EOT
   }
   depends_on = [module.azure-vms]

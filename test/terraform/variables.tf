@@ -6,20 +6,32 @@ variable "hosts" {
   description = "Key-Value of VM Names to Type"
   default = {
     "k3s-bootstrap-0" = {
-      "name" = "k3s-bootstrap-0",
-      "type" = "master"
+      "name"    = "k3s-bootstrap-0",
+      "type"    = "master",
+      "storage" = "nfs",
+      "ceph"    = "false",
+      "nfs"     = "false"
     },
     "k3s-bootstrap-1" = {
-      "name" = "k3s-bootstrap-1",
-      "type" = "nodes"
+      "name"    = "k3s-bootstrap-1",
+      "type"    = "nodes",
+      "storage" = "ceph",
+      "ceph"    = "true",
+      "nfs"     = "false"
     },
     "k3s-bootstrap-2" = {
-      "name" = "k3s-bootstrap-2",
-      "type" = "nodes"
+      "name"    = "k3s-bootstrap-2",
+      "type"    = "nodes",
+      "storage" = "ceph",
+      "ceph"    = "true",
+      "nfs"     = "false"
     },
     "k3s-bootstrap-3" = {
-      "name" = "k3s-bootstrap-3",
-      "type" = "nodes"
+      "name"    = "k3s-bootstrap-3",
+      "type"    = "nodes",
+      "storage" = "ceph",
+      "ceph"    = "true",
+      "nfs"     = "true"
     }
   }
 }

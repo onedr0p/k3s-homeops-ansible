@@ -1,2 +1,0 @@
-*.key filter=git-crypt diff=git-crypt
-kubeconfig filter=git-crypt diff=git-crypt
