@@ -21,12 +21,12 @@ The terraform process follows the below steps:
 Ensure that the following environment variables are set within your shell session. There are a total of 4 values that need to be set. Ansible looks for the same data in a different variable than Terraform.
 
 ```
-AZURE_TENANT
-AZURE_SUBSCRIPTION_ID
-AZURE_CLIENT_ID
-AZURE_SECRET
-ARM_TENANT_ID $AZURE_TENANT
-ARM_SUBSCRIPTION_ID $AZURE_SUBSCRIPTION_ID
-ARM_CLIENT_ID $AZURE_CLIENT_ID
-ARM_CLIENT_SECRET $AZURE_SECRET
+AZURE_TENANT=<GUID>
+AZURE_SUBSCRIPTION_ID=<GUID>
+AZURE_CLIENT_ID=<GUID>
+AZURE_SECRET=<GUID>
+ARM_TENANT_ID=$AZURE_TENANT
+ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
+ARM_CLIENT_ID=$AZURE_CLIENT_ID
+ARM_CLIENT_SECRET=$AZURE_SECRET
 ```
