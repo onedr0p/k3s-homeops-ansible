@@ -2,6 +2,6 @@ test/vagrant/.vagrant
 *tfstate*
 test/terraform/.terraform/*
 kubeconfig
-ansible/group_vars/all.yml
-/ansible/hosts.ini
-/ansible/hosts.yaml
+/ansible/bootstrap/group_vars/all.yml
+/ansible/bootstrap/hosts.ini
+/ansible/bootstrap/hosts.yaml
