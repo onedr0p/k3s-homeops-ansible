@@ -1,7 +1,7 @@
 helmOperator:
   create: false
 git:
-  url: "git@github.com:carpenike/k8s-bootstrap"
+  url: "git@github.com:carpenike/k3s-bootstrap"
   path: "devops"
 registry:
   rps: 1
