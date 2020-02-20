@@ -1,0 +1,12 @@
+---
+
+- hosts: vault
+  become: no
+  gather_facts: no
+  tasks:
+  - name: include global vars
+    include_vars: "{{ playbook_dir }}/config.yml"
+  - name: include vault vars
+    include_vars: "{{ playbook_dir }}/vault.yml"
+
+- include: bootstrap/main.yml

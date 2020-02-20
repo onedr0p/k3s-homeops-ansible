@@ -3,5 +3,8 @@ test/vagrant/.vagrant
 test/terraform/.terraform/*
 kubeconfig
 /ansible/bootstrap/group_vars/all.yml
-/ansible/bootstrap/hosts.ini
-/ansible/bootstrap/hosts.yml
+/ansible/inventory/hosts.ini
+/ansible/inventory/hosts.yml
+/ansible/variables/config.yml
+/ansible/variables/vault.yml
+/ansible/variables/encrypted-vault.yml

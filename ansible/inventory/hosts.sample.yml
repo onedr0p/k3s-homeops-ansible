@@ -1,6 +1,6 @@
 # all:
 #   vars:
-#     ansible_user: ryan
+#     ansible_user: ubuntu
 
 master:
   hosts:

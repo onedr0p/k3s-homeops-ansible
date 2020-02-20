@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: no
+  gather_facts: no
+  tasks:
+  - name: include global vars
+    include_vars: "{{ playbook_dir }}/variables/config.yml"
+
+- include: bootstrap/main.yml
