@@ -50,6 +50,6 @@ spec:
             - name: SLACK_ICON_EMOJI
               value: ":heart:"
             - name: GITHUB_URL
-              value: "https://dev.azure.com/ryholt/HomeAutomation/_git/k8s-gitops"
+              value: "https://github.com/carpenike/k3s-bootstrap"
             - name: LISTEN_ADDRESS
               value: ":3032"
