@@ -53,7 +53,6 @@
   set_fact:
     VAULT_RECOVERY_TOKEN: "{{ (initialize_vault_status.stdout | from_json).unseal_keys_b64 | first }}"
     VAULT_ROOT_TOKEN: "{{ (initialize_vault_status.stdout | from_json).root_token }}"
-    KUBECTL_PID_FILE: "/tmp/kubectl.pid"
   when: ( initialized_vault_status.stdout == "false" )
 
 - debug:
@@ -110,11 +109,8 @@
 - name: Port Forward Vault Service
   shell: |
     nohup kubectl -n kube-system port-forward svc/vault 8200:8200 >/dev/null 2>&1 &
-    echo "$!" >{{ KUBECTL_PID_FILE |quote }}
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-  args:
-    creates: "{{ KUBECTL_PID_FILE }}"
   when: kubernetes_pod_network.cni == "flannel"
 
 - name: Set Vault_Service_IP to Fact (Calico)
@@ -248,10 +244,3 @@
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
   when: ( initialized_vault_status.stdout == "false" )
-
-- name: Kill kubectl tunnel
-  shell: |
-    kill "$(cat {{ KUBECTL_PID_FILE|quote }})" || true
-    rm -f {{ KUBECTL_PID_FILE }}
-  args:
-    removes: "{{ KUBECTL_PID_FILE }}"

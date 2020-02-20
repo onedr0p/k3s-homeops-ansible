@@ -21,7 +21,7 @@ spec:
         limits:
           memory: 256Mi
       standalone:
-        enabled: "true"
+        enabled: true
         config: |
           ui = true
           listener "tcp" {
@@ -33,5 +33,5 @@ spec:
             path = "vault"
             address = "HOST_IP:8500"
           }
-      ha:
-        enabled: "false"
+      # ha:
+      #   enabled: false
