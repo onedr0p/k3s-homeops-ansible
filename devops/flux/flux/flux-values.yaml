@@ -10,8 +10,6 @@ memcached:
   tolerations:
   - key: "arm"
     operator: "Exists"
-additionalArgs:
-  - --connect=ws://fluxcloud
 prometheus:
   enabled: true
   serviceMonitor:
