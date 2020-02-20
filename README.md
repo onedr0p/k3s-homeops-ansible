@@ -24,15 +24,23 @@ brew install ansible curl jq kubernetes-cli kubectl kubernetes-helm git calicoct
 
 ## Running the Playbook
 
-Before you get started make sure you update the Ansible vars and host inventory:
+1) Update the Ansible vars and host inventory
 
-```bash
-# Copy and update the variables to your liking
-cp ./ansible/group_vars/all.sample.yml ./ansible/group_vars/all.yml
+    ```bash
+    # Copy and update the variables to your liking
+    cp ./ansible/group_vars/all.sample.yml ./ansible/group_vars/all.yml
 
-# Copy and update the hosts to your liking
-cp ./ansible/hosts.sample.yml ./ansible/hosts.yml
-```
+    # Copy and update the hosts to your liking
+    cp ./ansible/hosts.sample.yml ./ansible/hosts.yml
+    ```
+
+2) Run the playbook
+
+    ```bash
+    ansible ansible-playbook \
+        -i ansible/hosts.yml \
+        ansible/main.yml --ask-become-pass
+    ```
 
 ## Running Tests
 
