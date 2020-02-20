@@ -32,7 +32,7 @@ k3s_master: "k3s-master-a"
 k3s_master_lb: "{{ k3s_master }}"
 REPO_ROOT: "{{ lookup('pipe', 'git rev-parse --show-toplevel') }}"
 kubernetes_pod_network:
-  cni: flannel
+  cni: flannel # calico / flannel
   bgp: disabled # Enabled / Disabled
   calico_manifest_file: "{{ REPO_ROOT }}/devops/kube-system/calico/calico.yaml"
   calico_bgp_peer: 10.20.0.1
