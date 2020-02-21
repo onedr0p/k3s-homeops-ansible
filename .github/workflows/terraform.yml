@@ -83,7 +83,7 @@ jobs:
   ansible:
     name: Setup Ansible
     runs-on: ubuntu-latest
-    uses: cytopia/ansible@master
+    container: cytopia/ansible@master
     steps:
       - run: |
           pip install ansible
