@@ -22,11 +22,10 @@ spec:
       tag: "1.7.9"
     service:
       type: LoadBalancer
-      loadBalancerIP: 10.20.50.151
     persistence:
       enabled: true
       size: 50Gi
-      storageClass: nfs-client
+      storageClass: rook-ceph-block
     resources:
       requests:
         memory: 2000Mi
@@ -40,8 +39,3 @@ spec:
     config:
       opentsdb:
         enabled: true
-    podAnnotations:
-      backup.velero.io/backup-volumes: data
-    # tolerations:
-    # - key: "arm"
-    #   operator: "Exists"
