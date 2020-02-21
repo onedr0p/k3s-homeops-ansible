@@ -145,6 +145,9 @@
     VAULT_ROOT_TOKEN: "{{ VAULT_ROOT_TOKEN }}"
   register: vault_login
   when: ( initialized_vault_status.stdout == "false" )
+  until: vault_login is succeeded
+  retries: 30
+  delay: 30
 
 # - name: Show Vault Auth Providers
 #   shell: "{{ item }}"
