@@ -11,6 +11,8 @@ k3s_master_cli: --default-local-storage-path=/dev/shm --no-deploy servicelb --no
 #k3s_worker_cli: "--docker"
 k3s_worker_cli:
 k3s_copy_config_local: false
+k3s_master: "{{ hostvars[groups['master'][0]]['ansible_nodename'] }}"
+k3s_master_lb: "{{ k3s_master }}"
 
 # github options
 github_username:
@@ -28,8 +30,6 @@ ceph:
 timezone: America/New_York
 systemd_dir: /etc/systemd/system
 master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
-k3s_master: "k3s-master-a"
-k3s_master_lb: "{{ k3s_master }}"
 REPO_ROOT: "{{ lookup('pipe', 'git rev-parse --show-toplevel') }}"
 kubernetes_pod_network:
   cni: flannel # calico / flannel
