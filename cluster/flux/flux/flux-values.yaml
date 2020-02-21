@@ -1,7 +1,7 @@
 helmOperator:
   create: false
 git:
-  url: "git@github.com:carpenike/k3s-bootstrap"
+  url: "git@github.com:k8s-at-home/k8s-cluster"
   path: "cluster"
 registry:
   rps: 1
