@@ -29,18 +29,13 @@
   register: initialized_vault_status
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+  until: "'initialized_vault_status' is defined"
 
 - name: Check Vault Sealed Status
   shell: kubectl -n kube-system exec "vault-0" -- vault status -format=json 2> /dev/null | jq -r '.sealed'
   register: sealed_vault_status
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-
-- debug:
-    var: initialized_vault_status
-
-- debug:
-    var: sealed_vault_status
 
 - name: Initialize Vault
   shell: kubectl -n kube-system exec "vault-0" -- vault operator init -format json -recovery-shares=1 -recovery-threshold=1
@@ -51,15 +46,9 @@
 
 - name: Store Recovery & Root Token
   set_fact:
-    VAULT_RECOVERY_TOKEN: "{{ (initialize_vault_status.stdout | from_json).unseal_keys_b64 | first }}"
+    VAULT_RECOVERY_TOKEN: "{{ (initialize_vault_status.stdout | from_json).unseal_keys_b64 }}"
     VAULT_ROOT_TOKEN: "{{ (initialize_vault_status.stdout | from_json).root_token }}"
   when: ( initialized_vault_status.stdout == "false" )
-
-- debug:
-    var: VAULT_RECOVERY_TOKEN
-
-- debug:
-    var: VAULT_ROOT_TOKEN
 
 #- name: Decrypt Vault Secret File
 #  ignore_errors: yes
@@ -74,7 +63,7 @@
    line: "vault_VAULT_ROOT_TOKEN: {{ VAULT_ROOT_TOKEN }}"
   when: ( initialized_vault_status.stdout == "false" )
 
-- name: Update ansible-vault secret wtih recovery token
+- name: Update ansible-vault secret with recovery token
   lineinfile:
    dest: "{{ REPO_ROOT }}/ansible/variables/encrypted-vault.yml"
    regexp: '^vault_VAULT_RECOVERY_TOKEN:'
@@ -88,11 +77,12 @@
 #  when: ( initialized_vault_status.results[0].stdout == "false" )
 
 - name: Unseal Vault
-  shell: "{{ item }}"
+  shell: kubectl -n kube-system exec "vault-0" -- vault operator unseal {{ item }}
   with_items:
-    - kubectl -n kube-system exec "vault-0" -- vault operator unseal $VAULT_RECOVERY_TOKEN
+    - "{{ VAULT_RECOVERY_TOKEN[0] }}"
+    - "{{ VAULT_RECOVERY_TOKEN[1] }}"
+    - "{{ VAULT_RECOVERY_TOKEN[2] }}"
   environment:
-    VAULT_RECOVERY_TOKEN: "{{ VAULT_RECOVERY_TOKEN }}"
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: unseal_vault_status
   when: ( sealed_vault_status.stdout == "true" )
@@ -244,3 +234,6 @@
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
   when: ( initialized_vault_status.stdout == "false" )
+
+- name: Kill all kubectl port-forwards
+  shell: killall kubectl

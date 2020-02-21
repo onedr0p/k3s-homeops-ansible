@@ -10,9 +10,11 @@ spec:
     enabled: false
   chart:
     git: https://github.com/hashicorp/vault-helm
-    ref: v0.3.1
+    ref: v0.3.3
     path: .
   values:
+    injector:
+      enabled: false
     server:
       resources:
         requests:
@@ -20,3 +22,18 @@ spec:
           cpu: 250m
         limits:
           memory: 256Mi
+      standalone:
+        enabled: "false"
+      ha:
+        enabled: "true"
+        config: |
+          ui = true
+          listener "tcp" {
+            tls_disable = 1
+            address = "[::]:8200"
+            cluster_address = "[::]:8201"
+          }
+          storage "consul" {
+            path = "vault"
+            address = "HOST_IP:8500"
+          }
