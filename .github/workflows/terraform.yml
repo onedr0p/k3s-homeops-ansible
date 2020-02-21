@@ -81,11 +81,8 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
-      - name: 'Run Ansible Job'
-        uses: actions/ansible-playbook-docker-action@master
-        with:
-          playbookName: 'ansible/bootstrap.yml'
-          inventoryFile: 'ansible/inventory'
-          rolesPath: ".ansible/playbooks/roles"
-          extraFile: "test/terraform/overrides.yaml"
-          verbosity: "vv"
+      - name: Setup Ansible
+        uses: cytopia/ansible@master
+        shell: |
+          pip install ansible
+          pip install ansible[azure]
