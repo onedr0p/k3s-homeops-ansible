@@ -84,8 +84,24 @@
 #  changed_when: "'Encryption successful' in vault_encrypt.stdout"
 #  when: ( initialized_vault_status.results[0].stdout == "false" )
 
-- name: Unseal Vault
+- name: Unseal Vault (0)
   shell: kubectl -n kube-system exec "vault-0" -- vault operator unseal {{ item }}
+  with_items: "{{ VAULT_RECOVERY_TOKEN }}"
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+  register: unseal_vault_status
+  when: ( sealed_vault_status.stdout == "true" )
+
+- name: Unseal Vault (1)
+  shell: kubectl -n kube-system exec "vault-1" -- vault operator unseal {{ item }}
+  with_items: "{{ VAULT_RECOVERY_TOKEN }}"
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+  register: unseal_vault_status
+  when: ( sealed_vault_status.stdout == "true" )
+
+- name: Unseal Vault (2)
+  shell: kubectl -n kube-system exec "vault-2" -- vault operator unseal {{ item }}
   with_items: "{{ VAULT_RECOVERY_TOKEN }}"
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
