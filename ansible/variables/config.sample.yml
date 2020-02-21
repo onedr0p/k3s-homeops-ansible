@@ -14,7 +14,7 @@ k3s_copy_config_local: false
 
 # github options
 github_username: carpenike
-github_k8s_reponame: k3s-gitops
+github_k8s_reponame: k8s-cluster
 
 # ceph options
 ceph:
