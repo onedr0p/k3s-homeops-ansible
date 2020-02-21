@@ -83,6 +83,6 @@ jobs:
 
       - name: Setup Ansible
         uses: cytopia/ansible@master
-        shell: |
+        run: |
           pip install ansible
           pip install ansible[azure]
