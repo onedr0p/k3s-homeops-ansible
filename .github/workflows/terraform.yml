@@ -6,11 +6,11 @@ jobs:
     name: 'Terraform'
     runs-on: ubuntu-latest
     steps:
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          name: id_rsa # optional
+      # - name: Install SSH key
+      #   uses: shimataro/ssh-key-action@v2
+      #   with:
+      #     key: ${{ secrets.SSH_KEY }}
+      #     name: id_rsa # optional
 
       - name: 'Checkout'
         uses: actions/checkout@master
