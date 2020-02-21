@@ -6,7 +6,6 @@ jobs:
     name: 'Terraform'
     runs-on: ubuntu-latest
     steps:
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -80,8 +79,9 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-
+    ansible:
       - name: Setup Ansible
+        runs-on: ubuntu-latest
         uses: cytopia/ansible@master
         run: |
           pip install ansible
