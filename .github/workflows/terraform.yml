@@ -4,7 +4,7 @@ on:
    types: [created, edited]
 jobs:
   terraform:
-    if: github.event.comment.body == 'OK to test' && github.event.comment.user.login -- 'carpenike'
+    if: github.event.comment.body == 'OK to test' && github.event.comment.user.login == 'carpenike'
     name: 'Terraform'
     runs-on: ubuntu-latest
     steps:
