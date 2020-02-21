@@ -3,12 +3,12 @@
 
 VAGRANTFILE_API_VERSION = "2"
 
-# Use config.yml values for some configuration.
-require 'yaml'
-unless File.exist?("../../ansible/group_vars/all.yml")
-  raise 'Configuration file not found! Please copy vars.example.yml to vars.yml and try again.'
-end
-vconfig = YAML.load_file("../../ansible/group_vars/all.yml")
+# # Use config.yml values for some configuration.
+# require 'yaml'
+# unless File.exist?("../../ansible/group_vars/all.yml")
+#   raise 'Configuration file not found! Please copy vars.example.yml to vars.yml and try again.'
+# end
+# vconfig = YAML.load_file("../../ansible/group_vars/all.yml")
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "bento/ubuntu-18.04"
@@ -24,9 +24,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Define four VMs with static private IP addresses.
   boxes = [
-    { :name => "k3s-master", :ip => "192.168.88.200" },
-    { :name => "k3s-worker-node", :ip => "192.168.88.201" },
-    # { :name => "k3s-storage-node", :ip => "192.168.88.202" }
+    { :name => "k3s-master-a", :ip => "192.168.88.200" },
+    { :name => "k3s-worker-node-a", :ip => "192.168.88.201" },
+    { :name => "k3s-worker-node-b", :ip => "192.168.88.202" },
+    { :name => "k3s-storage-node-a", :ip => "192.168.88.203" }
   ]
 
   # Configure each of the VMs.
@@ -39,9 +40,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       if index == boxes.size - 1
         config.vm.provision "ansible" do |ansible|
           ansible.compatibility_mode = "2.0"
-          ansible.playbook = "../../ansible/main.yml"
-          ansible.inventory_path = "hosts.ini"
-          ansible.limit = "k3s_cluster"
+          ansible.playbook = "../../ansible/bootstrap.yml"
+          ansible.inventory_path = "hosts.yml"
+          ansible.limit = "all"
         end
       end
     end
