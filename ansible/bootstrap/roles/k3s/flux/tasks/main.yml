@@ -1,4 +1,10 @@
 ---
+
+- name: Create flux namespace
+  command: "kubectl apply -f {{ REPO_ROOT }}/cluster/flux/namespace.yaml"
+  environment:
+    KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+
 - name: Add Flux Repo
   command: "{{ item }}"
   with_items:
