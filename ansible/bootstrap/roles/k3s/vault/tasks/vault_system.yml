@@ -130,6 +130,9 @@
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
     VAULT_ROOT_TOKEN: "{{ VAULT_ROOT_TOKEN }}"
   register: vault_login
+  until: vault_login is succeeded
+  retries: 30
+  delay: 30
   when: ( initialized_vault_status.stdout == "true" )
 
 - name: Login to Vault (New Install)
