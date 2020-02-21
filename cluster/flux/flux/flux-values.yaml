@@ -7,9 +7,6 @@ registry:
   rps: 1
   burst: 1
 memcached:
-  tolerations:
-  - key: "arm"
-    operator: "Exists"
 prometheus:
   enabled: true
   serviceMonitor:

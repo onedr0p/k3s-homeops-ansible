@@ -4,6 +4,5 @@
   gather_facts: yes
   become: no
   roles:
-    - { role: k3s/helm }
     - { role: k3s/flux }
     - { role: k3s/bootstrap }
