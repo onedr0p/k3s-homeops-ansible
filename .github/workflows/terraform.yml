@@ -85,6 +85,6 @@ jobs:
     runs-on: ubuntu-latest
     uses: cytopia/ansible@master
     steps:
-      run: |
-        pip install ansible
-        pip install ansible[azure]
+      - run: |
+          pip install ansible
+          pip install ansible[azure]
