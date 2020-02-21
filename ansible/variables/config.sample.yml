@@ -47,4 +47,4 @@ kubernetes_prometheus_prometheus_manifest_file: https://raw.githubusercontent.co
 kubernetes_prometheus_prometheusrules_manifest_file: https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheusrules.yaml
 kubernetes_prometheus_servicemonitor_manifest_file: https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
 kubernetes_flux_values: "{{ REPO_ROOT }}/cluster/flux/flux/flux-values.yaml"
-kubernetes_helm_operator_values: "{{ REPO_ROOT }}/cluster/flux/helm-operator/flux-helm-operator-values.yaml"
+kubernetes_helm_operator_values: "{{ REPO_ROOT }}/cluster/flux/helm-operator/helm-operator-values.yaml"
