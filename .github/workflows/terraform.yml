@@ -82,8 +82,9 @@ jobs:
 
   ansible:
     name: Setup Ansible
+    needs: terraform
     runs-on: ubuntu-latest
-    container: cytopia/ansible@master
+    container: cytopia/ansible:latest
     steps:
       - run: |
           pip install ansible
