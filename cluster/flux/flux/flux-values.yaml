@@ -2,7 +2,7 @@ helmOperator:
   create: false
 git:
   url: "git@github.com:carpenike/k3s-bootstrap"
-  path: "devops"
+  path: "cluster"
 registry:
   rps: 1
   burst: 1

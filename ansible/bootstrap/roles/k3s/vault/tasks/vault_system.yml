@@ -86,10 +86,7 @@
 
 - name: Unseal Vault
   shell: kubectl -n kube-system exec "vault-0" -- vault operator unseal {{ item }}
-  with_items:
-    - "{{ VAULT_RECOVERY_TOKEN[0] }}"
-    - "{{ VAULT_RECOVERY_TOKEN[1] }}"
-    - "{{ VAULT_RECOVERY_TOKEN[2] }}"
+  with_items: "{{ VAULT_RECOVERY_TOKEN }}"
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: unseal_vault_status

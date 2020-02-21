@@ -14,7 +14,7 @@
 - name: Create Kiali Secret
   command: "{{ item }}"
   with_items:
-    - "{{ REPO_ROOT }}/kapply.sh {{ REPO_ROOT }}/devops/istio-system/secret/kiali-secret.txt"
+    - "{{ REPO_ROOT }}/kapply.sh {{ REPO_ROOT }}/cluster/istio-system/secret/kiali-secret.txt"
   register: kiali_status
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"

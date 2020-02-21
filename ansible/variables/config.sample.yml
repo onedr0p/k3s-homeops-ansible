@@ -34,7 +34,7 @@ REPO_ROOT: "{{ lookup('pipe', 'git rev-parse --show-toplevel') }}"
 kubernetes_pod_network:
   cni: flannel # calico / flannel
   bgp: disabled # Enabled / Disabled
-  calico_manifest_file: "{{ REPO_ROOT }}/devops/kube-system/calico/calico.yaml"
+  calico_manifest_file: "{{ REPO_ROOT }}/cluster/kube-system/calico/calico.yaml"
   calico_bgp_peer: 10.20.0.1
   calico_bgp_as: 64512
   cidr: '10.244.0.0/16'
@@ -46,5 +46,5 @@ kubernetes_prometheus_podmonitor_manifest_file: https://raw.githubusercontent.co
 kubernetes_prometheus_prometheus_manifest_file: https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheus.yaml
 kubernetes_prometheus_prometheusrules_manifest_file: https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheusrules.yaml
 kubernetes_prometheus_servicemonitor_manifest_file: https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
-kubernetes_flux_values: "{{ REPO_ROOT }}/devops/flux/flux/flux-values.yaml"
-kubernetes_helm_operator_values: "{{ REPO_ROOT }}/devops/flux/helm-operator/flux-helm-operator-values.yaml"
+kubernetes_flux_values: "{{ REPO_ROOT }}/cluster/flux/flux/flux-values.yaml"
+kubernetes_helm_operator_values: "{{ REPO_ROOT }}/cluster/flux/helm-operator/flux-helm-operator-values.yaml"
