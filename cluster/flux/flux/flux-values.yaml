@@ -7,6 +7,7 @@ registry:
   rps: 1
   burst: 1
 memcached:
+  enabled: true
 prometheus:
   enabled: true
   serviceMonitor:
