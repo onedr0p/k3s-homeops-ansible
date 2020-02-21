@@ -13,7 +13,7 @@ k3s_worker_cli:
 k3s_copy_config_local: false
 
 # github options
-github_username: carpenike
+github_username:
 github_k8s_reponame: k8s-cluster
 
 # ceph options
