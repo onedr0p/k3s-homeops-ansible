@@ -1,8 +1,10 @@
 name: 'Azure E2E'
 on:
-  - pull_request
+ issue_comment:
+   types: [created, edited]
 jobs:
   terraform:
+    if: github.event.comment.body == 'OK to test' AND ${{ GITHUB_ACTOR}} -- 'carpenike'
     name: 'Terraform'
     runs-on: ubuntu-latest
     steps:
