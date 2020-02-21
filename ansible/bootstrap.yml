@@ -6,5 +6,9 @@
   tasks:
   - name: include global vars
     include_vars: "{{ playbook_dir }}/variables/config.yml"
+  - name: include vault vars
+    include_vars: "{{ playbook_dir }}/variables/vault.yml"
+  - name: include encrypted-vault vars
+    include_vars: "{{ playbook_dir }}/variables/encrypted-vault.yml"
 
 - include: bootstrap/main.yml

@@ -29,13 +29,21 @@
   register: initialized_vault_status
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-  until: "'initialized_vault_status' is defined"
+  until: "'false' or 'true' in initialized_vault_status.stdout"
+  retries: 30
+  delay: 30
 
 - name: Check Vault Sealed Status
   shell: kubectl -n kube-system exec "vault-0" -- vault status -format=json 2> /dev/null | jq -r '.sealed'
   register: sealed_vault_status
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+  until: "'false' or 'true' in sealed_vault_status.stdout"
+  retries: 30
+  delay: 30
+
+- debug:
+    var: sealed_vault_status
 
 - name: Initialize Vault
   shell: kubectl -n kube-system exec "vault-0" -- vault operator init -format json -recovery-shares=1 -recovery-threshold=1
@@ -120,6 +128,7 @@
   environment:
     VAULT_ADDR: "{{ VAULT_ADDR }}"
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
+    VAULT_ROOT_TOKEN: "{{ VAULT_ROOT_TOKEN }}"
   register: vault_login
   when: ( initialized_vault_status.stdout == "true" )
 
