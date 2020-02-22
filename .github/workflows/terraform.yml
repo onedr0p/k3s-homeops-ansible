@@ -1,5 +1,8 @@
 name: 'Azure E2E'
-on: [pull_request]
+#on: [pull_request]
+on:
+  issue_comment:
+    types: [created, edited]
 jobs:
   terraform:
     name: 'Terraform'
