@@ -1,8 +1,5 @@
 name: 'Azure E2E'
-#on: [pull_request]
-on:
-  issue_comment:
-    types: [created, edited]
+on: ['deployment']
 jobs:
   terraform:
     name: 'Terraform'
@@ -14,43 +11,11 @@ jobs:
       #     key: ${{ secrets.SSH_KEY }}
       #     name: id_rsa # optional
 
-      - name: Fetch issue info
-        uses: octokit/request-action@v2.x
-        id: get_issue_info
-        with:
-          route: GET ${{ github.event.issue.url }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Parse issue info
-        id: parse_issue_info
-        uses: gr2m/get-json-paths-action@v1.x
-        with:
-          json: ${{ steps.get_issue_info.outputs.data }}
-          pull_request_url: "pull_request.url"
-      - name: Fetch PR info
-        uses: octokit/request-action@v2.x
-        id: get_pr_ref
-        with:
-          route: GET ${{ steps.parse_issue_info.outputs.pull_request_url }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Parse PR info
-        id: parse_pr_info
-        uses: gr2m/get-json-paths-action@v1.x
-        with:
-          json: ${{ steps.get_pr_ref.outputs.data }}
-          ref: "head.ref"
-
       - name: 'Checkout'
         uses: actions/checkout@master
-        if: github.event.comment.body == 'OK to test'
-
-        with:
-          ref: ${{ steps.parse_pr_info.outputs.ref }}
 
       - name: 'Terraform Format'
         uses: hashicorp/terraform-github-actions@master
-        if: github.event.comment.body == 'OK to test'
         with:
           tf_actions_version: 0.12.21
           tf_actions_subcommand: 'fmt'
@@ -64,7 +29,6 @@ jobs:
 
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
-        if: github.event.comment.body == 'OK to test'
         with:
           tf_actions_version: 0.12.21
           tf_actions_subcommand: 'init'
@@ -78,7 +42,6 @@ jobs:
 
       - name: 'Terraform Validate'
         uses: hashicorp/terraform-github-actions@master
-        if: github.event.comment.body == 'OK to test'
         with:
           tf_actions_version: 0.12.21
           tf_actions_subcommand: 'validate'
@@ -92,7 +55,6 @@ jobs:
 
       - name: 'Terraform Plan'
         uses: hashicorp/terraform-github-actions@master
-        if: github.event.comment.body == 'OK to test'
         with:
           tf_actions_version: 0.12.21
           tf_actions_subcommand: 'plan'
