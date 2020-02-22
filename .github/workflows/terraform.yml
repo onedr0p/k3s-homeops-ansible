@@ -84,7 +84,7 @@ jobs:
     name: Setup Ansible
     needs: terraform
     runs-on: ubuntu-latest
-    container: cytopia/ansible:azure
+    container: cytopia/ansible:latest-azure
     steps:
       - run: |
           ansible --version
