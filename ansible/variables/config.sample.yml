@@ -7,7 +7,7 @@ local_user: "{{ ansible_user }}"
 # k3s options
 k3s_version: v1.17.2+k3s1
 #k3s_master_cli: "--docker --default-local-storage-path=/dev/shm --flannel-backend=none --no-deploy servicelb --no-deploy traefik"
-k3s_master_cli: --default-local-storage-path=/dev/shm --no-deploy servicelb --no-deploy traefik
+k3s_master_cli: --default-local-storage-path=/dev/shm --no-deploy servicelb --no-deploy traefik --flannel-backend=host-gw
 #k3s_worker_cli: "--docker"
 k3s_worker_cli:
 k3s_copy_config_local: false
