@@ -1,7 +1,8 @@
 name: 'Azure E2E'
 on:
- issue_comment:
-   types: [created, edited]
+  - pull_request
+  issue_comment:
+    types: [created, edited]
 jobs:
   terraform:
     if: github.event.comment.body == 'OK to test' && github.event.comment.user.login == 'carpenike'
