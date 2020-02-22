@@ -2,7 +2,6 @@ name: 'Azure E2E'
 on: [pull_request]
 jobs:
   terraform:
-    #if: github.event.comment.body == 'OK to test'
     name: 'Terraform'
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +13,7 @@ jobs:
 
       - name: 'Checkout'
         uses: actions/checkout@master
+        if: github.event.comment.body == 'OK to test'
 
       - name: 'Terraform Format'
         uses: hashicorp/terraform-github-actions@master
@@ -67,18 +67,18 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
-      - name: 'Terraform Apply'
-        uses: hashicorp/terraform-github-actions@master
-        with:
-          tf_actions_version: 0.12.21
-          tf_actions_subcommand: 'apply'
-          tf_actions_working_dir: 'test/terraform'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      #- name: 'Terraform Apply'
+      #  uses: hashicorp/terraform-github-actions@master
+      #  with:
+      #    tf_actions_version: 0.12.21
+      #    tf_actions_subcommand: 'apply'
+      #    tf_actions_working_dir: 'test/terraform'
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      #    ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      #    ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #    ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
   ansible:
     name: Setup Ansible
