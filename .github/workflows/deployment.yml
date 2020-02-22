@@ -1,4 +1,4 @@
-name: 'Azure E2E'
+name: 'Deployment'
 on: ['deployment']
 jobs:
   terraform:
