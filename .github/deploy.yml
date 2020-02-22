@@ -18,5 +18,5 @@ test:
   production_environment: false
 
   # Dynamic environment name. The environment will look like pr123.
-  #environment: pr${{ pr }}
-  environment: test
+  environment: pr${{ pr }}
+  #environment: test
