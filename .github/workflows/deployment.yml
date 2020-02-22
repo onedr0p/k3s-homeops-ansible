@@ -10,6 +10,11 @@ jobs:
       #   with:
       #     key: ${{ secrets.SSH_KEY }}
       #     name: id_rsa # optional
+      - name: 'deployment pending'
+        uses: 'deliverybot/deployment-status@master'
+        with:
+          state: 'pending'
+          token: '${{ github.token }}'
 
       - name: 'Checkout'
         uses: actions/checkout@master
@@ -78,6 +83,19 @@ jobs:
       #    ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       #    ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       #    ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      - name: 'deployment success'
+        if: success()
+        uses: 'deliverybot/deployment-status@master'
+        with:
+          state: 'success'
+          token: '${{ github.token }}'
+
+      - name: 'deployment failure'
+        if: failure()
+        uses: 'deliverybot/deployment-status@master'
+        with:
+          state: 'failure'
+          token: '${{ github.token }}'
 
   ansible:
     name: Setup Ansible
