@@ -2,7 +2,7 @@ name: 'Azure E2E'
 on: [pull_request]
 jobs:
   terraform:
-    if: github.event.comment.body == 'OK to test'
+    #if: github.event.comment.body == 'OK to test'
     name: 'Terraform'
     runs-on: ubuntu-latest
     steps:
