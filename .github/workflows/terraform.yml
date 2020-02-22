@@ -17,6 +17,7 @@ jobs:
 
       - name: 'Terraform Format'
         uses: hashicorp/terraform-github-actions@master
+        if: github.event.comment.body == 'OK to test'
         with:
           tf_actions_version: 0.12.21
           tf_actions_subcommand: 'fmt'
@@ -30,6 +31,7 @@ jobs:
 
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
+        if: github.event.comment.body == 'OK to test'
         with:
           tf_actions_version: 0.12.21
           tf_actions_subcommand: 'init'
@@ -43,6 +45,7 @@ jobs:
 
       - name: 'Terraform Validate'
         uses: hashicorp/terraform-github-actions@master
+        if: github.event.comment.body == 'OK to test'
         with:
           tf_actions_version: 0.12.21
           tf_actions_subcommand: 'validate'
@@ -56,6 +59,7 @@ jobs:
 
       - name: 'Terraform Plan'
         uses: hashicorp/terraform-github-actions@master
+        if: github.event.comment.body == 'OK to test'
         with:
           tf_actions_version: 0.12.21
           tf_actions_subcommand: 'plan'
