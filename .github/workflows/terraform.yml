@@ -1,7 +1,9 @@
 name: 'Azure E2E'
 on:
-  - pull_request
-  - issue_comment:
+  pull_request:
+    branches:
+      - master
+  issue_comment:
     types: [created, edited]
 jobs:
   terraform:
