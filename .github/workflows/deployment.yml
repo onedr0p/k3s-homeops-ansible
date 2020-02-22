@@ -1,7 +1,7 @@
 name: 'Deployment'
 on: ['deployment']
 jobs:
-  terraform:
+  deploy:
     name: 'Terraform'
     runs-on: ubuntu-latest
     steps:
