@@ -1,9 +1,5 @@
 k3s_master: "{{ hostvars[groups['master'][0]]['ansible_host'] }}"
-#k3s_version: "v1.17.3-rc1+k3s1"
 k3s_copy_config_local: true
-github_k8s_reponame: "k3s-bootstrap"
-#kubernetes_flux_values: https://raw.githubusercontent.com/carpenike/k3s-bootstrap/master/cluster/flux/flux/flux-values.yaml
-#kubernetes_helm_operator_values: https://raw.githubusercontent.com/carpenike/k3s-bootstrap/master/cluster/flux/helm-operator/flux-helm-operator-values.yaml
 kubernetes_pod_network:
   cni: flannel
   bgp: disabled
