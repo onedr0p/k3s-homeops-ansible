@@ -20,6 +20,7 @@ github_k8s_reponame: k8s-cluster
 
 # ceph options
 ceph:
+  converged: true
   zap_disks: false
   disks:
     - /dev/sdb
