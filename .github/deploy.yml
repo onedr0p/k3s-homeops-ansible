@@ -19,3 +19,4 @@ test:
 
   # Dynamic environment name. The environment will look like pr123.
   environment: pr${{ pr }}
+  #environment: test
