@@ -28,7 +28,7 @@
   loop: "{{ groups['ceph'] }}"
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-  when: ceph.converged == false
+  when: ceph.converged|bool == false
 
 - name: Apply master annotations
   command: kubectl taint --overwrite node {{ item }} node-role.kubernetes.io/master=true:NoSchedule

@@ -10,6 +10,7 @@ kubernetes_pod_network:
 k3s_master_cli: --default-local-storage-path=/dev/shm --no-deploy servicelb --no-deploy traefik
 k3s_worker_cli:
 ceph:
+  converged: true
   zap_disks: false
   disks:
     - /dev/sdc
