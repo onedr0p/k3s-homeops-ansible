@@ -43,7 +43,7 @@ variable "username" {
   type        = string
 }
 
-variable "ssh-key" {
+variable "ssh_key" {
   description = "SSH Key for Admin User"
   type        = string
 }

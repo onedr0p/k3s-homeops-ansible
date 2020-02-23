@@ -91,7 +91,7 @@ resource azurerm_virtual_machine "k3s-bootstrap-vm" {
     disable_password_authentication = true
     ssh_keys {
       path     = "/home/${var.username}/.ssh/authorized_keys"
-      key_data = var.ssh-key
+      key_data = var.ssh_key
     }
   }
   tags = {

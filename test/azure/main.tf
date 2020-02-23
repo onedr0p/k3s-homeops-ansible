@@ -30,7 +30,7 @@ module azure-vms {
   os_sku       = "${var.os_sku}"
   os_version   = "${var.os_version}"
   username     = "${var.username}"
-  ssh-key      = "${var.ssh-key}"
+  ssh_key      = "${var.ssh_key}"
   subnet_id    = "${module.azure-network.subnet_id}"
 
 }
