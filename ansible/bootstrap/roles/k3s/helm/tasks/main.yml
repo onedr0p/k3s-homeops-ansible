@@ -19,7 +19,7 @@
   register: helm_operator_results
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-  changed_when: "'has been upgraded' in flux_results.stdout"
-  until: "'has been upgraded' in flux_results.stdout"
+  changed_when: "'has been upgraded' in helm_operator_results.stdout"
+  until: "'has been upgraded' in helm_operator_sresults.stdout"
   retries: 10
   delay: 10
