@@ -6,7 +6,7 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Terraform Format'
+      - name: 'Terraform Lint (Azure)'
         uses: hashicorp/terraform-github-actions@master
         with:
           tf_actions_version: 0.12.21
