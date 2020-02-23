@@ -32,7 +32,7 @@ jobs:
           #   playbook_1.yml
           #   playbook_2.yml
           targets: |
-            ansible/bootstrap.yaml
+            ansible/bootstrap.yml
           # [optional]
           # Arguments to be passed to the ansible-lint
   
