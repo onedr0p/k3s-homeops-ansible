@@ -17,6 +17,7 @@ k3s_master_lb: "{{ k3s_master }}"
 # github options
 github_username:
 github_k8s_reponame: k8s-cluster
+github_k8s_repooname_branch: master
 
 # ceph options
 ceph:
