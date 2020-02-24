@@ -1,6 +1,6 @@
 ---
 - name: Set timezone
-  command: "timedatectl set-timezone {{ timezone }}"
+  command: "timedatectl set-timezone {{ timezone | default('America/New_York') }}"
   become: true
 
 - name: Add the rbd module
