@@ -27,6 +27,9 @@ ceph:
     - /dev/sdc
     - /dev/sdd
 
+# helm options
+helm_operator: enabled
+
 # server options
 timezone: America/New_York
 systemd_dir: /etc/systemd/system
