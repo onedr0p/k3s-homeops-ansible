@@ -1,4 +1,6 @@
 k3s_master: "{{ hostvars[groups['master'][0]]['ansible_host'] }}"
+github_username: carpenike
+github_k8s_reponame: k8s-playground
 k3s_copy_config_local: true
 kubernetes_pod_network:
   cni: flannel
