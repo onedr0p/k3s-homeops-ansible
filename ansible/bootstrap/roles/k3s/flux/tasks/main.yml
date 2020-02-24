@@ -10,40 +10,15 @@
     fluxctl install --git-user={{ github_username }} \
     --git-email={{ github_username }}@users.noreply.github.com \
     --git-url=git@github.com:{{ github_username }}/{{ github_k8s_reponame }} \
+    --git-branch {{ github_k8s_repooname_branch }} \\
     --git-path=cluster \
     --namespace flux | kubectl apply -f -
   register: flux_results
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-  # changed_when: "'has been upgraded' in flux_results.stdout"
-  # until: "'has been upgraded' in flux_results.stdout"
-  # retries: 10
-  # delay: 10
 
-# - name: Add Flux Repo
-#   command: "{{ item }}"
-#   with_items:
-#     - helm repo add fluxcd https://charts.fluxcd.io
-#   register: flux_repo_results
-#   environment:
-#     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-#   changed_when: "'has been added to your repositories' in flux_repo_results.stdout"
-#   until: "'has been added to your repositories' in flux_repo_results.stdout"
-#   retries: 6
-#   delay: 10
-
-# - name: Deploy Flux
-#   command: "{{ item }}"
-#   with_items:
-#     - "helm upgrade --install flux --values {{ kubernetes_flux_values }} --namespace flux fluxcd/flux"
-#     # - "helm upgrade --install helm-operator --values {{ kubernetes_helm_operator_values }} --namespace flux fluxcd/helm-operator"
-#   register: flux_results
-#   environment:
-#     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-#   changed_when: "'has been upgraded' in flux_results.stdout"
-#   until: "'has been upgraded' in flux_results.stdout"
-#   retries: 10
-#   delay: 10
+- debug:
+    var: flux_results
 
 - name: Get Flux identity
   command: "{{ item }}"
