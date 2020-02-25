@@ -36,11 +36,10 @@ resource azurerm_network_security_group "k3s-bootstrap-nsg" {
 }
 
 resource azurerm_network_interface "k3s-bootstrap-nic" {
-  for_each                  = var.hosts
-  name                      = "${each.value.name}-nic"
-  location                  = var.location
-  resource_group_name       = var.rg_name
-  network_security_group_id = azurerm_network_security_group.k3s-bootstrap-nsg.id
+  for_each            = var.hosts
+  name                = "${each.value.name}-nic"
+  location            = var.location
+  resource_group_name = var.rg_name
 
   ip_configuration {
     name                          = "${each.value.name}-nic-configuration"
@@ -48,6 +47,12 @@ resource azurerm_network_interface "k3s-bootstrap-nic" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.k3s-bootstrap-publicip[each.key].id
   }
+}
+
+resource "azurerm_network_interface_security_group_association" "k3s-bootstrap-nic-nsg" {
+  for_each                  = var.hosts
+  network_interface_id      = azurerm_network_interface.k3s-bootstrap-nic[each.key].id
+  network_security_group_id = azurerm_network_security_group.k3s-bootstrap-nsg.id
 }
 
 resource azurerm_virtual_machine "k3s-bootstrap-vm" {

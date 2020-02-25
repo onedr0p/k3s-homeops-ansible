@@ -10,15 +10,11 @@
     fluxctl install --git-user={{ github_username }} \
     --git-email={{ github_username }}@users.noreply.github.com \
     --git-url=git@github.com:{{ github_username }}/{{ github_k8s_reponame }} \
-    --git-branch {{ github_k8s_repooname_branch }} \\
+    --git-branch={{ github_k8s_reponame_branch }} \
     --git-path=cluster \
     --namespace flux | kubectl apply -f -
-  register: flux_results
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-
-- debug:
-    var: flux_results
 
 - name: Get Flux identity
   command: "{{ item }}"
@@ -29,7 +25,7 @@
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
     FLUX_FORWARD_NAMESPACE: flux
   until: "'ssh-rsa' in flux_identity.stdout"
-  retries: 10
+  retries: 30
   delay: 10
 
 - name: Register Flux Identity with GitHub

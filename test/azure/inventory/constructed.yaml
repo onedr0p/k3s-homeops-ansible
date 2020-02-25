@@ -1,7 +1,5 @@
 plugin: constructed
 strict: False
-#groups:
-#  master: "'k3s' in (tags|list)"
 keyed_groups:
   - prefix: ""
     separator: ""

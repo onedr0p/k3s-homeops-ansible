@@ -1,6 +1,6 @@
 plugin: azure_rm
 include_vm_resource_groups:
-- k3s-bootstrap
+- k3s-bootstrap2
 auth_source: env
 plain_host_names: yes
 

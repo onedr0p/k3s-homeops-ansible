@@ -1,5 +1,0 @@
----
-- include: k3s.yml
-- include: calico.yml
-  when: k3s_master_cli is search("--flannel-backend=none")
-- include: crd.yml

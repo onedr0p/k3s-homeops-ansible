@@ -1,12 +1,9 @@
-k3s_master: "{{ hostvars[groups['master'][0]]['ansible_host'] }}"
 github_username: carpenike
 github_k8s_reponame: k8s-playground
 k3s_copy_config_local: true
 kubernetes_pod_network:
   cni: flannel
   bgp: disabled
-k3s_master_cli: --default-local-storage-path=/dev/shm --no-deploy servicelb --no-deploy traefik
-k3s_worker_cli:
 ceph:
   converged: true
   zap_disks: false
