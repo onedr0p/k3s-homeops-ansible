@@ -1,7 +1,3 @@
-# all:
-#   vars:
-#     ansible_user: ubuntu
-
 master:
   hosts:
     k3s-master-a:
