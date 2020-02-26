@@ -32,11 +32,5 @@ spec:
         volumeMounts:
           - mountPath: /mnt/tank/share
             name: nfs-vol
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                - key: "nfs"
-                  operator: Equals
-                  values: true
+      nodeSelector:
+        node-role.kubernetes.io/nfs: "true"
