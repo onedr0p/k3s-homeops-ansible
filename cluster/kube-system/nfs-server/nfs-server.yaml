@@ -34,3 +34,6 @@ spec:
             name: nfs-vol
       nodeSelector:
         node-role.kubernetes.io/nfs: "true"
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
