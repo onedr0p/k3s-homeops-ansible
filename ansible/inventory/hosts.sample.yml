@@ -6,7 +6,8 @@ master:
   hosts:
     k3s-master-a:
   vars:
-    type: master
+    k3s_control_node: true
+    k3s_tls_san: "{{ hostvars[groups['master'][0]]['ansible_host'] }}"
 
 nodes:
   hosts:
@@ -14,7 +15,6 @@ nodes:
     r610-1:
     r610-2:
   vars:
-    type: worker
 
 ceph:
   hosts:
@@ -22,12 +22,10 @@ ceph:
     r610-1:
     r610-2:
   vars:
-    storage: ceph
 
 nfs:
   hosts:
   vars:
-    storage: nfs
 
 k3s_cluster:
   children:
