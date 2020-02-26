@@ -42,9 +42,6 @@
   retries: 30
   delay: 30
 
-- debug:
-    var: sealed_vault_status
-
 - name: Initialize Vault
   shell: kubectl -n kube-system exec "vault-0" -- vault operator init -format json -recovery-shares=1 -recovery-threshold=1
   register: initialize_vault_status
