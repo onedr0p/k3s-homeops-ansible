@@ -25,9 +25,9 @@
     metadata:
       name: bgppeer-global-2001
     spec:
-      peerIP: {{ kubernetes_pod_network.calico_bgp_peer }}
-      asNumber: {{ kubernetes_pod_network.calico_bgp_as }}
+      peerIP: {{ calico.bgp_peer }}
+      asNumber: {{ calico.bgp_as }}
   environment:
     CALICO_DATASTORE_TYPE: kubernetes
     CALICO_KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-  when: "kubernetes_pod_network.bgp == 'enabled'"
+  when: "calico.bgp == 'enabled'"
