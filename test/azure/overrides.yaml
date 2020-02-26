@@ -1,3 +1,3 @@
-github_username: carpenike
-github_k8s_reponame: k8s-playground
+github_username: k8s-at-home
+github_k8s_reponame: k8s-cluster
 k3s_copy_config_local: true
