@@ -108,31 +108,31 @@
   register: unseal_vault_status
   when: ( sealed_vault_status.stdout == "true" )
 
-- name: Get Vault Service
+- name: Get Vault Service (Calico)
   shell: "{{ item }}"
   with_items:
     - kubectl get -n kube-system svc/vault -o jsonpath='{.spec.clusterIP}'
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
   register: vault_service_IP
-  when: k3s_no_flannel == "true"
+  when: k3s_no_flannel == true
 
-- name: Port Forward Vault Service
+- name: Port Forward Vault Service (Flannel)
   shell: |
     nohup kubectl -n kube-system port-forward svc/vault 8200:8200 >/dev/null 2>&1 &
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-  when: k3s_no_flannel == "false"
+  when: k3s_no_flannel == false
 
 - name: Set Vault_Service_IP to Fact (Calico)
   set_fact:
     VAULT_ADDR: "http://{{ vault_service_IP.stdout }}:8200"
-  when: k3s_no_flannel == "true"
+  when: k3s_no_flannel == true
 
 - name: Set Vault_Service_IP to Fact (Flannel)
   set_fact:
     VAULT_ADDR: "http://127.0.0.1:8200"
-  when: k3s_no_flannel == "false"
+  when: k3s_no_flannel == false
 
 - name: Login to Vault
   shell: "{{ item }}"
