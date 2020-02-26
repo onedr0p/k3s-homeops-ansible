@@ -13,7 +13,7 @@ spec:
     name: nfs-tank-share-pvc
   storageClassName: nfs-client
   nfs:
-    server: nfs-server-provisioner.kube-system.svc.cluster.local
+    server: nfs-server.kube-system.svc.cluster.local
     path: "/mnt/tank/share"
 ---
 apiVersion: v1

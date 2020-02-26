@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /mnt/tank/share
+    path: /mnt/tank/share/k8s
   claimRef:
     namespace: kube-system
     name: data-nfs-server-provisioner-0
