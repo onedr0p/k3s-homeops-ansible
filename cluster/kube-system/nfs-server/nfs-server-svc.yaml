@@ -9,3 +9,5 @@ spec:
       port: 2049
   selector:
     role: nfs-server
+  type: LoadBalancer
+  loadBalancerIP: 10.20.50.100
