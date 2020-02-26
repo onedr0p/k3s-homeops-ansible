@@ -12,6 +12,8 @@ spec:
     namespace: default
     name: nfs-tank-share-pvc
   storageClassName: nfs-client
+  mountOptions:
+    - nfsvers=4.1
   nfs:
     server: nfs-server.kube-system.svc.cluster.local
     path: "/mnt/tank/share"
