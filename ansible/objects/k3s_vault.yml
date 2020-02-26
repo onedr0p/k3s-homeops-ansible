@@ -1,7 +1,0 @@
----
-
-- hosts: vault
-  gather_facts: no
-  become: no
-  roles:
-    - { role: k3s/vault }

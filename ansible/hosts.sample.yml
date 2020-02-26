@@ -1,19 +1,22 @@
-# all:
-#   vars:
-#     ansible_user: ryan
-
 master:
   hosts:
+    k3s-master-a:
   vars:
     k3s_control_node: true
     k3s_tls_san: "{{ hostvars[groups['master'][0]]['ansible_host'] }}"
 
 nodes:
   hosts:
+    r610-0:
+    r610-1:
+    r610-2:
   vars:
 
 ceph:
   hosts:
+    r610-0:
+    r610-1:
+    r610-2:
   vars:
 
 nfs:

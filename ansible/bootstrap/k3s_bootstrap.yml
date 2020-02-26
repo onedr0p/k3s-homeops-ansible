@@ -1,9 +1,0 @@
----
-
-- hosts: localhost
-  gather_facts: yes
-  become: no
-  roles:
-    - { role: k3s/flux }
-    - { role: k3s/helm, when: helm_operator == 'enabled' }
-    - { role: k3s/bootstrap }

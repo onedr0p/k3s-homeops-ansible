@@ -1,4 +1,0 @@
----
-
-- include: k3s_objects.yml
-- include: k3s_vault_values.yml
