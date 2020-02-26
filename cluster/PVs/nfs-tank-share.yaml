@@ -15,8 +15,7 @@ spec:
   mountOptions:
     - nfsvers=4.1
   nfs:
-    #server: nfs-server.kube-system.svc.cluster.local
-    server: 10.43.209.171
+    server: nfs-server.kube-system.svc.cluster.local
     path: "/"
 ---
 apiVersion: v1
