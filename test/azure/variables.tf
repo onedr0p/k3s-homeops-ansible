@@ -41,7 +41,7 @@ variable "rg_network_name" {
 }
 
 variable "vnet_address_space" {
-  default = ["172.16.12.0/22"]
+  default = ["10.20.0.0/16"]
 }
 
 variable "vnet_name" {
@@ -53,7 +53,7 @@ variable "vnet_subnet_name" {
 }
 
 variable "vnet_subnet_prefix" {
-  default = "172.16.12.0/24"
+  default = "10.20.0.0/16"
 }
 
 variable "vnet_parent_rg_name" {
