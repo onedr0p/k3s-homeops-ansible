@@ -19,8 +19,7 @@ spec:
       repository: jessestuart/minio
       tag: RELEASE.2019-12-17T23-16-33Z
     persistence:
-      existingClaim: "nfs-tank-share-pvc"
-      subPath: "minio"
+      storageClass: nfs
     ingress:
       enabled: true
       hosts:
