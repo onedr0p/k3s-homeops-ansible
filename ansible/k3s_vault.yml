@@ -4,4 +4,4 @@
   gather_facts: yes
   become: no
   roles:
-    - { role: k3s/vault }
+    - { role: vault }
