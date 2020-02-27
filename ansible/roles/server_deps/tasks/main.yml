@@ -1,5 +1,6 @@
 ---
 - include: basics.yml
+- include: user.yml
 # - include: firewall.yml
 - include: network.yml
 - include: disks.yml

@@ -74,6 +74,7 @@
     - nethogs
     - iperf3
     - nfs-common
+    - neofetch
   register: apt_install_common
   retries: 5
   until: apt_install_common is success
