@@ -11,5 +11,5 @@
   become: no
   roles:
     - { role: k3s/bootstrap }
-    - { role: k3s/flux }
-    - { role: k3s/helm, when: helm_operator == 'enabled' }
+    - { role: flux }
+    - { role: helm_operator, when: helm_operator == 'enabled' }
