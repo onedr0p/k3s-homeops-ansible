@@ -13,6 +13,11 @@ variable "rg_name" {
   type        = string
 }
 
+variable "rg_id" {
+  description = "ID of Resource Group where resources will be deployed"
+  type        = string
+}
+
 variable "vm_size" {
   description = "VM Size to be used for deployment"
   type        = string

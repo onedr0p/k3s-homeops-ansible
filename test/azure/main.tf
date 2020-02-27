@@ -24,6 +24,7 @@ module azure-vms {
   hosts        = "${var.hosts}"
   location     = "${var.location}"
   rg_name      = azurerm_resource_group.k3s-bootstrap-rg.name
+  rg_id        = azurerm_resource_group.k3s-bootstrap-rg.id
   vm_size      = "${var.vm_size}"
   os_publisher = "${var.os_publisher}"
   os_offer     = "${var.os_offer}"

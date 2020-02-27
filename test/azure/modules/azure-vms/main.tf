@@ -99,10 +99,20 @@ resource azurerm_virtual_machine "k3s-bootstrap-vm" {
       key_data = var.ssh_key
     }
   }
+  identity {
+    type = "SystemAssigned"
+  }
   tags = {
     type    = each.value.type
     storage = each.value.storage
     nfs     = each.value.nfs
     ceph    = each.value.ceph
   }
+}
+
+resource azurerm_role_assignment "k3s-bootstrap-managed-identity-rbac-assignment" {
+  for_each             = var.hosts
+  scope                = var.rg_id
+  role_definition_name = "Contributor"
+  principal_id         = lookup(azurerm_virtual_machine.k3s-bootstrap-vm[each.key].identity[0], "principal_id")
 }
