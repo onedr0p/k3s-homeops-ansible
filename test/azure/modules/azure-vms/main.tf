@@ -99,9 +99,11 @@ resource azurerm_virtual_machine "k3s-bootstrap-vm" {
       key_data = var.ssh_key
     }
   }
+
   identity {
     type = "SystemAssigned"
   }
+
   tags = {
     type    = each.value.type
     storage = each.value.storage
