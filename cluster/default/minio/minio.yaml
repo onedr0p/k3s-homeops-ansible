@@ -20,13 +20,6 @@ spec:
       tag: RELEASE.2019-12-17T23-16-33Z
     persistence:
       storageClass: nfs
-    ingress:
-      enabled: true
-      hosts:
-        - minio.k8s-at-home.com
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        nginx.ingress.kubernetes.io/proxy-body-size: "0"
     resources:
       requests:
         memory: 350Mi
