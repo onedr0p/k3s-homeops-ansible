@@ -11,7 +11,7 @@ memcached:
 prometheus:
   enabled: true
   serviceMonitor:
-    create: true
+    create: false
     interval: 30s
     scrapeTimeout: 10s
     namespace: flux
