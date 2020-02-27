@@ -13,13 +13,19 @@
   delay: 10
 
 - name: Deploy Helm Operator
-  command: "{{ item }}"
-  with_items:
-    - "helm upgrade --install helm-operator --values {{ helm_operator_values }} --namespace flux fluxcd/helm-operator"
-  register: helm_operator_results
+  shell: |
+    helm upgrade -i helm-operator fluxcd/helm-operator \
+    --version 0.7.0 \
+    --namespace flux \
+    --set 'createCRD=false' \
+    --set 'git.ssh.secretName=flux-git-deploy' \
+    --set 'helm.versions=v3' \
+    --set 'chartsSyncInterval=10m' \
+    --set 'statusUpdateInterval=10m' \
+    --set 'prometheus.enabled=true' \
+    --set 'prometheus.serviceMonitor.create=false' \
+    --set 'prometheus.serviceMonitor.interval=30s' \
+    --set 'prometheus.serviceMonitor.scrapeTimeout=10s' \
+    --set 'prometheus.serviceMonitor.namespace=flux'
   environment:
     KUBECONFIG: "{{ REPO_ROOT }}/kubeconfig"
-  changed_when: "'has been upgraded' in helm_operator_results.stdout"
-  until: "'has been upgraded' in helm_operator_results.stdout"
-  retries: 10
-  delay: 10
