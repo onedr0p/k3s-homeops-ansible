@@ -4,5 +4,4 @@
   gather_facts: yes
   become: yes
   roles:
-    - { role: server_deps }
-    #- { role: raspbian }
+    - { role: prepare_nodes }
