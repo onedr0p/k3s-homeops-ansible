@@ -22,9 +22,10 @@ local_user: "{{ ansible_user }}"
 #master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
 
 # github options
-github_username:
-github_k8s_reponame: k8s-cluster
-github_k8s_reponame_branch: master
+github:
+  username:
+  repository_name: k8s-cluster
+  branch: master
 
 # ceph options
 ceph:

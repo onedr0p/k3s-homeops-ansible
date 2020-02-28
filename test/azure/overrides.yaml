@@ -1,3 +1,4 @@
-github_username: k8s-at-home
-github_k8s_reponame: k8s-cluster
+github.username: k8s-at-home
+github.repository_name: k8s-cluster
+github.branch: master
 k3s_copy_config_local: true
