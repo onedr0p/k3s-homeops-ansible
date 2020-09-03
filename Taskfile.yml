@@ -1,63 +1,69 @@
 ---
 version: '3'
 
-vars:
-  VMS:
-    sh: vagrant status --machine-readable | grep metadata | cut -d, -f2
-
 tasks:
   pull:
+    desc: Pull
     cmds:
     - vagrant box update
     - vagrant box prune --keep-active-boxes
   init:
+    desc: Init
     cmds:
     - ansible-galaxy install -r requirements.yml
     - pip3 install -r requirement.txt || true
     - vagrant plugin install vagrant-vbguest
     - vagrant box update
   build:
+    desc: Build
     cmds:
     - |
       vagrant status --machine-readable | grep metadata | cut -d, -f2 | {{if eq OS "linux"}}xargs{{else}}gxargs{{end}} --max-procs=4 -I {} vagrant up {}
-      for vm in {{catLines .VMS}}; do
+      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
         VBoxManage snapshot "${vm}" take "baseline" --live
       done
   start:
+    desc: Start
     cmds:
     - |
-      for vm in {{catLines .VMS}}; do
+      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
         VBoxManage startvm "${vm}" --type headless
       done
   stop:
+    desc: Stop
     cmds:
     - |
-      for vm in {{catLines .VMS}}; do
+      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
         VBoxManage controlvm "${vm}" poweroff
       done
-  destory:
+  destroy:
+    desc: Destroy
     cmds:
     - |
-      for vm in {{catLines .VMS}}; do \
+      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do \
         VBoxManage controlvm "${vm}" poweroff
         VBoxManage unregistervm "${vm}" --delete
       done
       rm -rf *.vdi || true
   restore:
+    desc: Restore
     cmds:
     - |
-      for vm in {{catLines .VMS}}; do \
+      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do \
         VBoxManage controlvm "${vm}" poweroff
         VBoxManage snapshot "${vm}" restore "baseline"
         VBoxManage startvm "${vm}" --type headless
       done
   rebuild:
+    desc: Rebuild
     cmds:
       - task: destroy
       - task: build
   ping:
+    desc: Ping
     cmds:
     - ansible all --one-line -m ping -i inventory/virtualbox.yml
   list:
+    desc: Lint
     cmds:
     - ansible all --list-hosts
