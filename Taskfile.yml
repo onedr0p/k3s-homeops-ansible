@@ -49,7 +49,7 @@ tasks:
     desc: Destroy
     cmds:
     - |
-      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do \
+      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
         VBoxManage controlvm "${vm}" poweroff
         VBoxManage unregistervm "${vm}" --delete
       done
@@ -58,7 +58,7 @@ tasks:
     desc: Restore
     cmds:
     - |
-      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do \
+      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
         VBoxManage controlvm "${vm}" poweroff
         VBoxManage snapshot "${vm}" restore "baseline"
         VBoxManage startvm "${vm}" --type headless
