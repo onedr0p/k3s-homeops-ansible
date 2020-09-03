@@ -14,14 +14,23 @@ tasks:
     - pip3 install -r requirement.txt || true
     - vagrant plugin install vagrant-vbguest
     - vagrant box update
-  build:
-    desc: Build
+  up:
+    desc: Up
     cmds:
     - |
       vagrant status --machine-readable | grep metadata | cut -d, -f2 | {{if eq OS "linux"}}xargs{{else}}gxargs{{end}} --max-procs=4 -I {} vagrant up {}
+  snapshot:
+    desc: Snapshot
+    cmds:
+    - |
       for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
         VBoxManage snapshot "${vm}" take "baseline" --live
       done
+  build:
+    desc: Build
+    cmds:
+    - task: up
+    - task: snapshot
   start:
     desc: Start
     cmds:
