@@ -1,0 +1,7 @@
+---
+plugin: virtualbox
+network_info_path: "/VirtualBox/GuestInfo/Net/1/V4/IP"
+query:
+  logged_in_users: /VirtualBox/GuestInfo/OS/LoggedInUsersList
+compose:
+  ansible_connection: ('indows' in vbox_Guest_OS)|ternary('winrm', 'ssh')

@@ -1,9 +1,0 @@
-plugin: constructed
-strict: False
-keyed_groups:
-  - prefix: ""
-    separator: ""
-    key: tags.type
-  - prefix: ""
-    separator: ""
-    key: tags.storage
