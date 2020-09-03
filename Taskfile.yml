@@ -19,7 +19,7 @@ tasks:
   build:
     cmds:
     - |
-      vagrant status --machine-readable | grep metadata | cut -d, -f2 | xargs --max-procs=4 -I {} vagrant up {}
+      vagrant status --machine-readable | grep metadata | cut -d, -f2 | {{if eq OS "linux"}}xargs{{else}}gxargs{{end}} --max-procs=4 -I {} vagrant up {}
       for vm in {{catLines .VMS}}; do
         VBoxManage snapshot "${vm}" take "baseline" --live
       done
