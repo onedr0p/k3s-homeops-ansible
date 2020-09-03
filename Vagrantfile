@@ -6,11 +6,11 @@ Vagrant.require_version ">= 1.6.0"
 VAGRANTFILE_API_VERSION = "2"
 
 # Read YAML file with box details
-require 'yaml'
-hosts = YAML.load_file(File.join(File.dirname(__FILE__), 'hosts.yml'))
+require "yaml"
+hosts = YAML.load_file(File.join(File.dirname(__FILE__), "hosts.yml"))
 
 # Set cpus to number of host cpus
-cpus = case RbConfig::CONFIG['host_os']
+cpus = case RbConfig::CONFIG["host_os"]
   when /darwin/ then `sysctl -n hw.ncpu`.to_i
   when /linux/ then `nproc`.to_i
   else 2
@@ -32,11 +32,11 @@ Vagrant.configure(2) do |config|
     # Configure host
     config.vm.define hostname do |node|
       node.vm.box = host["box"]
-      node.vm.synced_folder '.', '/vagrant', disabled: true
+      node.vm.synced_folder ".", "/vagrant", disabled: true
       node.vm.network "private_network", ip: host["ip"]
       node.vm.hostname = hostname
       node.vm.provider "virtualbox" do |vb|
-        # vb.linked_clone = true 
+        # vb.linked_clone = true
         # vb.gui = false
         vb.customize [
           "modifyvm", :id,
@@ -48,19 +48,31 @@ Vagrant.configure(2) do |config|
           "--uartmode1", "file", File::NULL,
           "--groups", "/"+group,
         ]
-        # disk = './'+hostname+'-block.vdi'
-        # unless File.exist?(disk)
-        #   vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 4 * 1024]
-        # end
-        # vb.customize ["storageattach", :id, "--storagectl", "IDE", "--port", 1, "--device", 1, "--type", "hdd", "--medium", disk ]
+        disk = "./"+hostname+"-block.vdi"
+        unless File.exist?(disk)
+          vb.customize [
+            "createhd",
+            "--filename", disk,
+            "--variant", "Fixed",
+            "--size", 512 #MB
+          ]
+        end
+        vb.customize [
+          "storageattach", :id,
+          "--storagectl", "SCSI",
+          "--port", 2,
+          "--device", 0,
+          "--type", "hdd",
+          "--medium", disk
+        ]
       end
-      
-      # enable ssh two ways : 
+
+      # enable ssh two ways :
       # - vagrant ssh
       # - ansible ssh via private key
       node.ssh.config = ".vagrant_ssh_key"
       node.ssh.insert_key = false
-      node.ssh.private_key_path = ['~/.vagrant.d/insecure_private_key', '~/.ssh/id_rsa']
+      node.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key", "~/.ssh/id_rsa"]
       node.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
     end
   end
