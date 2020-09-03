@@ -1,0 +1,20 @@
+---
+version: '3'
+
+tasks:
+  init:
+    cmds:
+    - ansible-galaxy install -r requirements.yml
+    - pip3 install -r requirement.txt || true
+    - vagrant plugin install vagrant-vbguest
+    - vagrant box update
+  pull:
+    cmds:
+    - vagrant box update
+    - vagrant box prune --keep-active-boxes
+  ping:
+    cmds:
+    - ansible all --one-line -m ping -i inventory/virtualbox.yml
+  list:
+    cmds:
+    - ansible all --list-hosts
