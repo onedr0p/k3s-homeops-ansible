@@ -6,23 +6,55 @@ vars:
     sh: vagrant status --machine-readable | grep metadata | cut -d, -f2
 
 tasks:
-  build:
+  pull:
     cmds:
-    - |
-      vagrant status --machine-readable | grep metadata | cut -d, -f2 | xargs --max-procs=4 -I {} vagrant up {}
-      for vm in {{catLines .VMS}}; do
-        VBoxManage snapshot "${vm}" take "baseline" --live;
-      done
+    - vagrant box update
+    - vagrant box prune --keep-active-boxes
   init:
     cmds:
     - ansible-galaxy install -r requirements.yml
     - pip3 install -r requirement.txt || true
     - vagrant plugin install vagrant-vbguest
     - vagrant box update
-  pull:
+  build:
     cmds:
-    - vagrant box update
-    - vagrant box prune --keep-active-boxes
+    - |
+      vagrant status --machine-readable | grep metadata | cut -d, -f2 | xargs --max-procs=4 -I {} vagrant up {}
+      for vm in {{catLines .VMS}}; do
+        VBoxManage snapshot "${vm}" take "baseline" --live
+      done
+  start:
+    cmds:
+    - |
+      for vm in {{catLines .VMS}}; do
+        VBoxManage startvm "${vm}" --type headless
+      done
+  stop:
+    cmds:
+    - |
+      for vm in {{catLines .VMS}}; do
+        VBoxManage controlvm "${vm}" poweroff
+      done
+  destory:
+    cmds:
+    - |
+      for vm in {{catLines .VMS}}; do \
+        VBoxManage controlvm "${vm}" poweroff
+        VBoxManage unregistervm "${vm}" --delete
+      done
+      rm -rf *.vdi || true
+  restore:
+    cmds:
+    - |
+      for vm in {{catLines .VMS}}; do \
+        VBoxManage controlvm "${vm}" poweroff
+        VBoxManage snapshot "${vm}" restore "baseline"
+        VBoxManage startvm "${vm}" --type headless
+      done
+  rebuild:
+    cmds:
+      - task: destroy
+      - task: build
   ping:
     cmds:
     - ansible all --one-line -m ping -i inventory/virtualbox.yml
