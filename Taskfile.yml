@@ -21,9 +21,12 @@ tasks:
       vagrant status --machine-readable | grep metadata | cut -d, -f2 | {{if eq OS "linux"}}xargs{{else}}gxargs{{end}} --max-procs=4 -I {} vagrant up {}
   snapshot:
     desc: Snapshot
+    vars:
+      VMS:
+        sh: vagrant status --machine-readable | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
+      for vm in {{catLines .VMS}}; do
         VBoxManage snapshot "${vm}" take "baseline" --live
       done
   build:
@@ -33,32 +36,44 @@ tasks:
     - task: snapshot
   start:
     desc: Start
+    vars:
+      VMS:
+        sh: vagrant status --machine-readable | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
+      for vm in {{catLines .VMS}}; do
         VBoxManage startvm "${vm}" --type headless
       done
   stop:
     desc: Stop
+    vars:
+      VMS:
+        sh: vagrant status --machine-readable | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
+      for vm in {{catLines .VMS}}; do
         VBoxManage controlvm "${vm}" poweroff
       done
   destroy:
     desc: Destroy
+    vars:
+      VMS:
+        sh: vagrant status --machine-readable | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
+      for vm in {{catLines .VMS}}; do
         VBoxManage controlvm "${vm}" poweroff
         VBoxManage unregistervm "${vm}" --delete
       done
       rm -rf *.vdi || true
   restore:
     desc: Restore
+    vars:
+      VMS:
+        sh: vagrant status --machine-readable | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in vagrant status --machine-readable | grep metadata | cut -d, -f2; do
+      for vm in {{catLines .VMS}}; do
         VBoxManage controlvm "${vm}" poweroff
         VBoxManage snapshot "${vm}" restore "baseline"
         VBoxManage startvm "${vm}" --type headless
