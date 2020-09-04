@@ -1,0 +1,19 @@
+---
+- name: Deploy Calico Operator
+  delegate_to: localhost
+  command: "{{ item }}"
+  become: false
+  with_items:
+    - kubectl apply -f {{ calico.operator_manifest }}
+  register: calico_result
+  environment:
+    KUBECONFIG: "kubeconfig"
+    CALICO_DATASTORE_TYPE: kubernetes
+    CALICO_KUBECONFIG: "kubeconfig"
+  until: calico_result is succeeded
+  retries: 6
+  delay: 10
+
+# - name: Deploy Calico Operator
+#   k8s:
+#     kubeconfig:
