@@ -78,6 +78,11 @@ tasks:
         VBoxManage snapshot "${vm}" restore "baseline"
         VBoxManage startvm "${vm}" --type headless
       done
+  restart:
+    desc: restart
+    cmds:
+      - task: stop
+      - task: start
   rebuild:
     desc: Rebuild
     cmds:
