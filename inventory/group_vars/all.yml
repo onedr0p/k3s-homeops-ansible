@@ -49,7 +49,7 @@ calico:
   enabled: true
   operator_manifest: "https://docs.projectcalico.org/manifests/tigera-operator.yaml"
   bgp:
-    enabled: true
+    enabled: false
     peer: 10.20.0.1
     as: 64512
 
@@ -87,7 +87,7 @@ k3s_no_metrics_server: true
 k3s_no_flannel: true
 k3s_no_local_storage: true
 k3s_flannel_backend: "none"
-k3s_control_node_address: "192.168.42.11"
+k3s_control_node_address: "172.16.20.10"
 k3s_become_for_all: true
 k3s_kubelet_args:
   - feature-gates: ExternalPolicyForExternalIP=true
@@ -103,7 +103,7 @@ manage_lvm: true
 lvm_groups:
 - vgname: longhorn-vg
   disks:
-  - /dev/sdx
+  - /dev/sdc
   create: true
   lvnames:
   - lvname: lv0

@@ -50,23 +50,25 @@ Vagrant.configure(2) do |config|
           "--uartmode1", "file", File::NULL,
           "--groups", "/"+group,
         ]
-        disk = "./"+hostname+"-block.vdi"
-        unless File.exist?(disk)
+        if hostname != "k8s-master"
+          disk = "./"+hostname+"-block.vdi"
+          unless File.exist?(disk)
+            vb.customize [
+              "createhd",
+              "--filename", disk,
+              "--variant", "Fixed",
+              "--size", 512 #MB
+            ]
+          end
           vb.customize [
-            "createhd",
-            "--filename", disk,
-            "--variant", "Fixed",
-            "--size", 512 #MB
+            "storageattach", :id,
+            "--storagectl", "SCSI",
+            "--port", 2,
+            "--device", 0,
+            "--type", "hdd",
+            "--medium", disk
           ]
         end
-        vb.customize [
-          "storageattach", :id,
-          "--storagectl", "SCSI",
-          "--port", 2,
-          "--device", 0,
-          "--type", "hdd",
-          "--medium", disk
-        ]
       end
 
       # enable ssh two ways :
