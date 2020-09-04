@@ -7,9 +7,9 @@ query:
 # Create vars from jinja2 expressions. (dictionary)
 compose:
   ansible_connection: ('indows' in vbox_Guest_OS)|ternary('winrm', 'ssh')
-  # k3s_control_node: ('master' in vbox_Config_file)
+  k3s_control_node: ('master' in vbox_Config_file)
   # k3s_longhorn: ('master' in vbox_Config_file)|ternary('false', 'true')
-  # k3s_tls_san: "vbox_Config_file | regex_replace ('.*/([a-zA-Z0-9-]+).vbox', '\\1')"
+  k3s_tls_san: ('master' in vbox_Config_file)|ternary('k8s-master', null)
 
 # Add hosts to group based on Jinja2 conditionals. (dictionary)
 groups:
