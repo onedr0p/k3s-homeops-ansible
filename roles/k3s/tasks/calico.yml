@@ -1,10 +1,8 @@
 ---
 - name: Deploy Calico Operator
-  delegate_to: localhost
-  command: "{{ item }}"
   become: false
-  with_items:
-    - kubectl apply -f {{ calico.operator_manifest }}
+  delegate_to: localhost
+  command: "kubectl apply -f {{ calico.operator_manifest }}"
   register: calico_result
   environment:
     KUBECONFIG: "kubeconfig"
