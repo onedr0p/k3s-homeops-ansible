@@ -3,4 +3,4 @@
   gather_facts: true
   become: true
   roles:
-    - system
+    - longhorn

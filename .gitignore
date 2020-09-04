@@ -5,3 +5,4 @@
 inventory/group_vars/vault.yml
 VBoxGuestAdditions_*
 kubeconfig
+.vscode
