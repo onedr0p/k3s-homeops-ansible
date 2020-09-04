@@ -3,5 +3,5 @@
 - name: Rebooting nodes
   reboot:
     msg: "Nodes are being rebooted..."
-    reboot_timeout: 60
+    reboot_timeout: 300
   ignore_errors: true
