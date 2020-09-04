@@ -35,7 +35,8 @@
     KUBECONFIG: "kubeconfig"
     CALICO_DATASTORE_TYPE: kubernetes
     CALICO_KUBECONFIG: "kubeconfig"
-
+  retries: 6
+  delay: 10
 # - name: Deploy Calico Operator
 #   k8s:
 #     kubeconfig:

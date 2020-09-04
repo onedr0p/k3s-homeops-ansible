@@ -2,3 +2,4 @@
 
 - include: kubeconfig.yml
 - include: calico.yml
+  when: calico.enabled == true

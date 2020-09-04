@@ -34,6 +34,7 @@ Vagrant.configure(2) do |config|
       node.vm.box = host["box"]
       node.vm.synced_folder ".", "/vagrant", disabled: true
       node.vm.network "private_network", ip: host["ip"]
+      node.vm.network "forwarded_port", guest: 6443, host: 6443 if hostname == "k8s-master"
       node.vm.hostname = hostname
       node.vm.post_up_message = "Ready to set up k3s locally"
       node.vm.provider "virtualbox" do |vb|
