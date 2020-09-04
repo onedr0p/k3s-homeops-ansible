@@ -1,4 +1,114 @@
-ansible_user: vagrant
-ansible_ssh_pass: vagrant
+---
+
+#
+# Vars this role
+#
+
+# Ansible user to ssh into servers with
+ansible_user: "vagrant"
+ansible_ssh_pass: "vagrant"
 ansible_ssh_common_args: "-o UserKnownHostsFile=/dev/null"
-ansible_become_pass: vagrant
+ansible_become_pass: "vagrant"
+
+# Timezone for the servers
+timezone: "America/New_York"
+
+# Set custom ntp servers
+ntp_servers:
+  primary:
+    - "time.cloudflare.com"
+    - "time.google.com"
+  fallback:
+    - "0.us.pool.ntp.org"
+    - "1.us.pool.ntp.org"
+    - "2.us.pool.ntp.org"
+    - "3.us.pool.ntp.org"
+
+# Enable rsyslog
+# ...requires a rsyslog server already set up
+remote_syslog:
+  enabled: false
+  ip: 192.168.69.155
+  port: 1514
+
+# Enable a registry cache and/or a local registry
+# ...requires a registry cache and/or a local registry already set up
+registry:
+  cache:
+    enabled: false
+    address: "http://10.10.10.10:5000"
+  local:
+    enabled: false
+    address: "registry.tld"
+    username: ""
+    password: ""
+
+# Use the Calico CNI driver instead of Flannel
+# ...adjust k3s_flannel_backend and k3s_no_flannel if you want to use flannel
+calico:
+  enabled: true
+  operator_manifest: "https://docs.projectcalico.org/manifests/tigera-operator.yaml"
+  bgp:
+    enabled: true
+    peer: 10.20.0.1
+    as: 64512
+
+# Apply CRDs to the cluster
+crds:
+  prometheus_operator:
+    enabled: true
+    urls:
+    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-alertmanager.yaml"
+    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-podmonitor.yaml"
+    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheus.yaml"
+    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheusrules.yaml"
+    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-servicemonitor.yaml"
+    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-thanosrulers.yaml"
+  helm_operator:
+    enabled: true
+    urls:
+    - "https://raw.githubusercontent.com/fluxcd/helm-operator/v1.2.0/deploy/crds.yaml"
+  cert_manager:
+    enabled: true
+    urls:
+    - "https://github.com/jetstack/cert-manager/releases/download/v1.0.0/cert-manager.crds.yaml"
+
+#
+#
+# Vars for the xanmanning.k3s role
+# ...see https://github.com/PyratLabs/ansible-role-k3s#group-variables
+#
+#
+
+k3s_release_version: "v1.18"
+k3s_no_traefik: true
+k3s_no_servicelb: true
+k3s_no_metrics_server: true
+k3s_no_flannel: true
+k3s_no_local_storage: true
+k3s_flannel_backend: "none"
+k3s_control_node_address: "192.168.42.11"
+k3s_become_for_all: true
+k3s_kubelet_args:
+  - feature-gates: ExternalPolicyForExternalIP=true
+
+#
+#
+# Vars for the mrlesmithjr.manage-lvm role
+# ...see https://github.com/mrlesmithjr/ansible-manage-lvm#role-variables
+#
+#
+
+manage_lvm: true
+lvm_groups:
+- vgname: longhorn-vg
+  disks:
+  - /dev/sdx
+  create: true
+  lvnames:
+  - lvname: lv0
+    size: 100%FREE
+    create: true
+    filesystem: ext4
+    mount: true
+    mntp: /var/lib/longhorn
