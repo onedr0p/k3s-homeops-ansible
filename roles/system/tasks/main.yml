@@ -11,3 +11,4 @@
 - include: time.yml
 - include: unattended-upgrades.yml
 - include: user.yml
+- include: reboot.yml

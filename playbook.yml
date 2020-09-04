@@ -5,3 +5,5 @@
   roles:
     - system
     - longhorn
+    - { role: xanmanning.k3s }
+    - k3s

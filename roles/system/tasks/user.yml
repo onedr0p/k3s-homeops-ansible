@@ -50,3 +50,10 @@
     dest: "/home/{{ ansible_user }}/.bash_profile"
     owner: "{{ ansible_user }}"
     mode: "0775"
+
+- name: Add additional SSH public keys
+  authorized_key:
+    user: "{{ ansible_user }}"
+    key: "{{ item }}"
+  with_items:
+    - "{{ ssh_authorized_keys }}"

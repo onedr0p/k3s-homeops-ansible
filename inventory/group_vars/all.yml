@@ -16,17 +16,21 @@ timezone: "America/New_York"
 # Set custom ntp servers
 ntp_servers:
   primary:
-    - "time.cloudflare.com"
-    - "time.google.com"
+  - "time.cloudflare.com"
+  - "time.google.com"
   fallback:
-    - "0.us.pool.ntp.org"
-    - "1.us.pool.ntp.org"
-    - "2.us.pool.ntp.org"
-    - "3.us.pool.ntp.org"
+  - "0.us.pool.ntp.org"
+  - "1.us.pool.ntp.org"
+  - "2.us.pool.ntp.org"
+  - "3.us.pool.ntp.org"
 
 # Enable coping kubeconfig to ~/.kube
 # ...otherwise a kubeconfig will be left in the root of the repo
 kubeconfig: false
+
+# Additional ssh public keys
+ssh_authorized_keys:
+- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDO1R1i7dP0dY3f3rnlIQjVPsg3p0Xvz/16oZq+cUmE+O3An9qKQNUwWA98EdnMfq09qLpU1OBSafrLjZ8rd4+4KZJNhFgOCX1qq9GDo+o87toYZUvZ6ftdokpgYlYh0sSUxCjbEnaYAr9W2ZYs32fSJAZdoSydUp9gsTlYQJtq4OYKeQd4gd0oJ2F+L3Rv/HwY1U2+ynW4XnsnbfYky9DkQJIgirFwhwsuDot7VMW14mvI1T4IN+rGHfvHsEqsKrVCOUwfsgnNEXR4R5lSE0mNgZiEFnh/F7pA8QGmcKrNv/Fd4cZRdWxtDdrmEVVtbVnlnRrtV0NS9VqJiJm6Rm9QQ9LLemHAGJHT90hUknSB5qw1pxJ/uZ5hCQzOAzfABQ+Jgj4VzT4PpwaGF529v9VSsV6KPPyF0pP8YNKgRaSBxFqFTwIBLH9eBiE0neIHDGBBi3H9pbYtlMHoy9pnepSPPhD4vSiVbFVSFxwKJ9hoVpRKt3gZuhtIMuDVFpgiAHYE9VYSKbfH0FuBLqrNzF0inkn0Luo+wWyCUNO2y+mZZKpm61huCgdWGL4HfSNLKqwxBtG0oKI1GISGzipay9m0u0JrPjeNr0bD0Sg28aDhjEeds6P9Xe/j/QZg6YWW11rUH33GFljHo6Llu9rBfoiM9BJqXDyInkzfYcq91cojmw== devin.kray@gmail.com"
 
 # Enable rsyslog
 # ...requires a rsyslog server already set up
@@ -59,23 +63,14 @@ calico:
 
 # Apply CRDs to the cluster
 crds:
-  prometheus_operator:
-    enabled: true
-    urls:
-    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-alertmanager.yaml"
-    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-podmonitor.yaml"
-    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheus.yaml"
-    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheusrules.yaml"
-    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-servicemonitor.yaml"
-    - "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-thanosrulers.yaml"
-  helm_operator:
-    enabled: true
-    urls:
-    - "https://raw.githubusercontent.com/fluxcd/helm-operator/v1.2.0/deploy/crds.yaml"
-  cert_manager:
-    enabled: true
-    urls:
-    - "https://github.com/jetstack/cert-manager/releases/download/v1.0.0/cert-manager.crds.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-alertmanager.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-podmonitor.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheus.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheusrules.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-servicemonitor.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-thanosrulers.yaml"
+- "https://raw.githubusercontent.com/fluxcd/helm-operator/v1.2.0/deploy/crds.yaml"
+- "https://github.com/jetstack/cert-manager/releases/download/v1.0.0/cert-manager.crds.yaml"
 
 #
 #
@@ -94,7 +89,7 @@ k3s_flannel_backend: "none"
 k3s_control_node_address: "172.16.20.10"
 k3s_become_for_all: true
 k3s_kubelet_args:
-  - feature-gates: ExternalPolicyForExternalIP=true
+- feature-gates: ExternalPolicyForExternalIP=true
 
 #
 #
