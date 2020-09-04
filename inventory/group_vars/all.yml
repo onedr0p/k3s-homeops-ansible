@@ -54,7 +54,8 @@ registry:
 # Use the Calico CNI driver instead of Flannel
 # ...adjust 'k3s_flannel_backend' and 'k3s_no_flannel' if you want to use flannel
 calico:
-  enabled: false
+  enabled: true
+  interface: "enp0s8"
   operator_manifest: "https://docs.projectcalico.org/manifests/tigera-operator.yaml"
   bgp:
     enabled: false
@@ -83,12 +84,13 @@ k3s_release_version: "v1.18"
 k3s_no_traefik: true
 k3s_no_servicelb: true
 k3s_no_metrics_server: true
-k3s_flannel_interface: "enp0s8"
-# k3s_no_flannel: true
+# k3s_flannel_interface: "enp0s8"
+k3s_no_flannel: true
 k3s_no_local_storage: true
-# k3s_flannel_backend: "none"
+k3s_flannel_backend: "none"
 # k3s_tls_san: "k8s-master"
 k3s_control_node_address: "172.16.20.10"
+#k3s_node_ip_address: ""
 k3s_become_for_all: true
 k3s_kubelet_args:
 - feature-gates: ExternalPolicyForExternalIP=true

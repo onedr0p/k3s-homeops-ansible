@@ -2,29 +2,28 @@
 - name: Deploy Calico Operator
   become: false
   delegate_to: localhost
-  command: "kubectl apply -f {{ calico.operator_manifest }}"
-  register: calico_result
+  command: "kubectl create -f {{ calico.operator_manifest }}"
+  # register: calico_result
   environment:
     KUBECONFIG: "kubeconfig"
-    CALICO_DATASTORE_TYPE: kubernetes
-    CALICO_KUBECONFIG: "kubeconfig"
-  until: calico_result is succeeded
-  retries: 6
-  delay: 10
+  ignore_errors: true
+    # DATASTORE_TYPE: "kubernetes"
+    # IP_AUTODETECTION_METHOD: "interface=enp0s8"
+  # until: calico_result is succeeded
+  # retries: 5
+  # delay: 5
 
 - name: Configure Calico Settings
   become: false
   delegate_to: localhost
   shell: |
-    cat << EOF | kubectl apply -f -
+    cat << EOF | kubectl create -f -
       apiVersion: operator.tigera.io/v1
       kind: Installation
       metadata:
         name: default
       spec:
-        # Configures Calico networking.
         calicoNetwork:
-          # Note: The ipPools section cannot be modified post-install.
           ipPools:
           - blockSize: 26
             cidr: 10.43.0.0/16
@@ -33,10 +32,10 @@
             nodeSelector: all()
   environment:
     KUBECONFIG: "kubeconfig"
-    CALICO_DATASTORE_TYPE: kubernetes
-    CALICO_KUBECONFIG: "kubeconfig"
-  retries: 6
-  delay: 10
+  ignore_errors: true
+    # DATASTORE_TYPE: "kubernetes"
+  # retries: 5
+  # delay: 5
 # - name: Deploy Calico Operator
 #   k8s:
 #     kubeconfig:

@@ -9,7 +9,8 @@ compose:
   ansible_connection: ('indows' in vbox_Guest_OS)|ternary('winrm', 'ssh')
   k3s_control_node: ('master' in vbox_Config_file)
   # k3s_longhorn: ('master' in vbox_Config_file)|ternary('false', 'true')
-  k3s_tls_san: ('master' in vbox_Config_file)|ternary('k8s-master', null)
+  k3s_tls_san: ('master' in vbox_Config_file)|ternary('172.16.20.10', null)
+  k3s_node_ip_address: ('master' in vbox_Config_file)|ternary('172.16.20.10', '172.16.20.11')
 
 # Add hosts to group based on Jinja2 conditionals. (dictionary)
 groups:
