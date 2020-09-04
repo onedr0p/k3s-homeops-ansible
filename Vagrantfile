@@ -9,10 +9,10 @@ VAGRANTFILE_API_VERSION = "2"
 require "yaml"
 hosts = YAML.load_file(File.join(File.dirname(__FILE__), "hosts.yml"))
 
-# Set cpus to number of host cpus
+# Set cpus to half number of host cpus
 cpus = case RbConfig::CONFIG["host_os"]
-  when /darwin/ then `sysctl -n hw.ncpu`.to_i
-  when /linux/ then `nproc`.to_i
+  when /darwin/ then `sysctl -n hw.ncpu`.to_i / 2
+  when /linux/ then `nproc`.to_i / 2
   else 2
 end
 
