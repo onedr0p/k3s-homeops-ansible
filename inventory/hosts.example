@@ -12,10 +12,4 @@ worker
 
 [master:vars]
 k3s_control_node: true
-k3s_longhorn: false
 k3s_tls_san: master.ip.address.here
-
-[worker:vars]
-k3s_control_node: false
-k3s_longhorn: true
-k3s_tls_san: 
