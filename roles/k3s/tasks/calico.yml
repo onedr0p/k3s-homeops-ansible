@@ -7,6 +7,7 @@
   environment:
     KUBECONFIG: "kubeconfig"
     CALICO_DATASTORE_TYPE: kubernetes
+    CALICO_KUBECONFIG: "kubeconfig"
   until: calico_result is succeeded
   retries: 6
   delay: 10
@@ -31,6 +32,7 @@
             natOutgoing: Enabled
             nodeSelector: all()
   environment:
+    KUBECONFIG: "kubeconfig"
     CALICO_DATASTORE_TYPE: kubernetes
     CALICO_KUBECONFIG: "kubeconfig"
 
