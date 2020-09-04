@@ -35,9 +35,11 @@ Vagrant.configure(2) do |config|
       node.vm.synced_folder ".", "/vagrant", disabled: true
       node.vm.network "private_network", ip: host["ip"]
       node.vm.hostname = hostname
+      node.vm.post_up_message = "Ready to set up k3s locally"
       node.vm.provider "virtualbox" do |vb|
-        # vb.linked_clone = true
-        # vb.gui = false
+        vb.linked_clone = true
+        vb.gui = false
+        vb.name = hostname
         vb.customize [
           "modifyvm", :id,
           "--memory", 1024,
