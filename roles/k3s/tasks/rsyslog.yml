@@ -1,0 +1,20 @@
+---
+- name: Set up remote syslog server (promtail/loki)
+  template:
+    src: 50-promtail.conf.j2
+    dest: /etc/rsyslog.d/50-promtail.conf
+  when: remote_syslog.enabled is defined and remote_syslog.enabled == true
+
+- name: Restart rsyslog service
+  systemd:
+    name: rsyslog
+    enabled: true
+    state: restarted
+  when: remote_syslog.enabled is defined and remote_syslog.enabled == true
+
+- name: Enable rsyslog service and assure it is started
+  systemd:
+    name: rsyslog
+    enabled: true
+    state: started
+  when: remote_syslog.enabled is defined and remote_syslog.enabled == true
