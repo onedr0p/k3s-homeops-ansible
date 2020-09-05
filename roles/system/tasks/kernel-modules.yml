@@ -2,8 +2,11 @@
 
 - name: Enable kernel modules
   modprobe:
-    name: br_netfilter
+    name: "{{ item }}"
     state: present
+  with_items:
+  - br_netfilter
+  - overlay
 
 - name: Enable kernel modules on boot
   copy:
@@ -11,3 +14,4 @@
     dest: "/etc/modules-load.d/{{item.name}}.conf"
   with_items:
   - { name: 'netfilter', kernel_module: 'br_netfilter' }
+  - { name: 'overlay', kernel_module: 'overlay' }
