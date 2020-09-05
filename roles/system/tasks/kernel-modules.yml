@@ -1,0 +1,13 @@
+---
+
+- name: Load kernel modules
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: Enable kernel modules on boot
+  copy:
+    content: "{{item.kernel_module}}"
+    dest: "/etc/modules-load.d/{{item.name}}.conf"
+  with_items:
+  - { name: 'netfilter', kernel_module: 'br_netfilter' }
