@@ -44,6 +44,7 @@
       - iperf3
       - iputils-ping
       - jq
+      - kubectl
       - lvm2
       - neofetch
       - net-tools
