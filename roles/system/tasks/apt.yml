@@ -72,27 +72,6 @@
   tags:
   - install_packages
 
-# Instructions: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
-- name: add apt signing key for kubernetes
-  apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    state: present
-
-- name: install k8s tools
-  apt:
-    name:
-    - kubectl
-    install_recommends: false
-    update_cache: true
-    # Need the force_apt_get until
-    # https://github.com/ansible/ansible/issues/56832
-    force_apt_get: true
-  register: apt_install_k8s_tools
-  retries: 5
-  until: apt_install_k8s_tools is success
-  tags:
-  - install_packages
-
 - name: Clean up apt
   apt:
     autoremove: true
