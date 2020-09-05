@@ -32,10 +32,8 @@ Vagrant.configure(2) do |config|
     # Configure host
     config.vm.define hostname do |node|
       node.vm.box = host["box"]
-      # node.vm.box = "bento/ubuntu-20.04"
       node.vm.synced_folder ".", "/vagrant", disabled: true
       node.vm.network "private_network", ip: host["ip"]
-      # node.vm.network "private_network", bridge: "bridge0"
       node.vm.network "forwarded_port", guest: 6443, host: 6443 if hostname == "k8s-master"
       node.vm.hostname = hostname
       node.vm.post_up_message = "Ready to set up k3s locally"

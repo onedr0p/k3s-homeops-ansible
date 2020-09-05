@@ -2,6 +2,7 @@
 - name: Deploy Calico Operator
   become: false
   delegate_to: localhost
+  run_once: true
   command: "kubectl create -f {{ calico.operator_manifest }}"
   # register: calico_result
   environment:
@@ -15,6 +16,7 @@
 
 - name: Configure Calico Settings
   become: false
+  run_once: true
   delegate_to: localhost
   shell: |
     cat << EOF | kubectl create -f -
