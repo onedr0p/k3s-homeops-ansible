@@ -43,6 +43,7 @@
       - htop
       - iperf3
       - iputils-ping
+      - jq
       - lvm2
       - neofetch
       - net-tools
@@ -52,11 +53,14 @@
       - psmisc
       - python3
       - python3-pip
+      - python3-openssl
       - rsync
       - socat
       - software-properties-common
       - traceroute
       - unattended-upgrades
+      - vim
+      - zip
     install_recommends: false
     update_cache: true
     # Need the force_apt_get until
