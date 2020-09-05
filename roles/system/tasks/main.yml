@@ -1,6 +1,7 @@
 ---
 
 - include: apt.yml
+- include: kernel-modules.yml
 - include: networking.yml
 - include: registry.yml
   when: (registry.cache.enabled is defined or registry.local.enabled is defined)
