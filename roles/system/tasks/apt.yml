@@ -10,7 +10,7 @@
   retries: 5
   until: apt_upgrade is success
   tags:
-    - upgrade_system
+  - upgrade_system
 
 - name: Upgrade all packages to the latest version
   apt:
@@ -23,45 +23,45 @@
   retries: 5
   until: apt_update is success
   tags:
-    - upgrade_packages
+  - upgrade_packages
 
 - name: Install Common Packages
   apt:
     name:
-      - apt-transport-https
-      - arptables
-      - ca-certificates
-      - curl
-      - dnsutils
-      - ebtables
-      - ethtool
-      - git
-      - gnupg-agent
-      - gnupg2
-      - haveged
-      - hdparm
-      - htop
-      - iperf3
-      - iputils-ping
-      - jq
-      - kubectl
-      - lvm2
-      - neofetch
-      - net-tools
-      - nfs-common
-      - nmap
-      - ntpdate
-      - psmisc
-      - python3
-      - python3-pip
-      - python3-openssl
-      - rsync
-      - socat
-      - software-properties-common
-      - traceroute
-      - unattended-upgrades
-      - vim
-      - zip
+    - apt-transport-https
+    - arptables
+    - ca-certificates
+    - curl
+    - dnsutils
+    - ebtables
+    - ethtool
+    - git
+    - gnupg-agent
+    - gnupg2
+    - haveged
+    - hdparm
+    - htop
+    - iperf3
+    - iputils-ping
+    - jq
+    - kubectl
+    - lvm2
+    - neofetch
+    - net-tools
+    - nfs-common
+    - nmap
+    - ntpdate
+    - psmisc
+    - python3
+    - python3-pip
+    - python3-openssl
+    - rsync
+    - socat
+    - software-properties-common
+    - traceroute
+    - unattended-upgrades
+    - vim
+    - zip
     install_recommends: false
     update_cache: true
     # Need the force_apt_get until
@@ -71,7 +71,28 @@
   retries: 5
   until: apt_install_common is success
   tags:
-    - install_packages
+  - install_packages
+
+# Instructions: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
+- name: add apt signing key for kubernetes
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: install k8s tools
+  apt:
+    name:
+    - kubectl
+    install_recommends: false
+    update_cache: true
+    # Need the force_apt_get until
+    # https://github.com/ansible/ansible/issues/56832
+    force_apt_get: true
+  register: apt_install_k8s_tools
+  retries: 5
+  until: apt_install_k8s_tools is success
+  tags:
+  - install_packages
 
 - name: Clean up apt
   apt:
@@ -80,6 +101,6 @@
     # https://github.com/ansible/ansible/issues/56832
     force_apt_get: true
   tags:
-    - upgrade_system
-    - upgrade_packages
-    - install_packages
+  - upgrade_system
+  - upgrade_packages
+  - install_packages
