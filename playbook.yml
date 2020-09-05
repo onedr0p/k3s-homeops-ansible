@@ -1,9 +1,0 @@
----
-- hosts: all
-  gather_facts: true
-  become: true
-  roles:
-    - system
-    - longhorn
-    - { role: xanmanning.k3s }
-    - k3s

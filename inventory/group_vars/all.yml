@@ -55,7 +55,6 @@ registry:
 # ...adjust 'k3s_flannel_backend' and 'k3s_no_flannel' if you want to use flannel
 calico:
   enabled: true
-  interface: "enp0s8"
   operator_manifest: "https://docs.projectcalico.org/manifests/tigera-operator.yaml"
   bgp:
     enabled: false
