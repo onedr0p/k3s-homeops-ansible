@@ -1,5 +1,9 @@
 ---
 
+# Set /proc/sys/net/bridge/bridge-nf-call-iptables to 1 by running
+# sysctl net.bridge.bridge-nf-call-iptables=1 to pass bridged IPv4 traffic to iptables’ chains.
+# This is a requirement for some CNI plugins to work.
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#letting-iptables-see-bridged-traffic
 - name: Enable kernel modules
   modprobe:
     name: "{{ item }}"
@@ -15,3 +19,22 @@
   with_items:
   - { name: 'netfilter', kernel_module: 'br_netfilter' }
   - { name: 'overlay', kernel_module: 'overlay' }
+
+# Blacklist for PiAware: https://hub.docker.com/r/mikenye/piaware
+- name: Blacklist kernel modules
+  kernel_blacklist:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - dvb_usb_rtl28xxu
+  - rtl2832
+  - rtl2832_sdr
+
+- name: Blacklist kernel modules on boot
+  blockinfile:
+    path: /etc/modprobe.d/blacklist.conf
+    marker: "# {mark} ANSIBLE BLACKLIST MODULES"
+    block: |
+      blacklist dvb_usb_rtl28xxu
+      blacklist rtl2832
+      blacklist rtl2832_sdr
