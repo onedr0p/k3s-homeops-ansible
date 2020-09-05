@@ -1,25 +1,4 @@
 ---
-- name: Add user to sudoers
-  copy:
-    content: "{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
-    dest: "/etc/sudoers.d/{{ ansible_user }}_nopasswd"
-    mode: "0440"
-
-- name: Check if neofetch config directory exists
-  stat:
-    path: "/home/{{ ansible_user }}/.config/neofetch"
-  register: stat_result
-
-- name: Remove motd
-  command: update-rc.d motd remove
-  when: stat_result.stat.exists == false
-
-- name: Silence the login prompt
-  file:
-    dest: "/home/{{ ansible_user }}/.hushlogin"
-    state: touch
-    owner: "{{ ansible_user }}"
-    mode: "0775"
 
 - name: Create config directory
   file:
@@ -50,10 +29,3 @@
     dest: "/home/{{ ansible_user }}/.bash_profile"
     owner: "{{ ansible_user }}"
     mode: "0775"
-
-- name: Add additional SSH public keys
-  authorized_key:
-    user: "{{ ansible_user }}"
-    key: "{{ item }}"
-  with_items:
-    - "{{ ssh_authorized_keys }}"

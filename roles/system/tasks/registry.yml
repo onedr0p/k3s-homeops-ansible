@@ -1,5 +1,0 @@
----
-- name: Set up k3s to use private http registry
-  template:
-    src: registries.yaml.j2
-    dest: /etc/rancher/k3s/registries.yaml

@@ -1,18 +1,13 @@
 ---
+
 - name: Deploy Calico Operator
   become: false
-  delegate_to: localhost
   run_once: true
+  delegate_to: localhost
   command: "kubectl create -f {{ calico.operator_manifest }}"
-  # register: calico_result
   environment:
     KUBECONFIG: "kubeconfig"
   ignore_errors: true
-    # DATASTORE_TYPE: "kubernetes"
-    # IP_AUTODETECTION_METHOD: "interface=enp0s8"
-  # until: calico_result is succeeded
-  # retries: 5
-  # delay: 5
 
 - name: Configure Calico Settings
   become: false
@@ -35,9 +30,3 @@
   environment:
     KUBECONFIG: "kubeconfig"
   ignore_errors: true
-    # DATASTORE_TYPE: "kubernetes"
-  # retries: 5
-  # delay: 5
-# - name: Deploy Calico Operator
-#   k8s:
-#     kubeconfig:

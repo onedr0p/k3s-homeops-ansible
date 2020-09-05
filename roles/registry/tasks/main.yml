@@ -1,0 +1,14 @@
+---
+
+- name: create k3s registries
+  template:
+    src: registries.yaml.j2
+    dest: /etc/rancher/k3s/registries.yaml
+  notify: k3s registry configuration changed
+
+- name: enable k3s service and assure it is started
+  systemd:
+    name: k3s
+    enabled: true
+    state: started
+  # when: remote_syslog.enabled is defined and remote_syslog.enabled == true

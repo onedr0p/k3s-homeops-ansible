@@ -1,0 +1,6 @@
+---
+
+- include: motd.yml
+- include: neofetch.yml
+- include: ssh.yml
+- include: sudo.yml

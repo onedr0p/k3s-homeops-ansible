@@ -1,0 +1,7 @@
+---
+
+- name: restart rsyslog service
+  systemd:
+    name: rsyslog
+    state: restarted
+  listen: rsyslog configuration changed

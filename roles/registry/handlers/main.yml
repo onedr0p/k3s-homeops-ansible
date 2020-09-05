@@ -1,0 +1,7 @@
+---
+
+- name: restart k3s service
+  systemd:
+    name: k3s
+    state: restarted
+  listen: k3s registry configuration changed

@@ -5,4 +5,12 @@
   become: true
   gather_facts: true
   roles:
-  - system
+  - package-upgrade
+  - package-install
+  - kernel
+  - network
+  - swap
+  - time
+  - unattended-upgrades
+  - user
+  - reboot
