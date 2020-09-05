@@ -1,6 +1,6 @@
 ---
 
-- name: Load kernel modules
+- name: Enable kernel modules
   modprobe:
     name: br_netfilter
     state: present
