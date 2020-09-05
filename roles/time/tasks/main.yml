@@ -1,10 +1,10 @@
 ---
-- name: set Timezone
+- name: set timezone
   timezone:
-    name: "{{ timezone | default('America/New_York') }}"
+    name: "{{ timezone | default('Etc/UTC') }}"
   notify: systemd-timesyncd configuration changed
 
-- name: add Timesyncd Configuration
+- name: add timesyncd configuration
   template:
     src: timesyncd.conf.j2
     dest: /etc/systemd/timesyncd.conf

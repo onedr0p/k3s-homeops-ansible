@@ -6,8 +6,7 @@
   delegate_to: localhost
   command: "kubectl create -f {{ calico.operator_manifest }}"
   environment:
-    KUBECONFIG: "kubeconfig"
-  ignore_errors: true
+    KUBECONFIG: "../kubeconfig"
 
 - name: Configure Calico Settings
   become: false
@@ -28,5 +27,4 @@
             natOutgoing: Enabled
             nodeSelector: all()
   environment:
-    KUBECONFIG: "kubeconfig"
-  ignore_errors: true
+    KUBECONFIG: "../kubeconfig"

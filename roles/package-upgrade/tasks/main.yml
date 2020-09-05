@@ -3,9 +3,6 @@
 - name: Upgrade system
   apt:
     upgrade: dist
-    # Need the force_apt_get until
-    # https://github.com/ansible/ansible/issues/56832
-    force_apt_get: true
   register: apt_upgrade
   retries: 5
   until: apt_upgrade is success
@@ -14,9 +11,6 @@
   apt:
     name: "*"
     state: latest
-    # Need the force_apt_get until
-    # https://github.com/ansible/ansible/issues/56832
-    force_apt_get: true
   register: apt_update
   retries: 5
   until: apt_update is success

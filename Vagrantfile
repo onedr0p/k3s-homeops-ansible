@@ -1,13 +1,10 @@
+
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 # Specify minimum Vagrant version and Vagrant API version
 Vagrant.require_version ">= 1.6.0"
 VAGRANTFILE_API_VERSION = "2"
-
-# Read YAML file with box details
-require "yaml"
-hosts = YAML.load_file(File.join(File.dirname(__FILE__), "hosts.yml"))
 
 # Set cpus to half number of host cpus
 cpus = case RbConfig::CONFIG["host_os"]
@@ -16,69 +13,53 @@ cpus = case RbConfig::CONFIG["host_os"]
   else 2
 end
 
-Vagrant.configure(2) do |config|
-  hosts.each do |host|
+NODES_NUM = 3
+IP_BASE = "172.16.20."
 
-    # Create vars from box name
-    group = host["group"]
-    name = host["name"]
-    hostname = group+"-"+name
-    if Vagrant.has_plugin?("vagrant-vbguest")
-      config.vbguest.auto_update = true
-      config.vbguest.no_remote = true
-      config.vbguest.iso_path = "./VBoxGuestAdditions_6.1.12.iso"
-    end
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
 
-    # Configure host
-    config.vm.define hostname do |node|
-      node.vm.box = host["box"]
-      node.vm.synced_folder ".", "/vagrant", disabled: true
-      node.vm.network "private_network", ip: host["ip"]
-      node.vm.network "forwarded_port", guest: 6443, host: 6443 if hostname == "k8s-master"
-      node.vm.hostname = hostname
-      node.vm.post_up_message = "Ready to set up k3s locally"
-      node.vm.provider "virtualbox" do |vb|
-        vb.linked_clone = true
-        vb.gui = false
-        vb.name = hostname
-        vb.customize [
-          "modifyvm", :id,
+  (1..NODES_NUM).each do |i|      
+    config.vm.define "k8s-node-#{i + 10}" do |config|
+
+      hostname = "k8s-node-#{i + 10}"
+
+      config.vm.box = "bento/ubuntu-20.04"
+      config.vm.network "private_network", ip: "#{IP_BASE}#{i + 10}"
+      config.vm.hostname = hostname
+      config.vm.provider "virtualbox"
+      config.vm.provider :virtualbox do |v|
+        v.linked_clone = true
+        v.gui = false
+        v.customize [
+          'modifyvm', :id,
           "--memory", 1024,
           "--cpus", cpus,
           "--name", hostname,
           "--ioapic", "on",
-          "--audio", "none",
+          '--audio', 'none',
           "--uartmode1", "file", File::NULL,
-          "--groups", "/"+group,
         ]
-        if hostname != "k8s-master"
-          disk = "./"+hostname+"-block.vdi"
-          unless File.exist?(disk)
-            vb.customize [
-              "createhd",
-              "--filename", disk,
-              "--variant", "Fixed",
-              "--size", 512 #MB
-            ]
-          end
-          vb.customize [
-            "storageattach", :id,
-            "--storagectl", "SCSI",
-            "--port", 2,
-            "--device", 0,
-            "--type", "hdd",
-            "--medium", disk
-          ]
-        end
+        # if hostname != "k8s-node-11"
+        #   disk = "./"+hostname+"-block.vdi"
+        #   unless File.exist?(disk)
+        #     v.customize [
+        #       "createhd",
+        #       "--filename", disk,
+        #       "--variant", "Fixed",
+        #       "--size", 512 #MB
+        #     ]
+        #   end
+        #   v.customize [
+        #     "storageattach", :id,
+        #     "--storagectl", "SCSI",
+        #     "--port", 2,
+        #     "--device", 0,
+        #     "--type", "hdd",
+        #     "--medium", disk
+        #   ]
+        # end
       end
-
-      # enable ssh two ways :
-      # - vagrant ssh
-      # - ansible ssh via private key
-      node.ssh.config = ".vagrant_ssh_key"
-      node.ssh.insert_key = false
-      node.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key", "~/.ssh/id_rsa"]
-      node.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
     end
   end
 end
