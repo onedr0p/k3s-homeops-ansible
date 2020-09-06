@@ -3,7 +3,7 @@
 - name: remove ubuntu packages
   become: true
   apt:
-    name: snapd
+    name: "{{ item }}"
     state: absent
   with_items:
   - snapd
@@ -36,4 +36,8 @@
     name: "{{ item }}"
     selection: hold
   loop:
-    - "snapd"
+    - snapd
+    - ubuntu-advantage-tools
+    - apport
+    - sosreport
+    - popularity-contest
