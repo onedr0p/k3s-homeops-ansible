@@ -1,10 +1,22 @@
 ---
 
-- name: remove snap
+- name: remove ubuntu packages
   become: true
   apt:
     name: snapd
     state: absent
+  with_items:
+  - snapd
+  - ubuntu-minimal
+  - ubuntu-advantage-tools
+  - apport
+  - ubuntu-server
+  - apport-symptoms
+  - python3-apport
+  - python3-problem-report
+  - python3-systemd
+  - sosreport
+  - popularity-contest
 
 - name: remove snap cruft
   become: true
