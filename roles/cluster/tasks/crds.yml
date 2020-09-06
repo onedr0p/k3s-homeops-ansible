@@ -1,0 +1,11 @@
+---
+
+- name: deploy crds
+  become: false
+  run_once: true
+  delegate_to: localhost
+  environment:
+    KUBECONFIG: "../kubeconfig"
+  command: "kubectl apply -f {{ item }}"
+  with_items:
+  - "{{ crds }}"
