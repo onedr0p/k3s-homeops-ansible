@@ -30,7 +30,7 @@
     - "/var/cache/snapd"
     - "/usr/lib/snapd"
 
-- name: never allow snap to be installed
+- name: never allow certain packages to be installed
   become: true
   dpkg_selections:
     name: "{{ item }}"
