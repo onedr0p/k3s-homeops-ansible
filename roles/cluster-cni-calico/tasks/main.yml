@@ -4,7 +4,7 @@
   become: false
   run_once: true
   delegate_to: localhost
-  command: "kubectl apply -f {{ calico.operator_manifest }}"
+  command: "kubectl create -f {{ calico.operator_manifest }}"
   environment:
     KUBECONFIG: "../kubeconfig"
 
@@ -13,7 +13,7 @@
   run_once: true
   delegate_to: localhost
   shell: |
-    cat << EOF | kubectl apply -f -
+    cat << EOF | kubectl create -f -
       apiVersion: operator.tigera.io/v1
       kind: Installation
       metadata:
@@ -34,7 +34,7 @@
   run_once: true
   delegate_to: localhost
   shell: |
-    cat << EOF | kubectl apply -f -
+    cat << EOF | kubectl create -f -
       apiVersion: crd.projectcalico.org/v1
       kind: BGPPeer
       metadata:
@@ -51,7 +51,7 @@
   run_once: true
   delegate_to: localhost
   shell: |
-    cat << EOF | kubectl apply -f -
+    cat << EOF | kubectl create -f -
       apiVersion: crd.projectcalico.org/v1
       kind: BGPConfiguration
       metadata:

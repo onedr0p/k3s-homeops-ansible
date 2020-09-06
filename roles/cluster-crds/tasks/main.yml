@@ -6,6 +6,6 @@
   delegate_to: localhost
   environment:
     KUBECONFIG: "../kubeconfig"
-  command: "kubectl apply -f {{ item }}"
+  command: "kubectl create -f {{ item }}"
   with_items:
   - "{{ crds }}"
