@@ -1,0 +1,27 @@
+---
+
+- name: remove snap
+  become: true
+  apt:
+    name: snapd
+    state: absent
+
+- name: remove snap cruft
+  become: true
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - "/snap"
+    - "/var/snap"
+    - "/var/lib/snapd"
+    - "/var/cache/snapd"
+    - "/usr/lib/snapd"
+
+- name: never allow snap to be installed
+  become: true
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  loop:
+    - "snapd"
