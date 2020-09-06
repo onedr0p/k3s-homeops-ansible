@@ -6,14 +6,14 @@
   gather_facts: false
   vars_prompt:
     name: "nuke_confirmation"
-    prompt: "Are you sure you want to run this playbook? This will DESTROY your cluster. (y/N)"
-    default: "N"
+    prompt: "This will DESTROY your cluster. Do you wish to continue? [Y/n]"
+    default: "n"
     private: no
   any_errors_fatal: yes
   tasks:
   - name: check confirmation
-    fail: msg="playbook run confirmation failed"
-    when: nuke_confirmation != "y"
+    fail: msg="Abort."
+    when: nuke_confirmation != "Y"
 
   - name: "Run k3s-killall.sh"
     command: /usr/local/bin/k3s-killall.sh
