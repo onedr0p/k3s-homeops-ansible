@@ -1,43 +1,38 @@
 ---
 
-- name: remove ubuntu packages
+- name: "package-prune: remove packages"
   become: true
   apt:
-    name: "{{ item }}"
+    name:
+    - apport
+    - popularity-contest
+    - snapd
+    - sosreport
+    - ubuntu-advantage-tools
     state: absent
-  with_items:
-  - snapd
-  - ubuntu-minimal
-  - ubuntu-advantage-tools
-  - apport
-  - ubuntu-server
-  - apport-symptoms
-  - python3-apport
-  - python3-problem-report
-  - python3-systemd
-  - sosreport
-  - popularity-contest
+    autoremove: true
 
-- name: remove snap cruft
+- name: "package-prune: forbid packages to be installed"
+  become: true
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+  - apport
+  - popularity-contest
+  - snapd
+  - sosreport
+  - ubuntu-advantage-tools
+
+- name: "package-prune: remove file and directory cruft"
   become: true
   file:
     state: absent
     path: "{{ item }}"
   with_items:
-    - "/snap"
-    - "/var/snap"
-    - "/var/lib/snapd"
-    - "/var/cache/snapd"
-    - "/usr/lib/snapd"
-
-- name: never allow certain packages to be installed
-  become: true
-  dpkg_selections:
-    name: "{{ item }}"
-    selection: hold
-  loop:
-    - snapd
-    - ubuntu-advantage-tools
-    - apport
-    - sosreport
-    - popularity-contest
+  - "/home/{{ ansible_user }}/.snap"
+  - "/snap"
+  - "/var/snap"
+  - "/var/lib/snapd"
+  - "/var/cache/snapd"
+  - "/usr/lib/snapd"

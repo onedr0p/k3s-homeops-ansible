@@ -5,8 +5,8 @@
   become: true
   gather_facts: true
   roles:
-  - package-upgrade
   - package-install
+  - package-upgrade
   - package-prune
   - kernel
   - network

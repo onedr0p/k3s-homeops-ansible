@@ -1,12 +1,19 @@
 ---
 
-- name: create k3s registries
-  template:
-    src: registries.yaml.j2
+- name: "registry: create k3s config"
+  copy:
+    content: |
+      mirrors:
+        "docker.io":
+          endpoint:
+            - "{{ registry_cache.address }}"
+        "*":
+          endpoint:
+            - "{{ registry_cache.address }}"
     dest: /etc/rancher/k3s/registries.yaml
   notify: k3s registry configuration changed
 
-- name: enable k3s service and assure it is started
+- name: "registry: start k3s systemd service"
   systemd:
     name: k3s
     enabled: true

@@ -1,9 +1,9 @@
 ---
 
-- name: Remove motd
+- name: "user: remove motd"
   command: update-rc.d motd remove
 
-- name: Silence the login prompt
+- name: "user: silence the login prompt"
   file:
     dest: "/home/{{ ansible_user }}/.hushlogin"
     state: touch

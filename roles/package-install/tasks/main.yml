@@ -1,6 +1,6 @@
 ---
 
-- name: Install Common Packages
+- name: "package-install: common packages"
   apt:
     name:
     - apt-transport-https

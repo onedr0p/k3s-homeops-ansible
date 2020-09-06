@@ -1,6 +1,6 @@
 ---
 
-- name: deploy calico operator
+- name: "cluster-calico: deploy operator"
   become: false
   run_once: true
   delegate_to: localhost
@@ -8,7 +8,7 @@
   environment:
     KUBECONFIG: "../kubeconfig"
 
-- name: configure calico settings
+- name: "cluster-calico: configure settings"
   become: false
   run_once: true
   delegate_to: localhost
@@ -29,7 +29,7 @@
   environment:
     KUBECONFIG: "../kubeconfig"
 
-- name: configure BGP-peer for calico
+- name: "cluster-calico: configure BGP-peer"
   become: false
   run_once: true
   delegate_to: localhost
@@ -46,7 +46,7 @@
     KUBECONFIG: "../kubeconfig"
   when: "calico.bgp.enabled == true"
 
-- name: configure BGP-externalIPs for calico
+- name: "cluster-calico: configure BGP-externalIPs"
   become: false
   run_once: true
   delegate_to: localhost

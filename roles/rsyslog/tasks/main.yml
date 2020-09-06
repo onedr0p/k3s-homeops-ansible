@@ -1,12 +1,16 @@
 ---
 
-- name: set up remote syslog server (1/2)
-  template:
-    src: 50-promtail.conf.j2
+- name: "rsyslog: copy config"
+  copy:
+    content: |
+      module(load="omprog")
+      module(load="mmutf8fix")
+      action(type="mmutf8fix" replacementChar="?")
+      action(type="omfwd" protocol="tcp" target="{{ remote_syslog.ip }}" port="{{ remote_syslog.port }}" Template="RSYSLOG_SyslogProtocol23Format" TCP_Framing="octet-counted" KeepAlive="on")
     dest: /etc/rsyslog.d/50-promtail.conf
   notify: rsyslog configuration changed
 
-- name: enable rsyslog service and assure it is started
+- name: "rsyslog: start systemd service"
   systemd:
     name: rsyslog
     enabled: true

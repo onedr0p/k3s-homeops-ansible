@@ -40,17 +40,24 @@ remote_syslog:
   ip: x.x.x.x
   port: 1514
 
-# Enable a registry cache and/or a local registry
-# ...requires a registry cache and/or a local registry already set up
-registry:
-  cache:
-    enabled: false
-    address: "http://x.x.x.x:5000"
-  local:
-    enabled: false
-    address: "registry.tld"
-    username: ""
-    password: ""
+# Configure a pull thru cache using an existing registry
+# ...requires a registry cache already set up
+registry_cache:
+  enabled: false
+  address: "http://x.x.x.x:5000"
+
+# # @TODO Allow a custom registry
+# registry_custom:
+# - name: ""
+#   enabled: false
+#   address: "http://x.x.x.x:5000"
+#   username: ""
+#   password: ""
+# # - name: ""
+# #   enabled: false
+# #   address: "http://x.x.x.x:5000"
+# #   username: ""
+# #   password: ""
 
 # Use the Calico CNI driver instead of Flannel
 # ...adjust 'k3s_flannel_backend' and 'k3s_no_flannel' if you want to use flannel
@@ -108,17 +115,17 @@ k3s_kubelet_args:
 #
 #
 
-# Set 'manage_lvm' to false inorder to preserve data and skip the lvm role
-manage_lvm: true
-lvm_groups:
-- vgname: longhorn-vg
-  disks:
-  - /dev/sdc
-  create: true
-  lvnames:
-  - lvname: lv0
-    size: 100%FREE
-    create: true
-    filesystem: ext4
-    mount: true
-    mntp: /var/lib/longhorn
+# # Set 'manage_lvm' to false inorder to preserve data and skip the lvm role
+# manage_lvm: true
+# lvm_groups:
+# - vgname: longhorn-vg
+#   disks:
+#   - /dev/sdc
+#   create: true
+#   lvnames:
+#   - lvname: lv0
+#     size: 100%FREE
+#     create: true
+#     filesystem: ext4
+#     mount: true
+#     mntp: /var/lib/longhorn

@@ -1,0 +1,7 @@
+---
+
+- name: "unattended-upgrades: restart systemd service"
+  service:
+    name: unattended-upgrades.service
+    state: restarted
+  listen: unattended-upgrades configuration changed
