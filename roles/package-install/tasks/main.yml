@@ -38,10 +38,8 @@
     - zip
     install_recommends: false
     update_cache: true
+    autoclean: true
+    autoremove: true
   register: apt_install_common
   retries: 5
   until: apt_install_common is success
-
-- name: Clean up apt
-  apt:
-    autoremove: true
