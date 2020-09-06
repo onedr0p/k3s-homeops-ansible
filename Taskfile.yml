@@ -1,0 +1,5 @@
+---
+version: '3'
+
+includes:
+  vagrant: ./tasks/Vagrant.yml

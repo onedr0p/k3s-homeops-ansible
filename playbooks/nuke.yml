@@ -1,0 +1,29 @@
+---
+- hosts:
+  - master
+  - worker
+  become: true
+  gather_facts: false
+  vars_prompt:
+    name: "nuke_confirmation"
+    prompt: "This will DESTROY your cluster. Do you wish to continue? [Y/n]"
+    default: "n"
+    private: no
+  any_errors_fatal: yes
+  tasks:
+  - name: check confirmation
+    fail: msg="Abort."
+    when: nuke_confirmation != "Y"
+
+  - name: "Run k3s-killall.sh"
+    command: /usr/local/bin/k3s-killall.sh
+
+  - name: "Run k3s-uninstall.sh"
+    command:
+      cmd: /usr/local/bin/k3s-uninstall.sh
+      removes: /usr/local/bin/k3s-uninstall.sh
+
+  - name: "Run k3s-agent-uninstall.sh"
+    command:
+      cmd: /usr/local/bin/k3s-agent-uninstall.sh
+      removes: /usr/local/bin/k3s-agent-uninstall.sh

@@ -1,0 +1,10 @@
+---
+
+- name: Create Longhorn LVM directory
+  file:
+    path: /var/lib/longhorn
+    state: directory
+
+- name: Include lvm
+  include_role:
+    name: mrlesmithjr.manage-lvm

@@ -1,0 +1,64 @@
+---
+
+- name: "cluster-calico: deploy operator"
+  become: false
+  run_once: true
+  delegate_to: localhost
+  command: "kubectl create -f {{ calico.operator_manifest }}"
+  environment:
+    KUBECONFIG: "../kubeconfig"
+
+- name: "cluster-calico: configure settings"
+  become: false
+  run_once: true
+  delegate_to: localhost
+  shell: |
+    cat << EOF | kubectl create -f -
+      apiVersion: operator.tigera.io/v1
+      kind: Installation
+      metadata:
+        name: default
+      spec:
+        calicoNetwork:
+          ipPools:
+          - blockSize: 26
+            cidr: 10.43.0.0/16
+            encapsulation: VXLANCrossSubnet
+            natOutgoing: Enabled
+            nodeSelector: all()
+  environment:
+    KUBECONFIG: "../kubeconfig"
+
+- name: "cluster-calico: configure BGP-peer"
+  become: false
+  run_once: true
+  delegate_to: localhost
+  shell: |
+    cat << EOF | kubectl create -f -
+      apiVersion: crd.projectcalico.org/v1
+      kind: BGPPeer
+      metadata:
+        name: global
+      spec:
+        peerIP: {{ calico.bgp.peer }}
+        asNumber: {{ calico.bgp.as }}
+  environment:
+    KUBECONFIG: "../kubeconfig"
+  when: "calico.bgp.enabled == true"
+
+- name: "cluster-calico: configure BGP-externalIPs"
+  become: false
+  run_once: true
+  delegate_to: localhost
+  shell: |
+    cat << EOF | kubectl create -f -
+      apiVersion: crd.projectcalico.org/v1
+      kind: BGPConfiguration
+      metadata:
+        name: default
+      spec:
+        serviceExternalIPs:
+        - cidr: {{ calico.bgp.externalIPs }}
+  environment:
+    KUBECONFIG: "../kubeconfig"
+  when: "calico.bgp.enabled == true"

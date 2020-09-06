@@ -1,0 +1,45 @@
+---
+
+- name: "package-install: common packages"
+  apt:
+    name:
+    - apt-transport-https
+    - arptables
+    - ca-certificates
+    - curl
+    - dnsutils
+    - ebtables
+    - ethtool
+    - git
+    - gnupg-agent
+    - gnupg2
+    - haveged
+    - hdparm
+    - htop
+    - iperf3
+    - iputils-ping
+    - jq
+    - lvm2
+    - neofetch
+    - net-tools
+    - nfs-common
+    - nmap
+    - ntpdate
+    - psmisc
+    - python3
+    - python3-pip
+    - python3-openssl
+    - rsync
+    - socat
+    - software-properties-common
+    - traceroute
+    - unattended-upgrades
+    - vim
+    - zip
+    install_recommends: false
+    update_cache: true
+    autoclean: true
+    autoremove: true
+  register: apt_install_common
+  retries: 5
+  until: apt_install_common is success

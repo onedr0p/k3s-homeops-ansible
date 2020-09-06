@@ -1,0 +1,38 @@
+---
+
+- name: "package-prune: remove packages"
+  become: true
+  apt:
+    name:
+    - apport
+    - popularity-contest
+    - snapd
+    - sosreport
+    - ubuntu-advantage-tools
+    state: absent
+    autoremove: true
+
+- name: "package-prune: forbid packages to be installed"
+  become: true
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+  - apport
+  - popularity-contest
+  - snapd
+  - sosreport
+  - ubuntu-advantage-tools
+
+- name: "package-prune: remove file and directory cruft"
+  become: true
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+  - "/home/{{ ansible_user }}/.snap"
+  - "/snap"
+  - "/var/snap"
+  - "/var/lib/snapd"
+  - "/var/cache/snapd"
+  - "/usr/lib/snapd"

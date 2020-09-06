@@ -1,0 +1,17 @@
+---
+- hosts:
+  - master
+  - worker
+  become: true
+  gather_facts: true
+  roles:
+  - package-install
+  - package-upgrade
+  - package-prune
+  - kernel
+  - network
+  - swap
+  - time
+  - unattended-upgrades
+  - user
+  # - reboot

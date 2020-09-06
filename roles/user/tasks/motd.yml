@@ -1,0 +1,11 @@
+---
+
+- name: "user: remove motd"
+  command: update-rc.d motd remove
+
+- name: "user: silence the login prompt"
+  file:
+    dest: "/home/{{ ansible_user }}/.hushlogin"
+    state: touch
+    owner: "{{ ansible_user }}"
+    mode: "0775"

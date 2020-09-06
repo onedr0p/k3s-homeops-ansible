@@ -1,0 +1,41 @@
+---
+
+- name: "user: create config directory"
+  file:
+    path: "/home/{{ ansible_user }}/.config"
+    state: directory
+    recurse: true
+    owner: "{{ ansible_user }}"
+    mode: "0775"
+
+- name: "user: create neofetch directory"
+  file:
+    path: "/home/{{ ansible_user }}/.config/neofetch"
+    state: directory
+    recurse: true
+    owner: "{{ ansible_user }}"
+    mode: "0775"
+
+- name: "user: copy neofetch config"
+  copy:
+    owner: "{{ ansible_user }}"
+    mode: "0775"
+    content: |
+      print_info() {
+          prin
+          info title
+          info "Uptime" uptime
+          info "CPU Usage" cpu_usage
+          info "Memory Usage" memory
+          info "Disk" disk
+          info "Local IP" local_ip
+          info "Shell" shell
+      }
+    dest: "/home/{{ ansible_user }}/.config/neofetch/config.conf"
+
+- name: "user: enable neofetch on login"
+  copy:
+    content: "neofetch --ascii_distro debian_small"
+    dest: "/home/{{ ansible_user }}/.bash_profile"
+    owner: "{{ ansible_user }}"
+    mode: "0775"

@@ -1,0 +1,21 @@
+---
+
+- name: "registry: create k3s config"
+  copy:
+    content: |
+      mirrors:
+        "docker.io":
+          endpoint:
+            - "{{ registry_cache.address }}"
+        "*":
+          endpoint:
+            - "{{ registry_cache.address }}"
+    dest: /etc/rancher/k3s/registries.yaml
+  notify: k3s registry configuration changed
+
+- name: "registry: start k3s systemd service"
+  systemd:
+    name: k3s
+    enabled: true
+    state: started
+  # when: remote_syslog.enabled is defined and remote_syslog.enabled == true

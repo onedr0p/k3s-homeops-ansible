@@ -1,0 +1,6 @@
+---
+
+- name: "reboot: nodes"
+  reboot:
+    msg: "Nodes are being rebooted..."
+  ignore_errors: true

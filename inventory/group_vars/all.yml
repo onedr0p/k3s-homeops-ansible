@@ -1,0 +1,131 @@
+---
+
+#
+# Vars for this role
+#
+
+# Ansible user to ssh into servers with
+ansible_user: "vagrant"
+ansible_ssh_pass: "vagrant"
+ansible_ssh_common_args: "-o UserKnownHostsFile=/dev/null"
+ansible_become_pass: "vagrant"
+
+# Timezone for the servers
+timezone: "America/New_York"
+
+# Set custom ntp servers
+ntp_servers:
+  primary:
+  - "time.cloudflare.com"
+  - "time.google.com"
+  fallback:
+  - "0.us.pool.ntp.org"
+  - "1.us.pool.ntp.org"
+  - "2.us.pool.ntp.org"
+  - "3.us.pool.ntp.org"
+
+# Enable coping kubeconfig to ~/.kube
+# ...otherwise a kubeconfig will be left in the root of the repo
+kubeconfig: false
+
+# Additional ssh public keys to add to the nodes
+ssh_authorized_keys:
+- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDO1R1i7dP0dY3f3rnlIQjVPsg3p0Xvz/16oZq+cUmE+O3An9qKQNUwWA98EdnMfq09qLpU1OBSafrLjZ8rd4+4KZJNhFgOCX1qq9GDo+o87toYZUvZ6ftdokpgYlYh0sSUxCjbEnaYAr9W2ZYs32fSJAZdoSydUp9gsTlYQJtq4OYKeQd4gd0oJ2F+L3Rv/HwY1U2+ynW4XnsnbfYky9DkQJIgirFwhwsuDot7VMW14mvI1T4IN+rGHfvHsEqsKrVCOUwfsgnNEXR4R5lSE0mNgZiEFnh/F7pA8QGmcKrNv/Fd4cZRdWxtDdrmEVVtbVnlnRrtV0NS9VqJiJm6Rm9QQ9LLemHAGJHT90hUknSB5qw1pxJ/uZ5hCQzOAzfABQ+Jgj4VzT4PpwaGF529v9VSsV6KPPyF0pP8YNKgRaSBxFqFTwIBLH9eBiE0neIHDGBBi3H9pbYtlMHoy9pnepSPPhD4vSiVbFVSFxwKJ9hoVpRKt3gZuhtIMuDVFpgiAHYE9VYSKbfH0FuBLqrNzF0inkn0Luo+wWyCUNO2y+mZZKpm61huCgdWGL4HfSNLKqwxBtG0oKI1GISGzipay9m0u0JrPjeNr0bD0Sg28aDhjEeds6P9Xe/j/QZg6YWW11rUH33GFljHo6Llu9rBfoiM9BJqXDyInkzfYcq91cojmw== devin.kray@gmail.com"
+- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDBB8yES+Os3okY1TwOgfaRsIffAWwPxkgCO1BDfY7Ynno7YxmYgyRaxUnOrkuWfMwiWcYwLgk+yipBf5ctYRsEQkK4cVn1VYR3a0YeMa8tBDa36EyR+A0IcJ1GOOq24+l9N9Y/a/3kz8lC7eIope67WOIikccRrbiP89nP1FicAsDMpPLfcXFKb0G4MQHrY1w8zcd9lJFQkqwBCFaoZKW2tCaE21zYuqhv3gLAUcSiUF6FNZSnwvpFwC1s9jFqvrrOiLsXD61hHqO/Muo6xiPaSsjHBy72kfvHM4vKK8au99TX4sMwZ+f1QJqyvzWqG52HfMNLD14Wf3dChgZRkBUGu8MY+jGpX23VmcmypPFBwTB1+jm4n5XlgpeuqG4BumS5gdrRsHNX0tfRRftzaSnLeAEOGQz6SCXor0m/FOXdYBDiVihdsCrKwFZK6AmPF5XwMnCMJIC3RCIKgRxYW/Pxd3fLlD0WlM10MYdJLxK0wBiLbugFS5iRBHLwn0MgJxEkRY7+j46/Ds5RRiFrYOqFG0A7GQj/mZKxSVeYuHUAnRIfaWlZ71TGqf3RRCsPbrTkeFCPToqPLxOEpj+IXMAB3adI+R6OmtRoZV4HaiWDfHDxNj0lsS2w2AyhrWPeyAz84yRmhcB5tA7hi/KYCNT/c7Wt7EdcjlGA5Z20urlfhw== devin.kray@gmail.com"
+
+# Enable rsyslog
+# ...requires a rsyslog server already set up
+remote_syslog:
+  enabled: false
+  ip: x.x.x.x
+  port: 1514
+
+# Configure a pull thru cache using an existing registry
+# ...requires a registry cache already set up
+registry_cache:
+  enabled: false
+  address: "http://x.x.x.x:5000"
+
+# # @TODO Allow a custom registry
+# registry_custom:
+# - name: ""
+#   enabled: false
+#   address: "http://x.x.x.x:5000"
+#   username: ""
+#   password: ""
+# # - name: ""
+# #   enabled: false
+# #   address: "http://x.x.x.x:5000"
+# #   username: ""
+# #   password: ""
+
+# Use the Calico CNI driver instead of Flannel
+# ...adjust 'k3s_flannel_backend' and 'k3s_no_flannel' if you want to use flannel
+calico:
+  enabled: true
+  operator_manifest: "https://docs.projectcalico.org/manifests/tigera-operator.yaml"
+  bgp:
+    # enabling bgp requires your router set up to handle it
+    enabled: false
+    # peer is usually your router e.g. 192.168.1.1
+    peer: x.x.x.1
+    as: 64512
+    # externalIPs is the network you want services to consume
+    # this network should not exist or be defined anywhere in your network
+    # e.g. 192.168.69.0/24
+    externalIPs: x.x.x.0/24
+
+
+# Apply CRDs to the cluster
+crds:
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-alertmanager.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-podmonitor.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheus.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-prometheusrules.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-servicemonitor.yaml"
+- "https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-thanosrulers.yaml"
+- "https://raw.githubusercontent.com/fluxcd/helm-operator/v1.2.0/deploy/crds.yaml"
+- "https://github.com/jetstack/cert-manager/releases/download/v1.0.0/cert-manager.crds.yaml"
+
+#
+#
+# Vars for the xanmanning.k3s role
+# ...see https://github.com/PyratLabs/ansible-role-k3s#group-variables
+#
+#
+
+k3s_release_version: "v1.18"
+k3s_no_traefik: true
+k3s_no_servicelb: true
+k3s_no_metrics_server: true
+# k3s_flannel_interface: "enp0s8"
+k3s_no_flannel: true
+k3s_no_local_storage: true
+k3s_flannel_backend: "none"
+# k3s_tls_san: "k8s-master"
+k3s_control_node_address: "172.16.20.11"
+k3s_become_for_all: true
+k3s_kubelet_args:
+- feature-gates: ExternalPolicyForExternalIP=true
+
+#
+#
+# Vars for the mrlesmithjr.manage-lvm role
+# ...see https://github.com/mrlesmithjr/ansible-manage-lvm#role-variables
+#
+#
+
+# # Set 'manage_lvm' to false inorder to preserve data and skip the lvm role
+# manage_lvm: true
+# lvm_groups:
+# - vgname: longhorn-vg
+#   disks:
+#   - /dev/sdc
+#   create: true
+#   lvnames:
+#   - lvname: lv0
+#     size: 100%FREE
+#     create: true
+#     filesystem: ext4
+#     mount: true
+#     mntp: /var/lib/longhorn

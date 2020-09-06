@@ -1,0 +1,13 @@
+---
+- name: "swap: disable"
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
+- name: "swap: disable in /etc/fstab"
+  mount:
+    name: "{{ item }}"
+    fstype: swap
+    state: absent
+  loop:
+    - swap
+    - none
