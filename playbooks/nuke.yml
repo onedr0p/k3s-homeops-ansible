@@ -27,8 +27,3 @@
     command:
       cmd: /usr/local/bin/k3s-agent-uninstall.sh
       removes: /usr/local/bin/k3s-agent-uninstall.sh
-
-  - name: Rebooting hosts
-    reboot:
-      msg: "Systems are being rebooted"
-    ignore_errors: true
