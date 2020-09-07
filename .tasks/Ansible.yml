@@ -6,6 +6,10 @@ tasks:
     desc: Ping all the nodes
     cmds:
     - ansible all --one-line -m ping -i inventory/hosts.yml
+  list:
+    desc: List all the nodes
+    cmds:
+    - ansible all -i inventory/hosts.yml --list-hosts
   reboot:
     desc: Reboot all the nodes
     cmds:

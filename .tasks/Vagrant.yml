@@ -1,6 +1,9 @@
 ---
 version: '3'
 
+vars:
+  VMS: "k8s-node-10 k8s-node-11 k8s-node-12"
+
 tasks:
   pull:
     desc: Pull
@@ -21,12 +24,9 @@ tasks:
       vagrant status --machine-readable --no-color | grep metadata | cut -d, -f2 | {{if eq OS "linux"}}xargs{{else}}gxargs{{end}} --max-procs=4 -I {} vagrant up {}
   snapshot:
     desc: Snapshot
-    vars:
-      VMS:
-        sh: vagrant status --machine-readable --no-color | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in {{catLines .VMS}}; do
+      for vm in {{.VMS}}; do
         VBoxManage snapshot "${vm}" take "baseline" --live
       done
   build:
@@ -36,44 +36,32 @@ tasks:
     - task: snapshot
   start:
     desc: Start
-    vars:
-      VMS:
-        sh: vagrant status --machine-readable --no-color | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in {{catLines .VMS}}; do
+      for vm in {{.VMS}}; do
         VBoxManage startvm "${vm}" --type headless
       done
   stop:
     desc: Stop
-    vars:
-      VMS:
-        sh: vagrant status --machine-readable --no-color | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in {{catLines .VMS}}; do
+      for vm in {{.VMS}}; do
         VBoxManage controlvm "${vm}" poweroff
       done
   destroy:
     desc: Destroy
-    vars:
-      VMS:
-        sh: vagrant status --machine-readable --no-color | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in {{catLines .VMS}}; do
+      for vm in {{.VMS}}; do
         VBoxManage controlvm "${vm}" poweroff
         VBoxManage unregistervm "${vm}" --delete
       done
       rm -rf *.vdi || true
   restore:
     desc: Restore
-    vars:
-      VMS:
-        sh: vagrant status --machine-readable --no-color | grep metadata | cut -d, -f2
     cmds:
     - |
-      for vm in {{catLines .VMS}}; do
+      for vm in {{.VMS}}; do
         VBoxManage controlvm "${vm}" poweroff
         VBoxManage snapshot "${vm}" restore "baseline"
         VBoxManage startvm "${vm}" --type headless
@@ -88,11 +76,3 @@ tasks:
     cmds:
       - task: destroy
       - task: build
-  ping:
-    desc: Ping
-    cmds:
-    - ansible all --one-line -m ping -i inventory/virtualbox.yml
-  list:
-    desc: Lint
-    cmds:
-    - ansible all --list-hosts
