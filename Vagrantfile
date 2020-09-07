@@ -20,12 +20,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
 
   (1..NODES_NUM).each do |i|      
-    config.vm.define "k8s-node-#{i + 10}" do |config|
+    config.vm.define "k8s-node-#{i + 9}" do |config|
 
-      hostname = "k8s-node-#{i + 10}"
+      hostname = "k8s-node-#{i + 9}"
 
       config.vm.box = "bento/ubuntu-20.04"
-      config.vm.network "private_network", ip: "#{IP_BASE}#{i + 10}"
+      config.vm.network "private_network", ip: "#{IP_BASE}#{i + 9}"
       config.vm.hostname = hostname
       config.vm.provider "virtualbox"
       config.vm.provider :virtualbox do |v|
@@ -38,7 +38,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "--name", hostname,
           "--ioapic", "on",
           '--audio', 'none',
-          "--uartmode1", "file", File::NULL,
+          # "--uartmode1", "file", File::NULL,
+          "--uartmode1", "disconnected",
         ]
         # if hostname != "k8s-node-11"
         #   disk = "./"+hostname+"-block.vdi"
@@ -58,7 +59,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         #     "--type", "hdd",
         #     "--medium", disk
         #   ]
-        # end
+        end
       end
     end
   end
