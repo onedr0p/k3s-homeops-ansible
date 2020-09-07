@@ -1,6 +1,6 @@
 ---
 
-- name: cluster-meta: apply master taints"
+- name: "cluster-meta: apply master taints"
   command: kubectl taint --overwrite node {{ inventory_hostname }} node-role.kubernetes.io/master=true:NoSchedule
   environment:
     KUBECONFIG: "../kubeconfig"
@@ -16,4 +16,4 @@
   command: kubectl label --overwrite node {{ inventory_hostname }} k3s-upgrade-
   environment:
     KUBECONFIG: "../kubeconfig"
-  when: k3s_system_upgrade == true"
+  when: k3s_system_upgrade == true
