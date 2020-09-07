@@ -1,5 +1,17 @@
 ---
 
+- name: "user: install neofetch"
+  apt:
+    name:
+    - neofetch
+    install_recommends: false
+    update_cache: true
+    autoclean: true
+    autoremove: true
+  register: apt_install_neofetch
+  retries: 5
+  until: apt_install_neofetch is success
+
 - name: "user: create config directory"
   file:
     path: "/home/{{ ansible_user }}/.config"

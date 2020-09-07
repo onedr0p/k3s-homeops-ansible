@@ -1,14 +1,22 @@
 ---
 
-- name: "network: configure nodes to use legacy iptables"
-  alternatives:
-      name: "{{ item }}"
-      path: /usr/sbin/{{ item }}-legacy
-  with_items:
-      - "iptables"
-      - "ip6tables"
-      - "ebtables"
-  ignore_errors: true
+- name: "network: install packages"
+  apt:
+    name:
+    - dnsutils
+    - ethtool
+    - iperf3
+    - iputils-ping
+    - net-tools
+    - nmap
+    - traceroute
+    install_recommends: false
+    update_cache: true
+    autoclean: true
+    autoremove: true
+  register: apt_install_network_packages
+  retries: 5
+  until: apt_install_network_packages is success
 
 - name: "network: update bridged IPv4 traffic to iptables chains"
   sysctl:
@@ -24,25 +32,9 @@
     state: present
     sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
 
-- name: "network: update bridged IPv4 traffic to arptables chains"
-  sysctl:
-    name: net.bridge.bridge-nf-call-arptables
-    value: "1"
-    state: present
-    sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
-
-# Required for containerd CRI prerequisites
-# https://kubernetes.io/docs/setup/production-environment/container-runtimes/#prerequisites-1
 - name: "network: update bridged IPv4 traffic forwarding"
   sysctl:
     name: net.ipv4.ip_forward
-    value: "1"
-    state: present
-    sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
-
-- name: "network: update bridged IPv6 traffic forwarding"
-  sysctl:
-    name: net.ipv6.conf.all.forwarding
     value: "1"
     state: present
     sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf

@@ -1,4 +1,18 @@
 ---
+
+- name: "time: install packages"
+  apt:
+    name:
+    - ntpdate
+    install_recommends: false
+    update_cache: true
+    autoclean: true
+    autoremove: true
+  register: apt_install_time
+  retries: 5
+  until: apt_install_time is success
+
+
 - name: "time: set timezone"
   timezone:
     name: "{{ timezone | default('America/New_York') }}"

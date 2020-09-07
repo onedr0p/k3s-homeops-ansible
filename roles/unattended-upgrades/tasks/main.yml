@@ -1,5 +1,18 @@
 ---
 
+- name: "unattended-upgrades: install packages"
+  apt:
+    name:
+    - unattended-upgrades
+    install_recommends: false
+    update_cache: true
+    autoclean: true
+    autoremove: true
+  register: apt_install_unattended_upgrades
+  retries: 5
+  until: apt_install_unattended_upgrades is success
+
+
 - name: "unattended-upgrades: delete 20auto-upgrades config"
   file:
     path: /etc/apt/apt.conf.d/20auto-upgrades
