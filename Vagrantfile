@@ -41,24 +41,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           # "--uartmode1", "file", File::NULL,
           "--uartmode1", "disconnected",
         ]
-        # if hostname != "k8s-node-11"
-        #   disk = "./"+hostname+"-block.vdi"
-        #   unless File.exist?(disk)
-        #     v.customize [
-        #       "createhd",
-        #       "--filename", disk,
-        #       "--variant", "Fixed",
-        #       "--size", 512 #MB
-        #     ]
-        #   end
-        #   v.customize [
-        #     "storageattach", :id,
-        #     "--storagectl", "SCSI",
-        #     "--port", 2,
-        #     "--device", 0,
-        #     "--type", "hdd",
-        #     "--medium", disk
-        #   ]
+
+        # Create a block device for Longhorn on the worker nodes
+        if hostname != "k8s-node-10"
+          disk = "./"+hostname+"-block.vdi"
+          unless File.exist?(disk)
+            v.customize [
+              "createhd",
+              "--filename", disk,
+              "--variant", "Fixed",
+              "--size", 1024
+            ]
+          end
+          v.customize [
+            "storageattach", :id,
+            "--storagectl", "SATA Controller",
+            "--port", 2,
+            "--device", 0,
+            "--type", "hdd",
+            "--medium", disk
+          ]
         end
       end
     end
