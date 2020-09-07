@@ -13,7 +13,6 @@
     - hdparm
     - htop
     - jq
-    - lvm2
     - nfs-common
     - psmisc
     - python3
