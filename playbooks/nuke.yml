@@ -10,11 +10,12 @@
     default: "n"
     private: no
   any_errors_fatal: yes
-  tasks:
+  pre_tasks:
   - name: check confirmation
     fail: msg="Abort."
     when: nuke_confirmation != "Y"
-
+  
+  tasks:
   - name: "Run k3s-killall.sh"
     command: /usr/local/bin/k3s-killall.sh
 
