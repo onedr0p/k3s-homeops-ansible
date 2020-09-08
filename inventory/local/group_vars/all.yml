@@ -107,25 +107,3 @@ k3s_control_node_address: "172.16.20.10"
 k3s_become_for_all: true
 k3s_kubelet_args:
 - feature-gates: ExternalPolicyForExternalIP=true
-
-#
-#
-# Vars for the mrlesmithjr.manage-lvm role
-# ...see https://github.com/mrlesmithjr/ansible-manage-lvm#role-variables
-#
-#
-
-# # Set 'manage_lvm' to false inorder to preserve data and skip the lvm role
-# manage_lvm: true
-# lvm_groups:
-# - vgname: longhorn-vg
-#   disks:
-#   - /dev/sdc
-#   create: true
-#   lvnames:
-#   - lvname: lv0
-#     size: 100%FREE
-#     create: true
-#     filesystem: ext4
-#     mount: true
-#     mntp: /var/lib/longhorn

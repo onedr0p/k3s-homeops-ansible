@@ -8,5 +8,6 @@ kubeconfig
 .vscode
 .tasks
 
+inventory/bare-metal
+
 roles/xanmanning.k3s
-roles/mrlesmithjr.manage-lvm

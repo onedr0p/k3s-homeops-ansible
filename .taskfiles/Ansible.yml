@@ -1,9 +1,12 @@
 ---
 version: '3'
 
+vars:
+  ANSIBLE_HOSTS: inventory/local/hosts.yml
+
 tasks:
 
-  deps:
+  deps: 
     desc: Install Ansible Galaxy dependencies
     cmds:
     - ansible-galaxy install -r requirements.yml
@@ -11,44 +14,19 @@ tasks:
   ping:
     desc: Ping all the nodes
     cmds:
-    - ansible all --one-line -m ping -i inventory/hosts.yml
+    - ansible all -i {{.ANSIBLE_HOSTS}} --one-line -m ping 
 
   list:
     desc: List all the nodes
     cmds:
-    - ansible all -i inventory/hosts.yml --list-hosts
+    - ansible all -i {{.ANSIBLE_HOSTS}} --list-hosts
 
   reboot:
     desc: Reboot all the nodes
     cmds:
-    - ansible -b all -i inventory/hosts.yml -m shell -a "/sbin/shutdown -r now"
+    - ansible all -i {{.ANSIBLE_HOSTS}} -b -m shell -a "/sbin/shutdown -r now"
 
   shutdown:
     desc: Shutdown all the nodes
     cmds:
-    - ansible -b all -i inventory/hosts.yml -m shell -a "/sbin/shutdown -h now"
-
-  playbook:common:
-    desc: Install the OS level dependencies
-    cmds:
-    - ansible-playbook -i inventory/hosts.yml playbooks/common.yml
-
-  playbook:cluster:
-    desc: Install k3s
-    cmds:
-    - ansible-playbook -i inventory/hosts.yml playbooks/cluster.yml
-
-  playbook:nuke:
-    desc: Remove k3s
-    cmds:
-    - ansible-playbook -i inventory/hosts.yml playbooks/nuke.yml
-
-  playbook:registry:
-    desc: Install a pullthru cache into your k3s nodes
-    cmds:
-    - ansible-playbook -i inventory/hosts.yml playbooks/registry.yml
-
-  playbook:rsyslog:
-    desc: Enable rsyslog
-    cmds:
-    - ansible-playbook -i inventory/hosts.yml playbooks/rsyslog.yml
+    - ansible all -i {{.ANSIBLE_HOSTS}} -b -m shell -a "/sbin/shutdown -h now"
