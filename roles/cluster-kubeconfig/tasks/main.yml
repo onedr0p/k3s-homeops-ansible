@@ -2,38 +2,38 @@
 
 - name: "cluster-kubeconfig: copy config file to local directory"
   fetch:
-    src: /etc/rancher/k3s/k3s.yaml
+    src: "/etc/rancher/k3s/k3s.yaml"
     dest: "{{ inventory_dir | dirname }}/kubeconfig"
     owner: "{{ lookup('env', 'USER') }}"
     flat: true
   when: "'master' in group_names"
 
 - name: "cluster-kubeconfig: update kubeconfig with the right IPv4 address"
+  delegate_to: localhost
   become: false
   run_once: true
-  delegate_to: localhost
   replace:
     path: "{{ inventory_dir | dirname }}/kubeconfig"
     regexp: "https://127.0.0.1:6443"
     replace: "https://{{ k3s_control_node_address }}:6443"
 
 - name: "cluster-kubeconfig: create directory .kube"
+  delegate_to: localhost
   become: false
   run_once: true
-  delegate_to: localhost
   file:
     path: ~/.kube
     state: directory
     owner: "{{ lookup('env', 'USER') }}"
-  when: kubeconfig == true
+  when: kubeconfig is defined and kubeconfig == true
 
 - name: "cluster-kubeconfig: copy config file to user home directory"
+  delegate_to: localhost
   become: false
   run_once: true
-  delegate_to: localhost
   copy:
     src: "{{ inventory_dir | dirname }}/kubeconfig"
     dest: "~/.kube/config"
     owner: "{{ lookup('env', 'USER') }}"
     flat: true
-  when: kubeconfig == true
+  when: kubeconfig is defined and kubeconfig == true

@@ -1,11 +1,12 @@
 ---
 
 - name: "cluster-crds: create"
-  become: false
+  become: true
   run_once: true
-  delegate_to: localhost
   environment:
-    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
+    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: "kubectl create -f {{ item }}"
   with_items:
   - "{{ crds }}"
+  when:
+  - "'master' in group_names"

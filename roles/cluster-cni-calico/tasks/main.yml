@@ -1,17 +1,19 @@
 ---
 
 - name: "cluster-calico: deploy operator"
-  become: false
+  become: true
   run_once: true
-  delegate_to: localhost
-  command: "kubectl create -f {{ calico.operator_manifest }}"
   environment:
-    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
+    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
+  command: "kubectl create -f {{ calico.operator_manifest }}"
+  when:
+  - "'master' in group_names"
 
 - name: "cluster-calico: configure settings"
-  become: false
+  become: true
   run_once: true
-  delegate_to: localhost
+  environment:
+    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   shell: |
     cat << EOF | kubectl create -f -
       apiVersion: operator.tigera.io/v1
@@ -26,13 +28,14 @@
             encapsulation: VXLANCrossSubnet
             natOutgoing: Enabled
             nodeSelector: all()
-  environment:
-    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
+  when:
+  - "'master' in group_names"
 
 - name: "cluster-calico: configure BGP-peer"
-  become: false
+  become: true
   run_once: true
-  delegate_to: localhost
+  environment:
+    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   shell: |
     cat << EOF | kubectl create -f -
       apiVersion: crd.projectcalico.org/v1
@@ -42,14 +45,13 @@
       spec:
         peerIP: {{ calico.bgp.peer }}
         asNumber: {{ calico.bgp.as }}
-  environment:
-    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
-  when: "calico.bgp.enabled == true"
+  when: "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled == true"
 
 - name: "cluster-calico: configure BGP-externalIPs"
-  become: false
+  become: true
   run_once: true
-  delegate_to: localhost
+  environment:
+    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   shell: |
     cat << EOF | kubectl create -f -
       apiVersion: crd.projectcalico.org/v1
@@ -59,6 +61,4 @@
       spec:
         serviceExternalIPs:
         - cidr: {{ calico.bgp.externalIPs }}
-  environment:
-    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
-  when: "calico.bgp.enabled == true"
+  when: "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled == true"
