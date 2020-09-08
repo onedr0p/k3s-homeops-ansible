@@ -6,6 +6,7 @@ inventory/group_vars/vault.yml
 VBoxGuestAdditions_*
 kubeconfig
 .vscode
+.task
 
 roles/xanmanning.k3s
 roles/mrlesmithjr.manage-lvm
