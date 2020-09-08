@@ -7,4 +7,5 @@
   - { role: xanmanning.k3s }
   - cluster-kubeconfig
   - cluster-cni-calico
+  - cluster-meta
   # - cluster-crds
