@@ -6,7 +6,7 @@
   delegate_to: localhost
   command: "kubectl create -f {{ calico.operator_manifest }}"
   environment:
-    KUBECONFIG: "../kubeconfig"
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
 
 - name: "cluster-calico: configure settings"
   become: false
@@ -27,7 +27,7 @@
             natOutgoing: Enabled
             nodeSelector: all()
   environment:
-    KUBECONFIG: "../kubeconfig"
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
 
 - name: "cluster-calico: configure BGP-peer"
   become: false
@@ -43,7 +43,7 @@
         peerIP: {{ calico.bgp.peer }}
         asNumber: {{ calico.bgp.as }}
   environment:
-    KUBECONFIG: "../kubeconfig"
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
   when: "calico.bgp.enabled == true"
 
 - name: "cluster-calico: configure BGP-externalIPs"
@@ -60,5 +60,5 @@
         serviceExternalIPs:
         - cidr: {{ calico.bgp.externalIPs }}
   environment:
-    KUBECONFIG: "../kubeconfig"
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
   when: "calico.bgp.enabled == true"

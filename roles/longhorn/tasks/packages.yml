@@ -1,0 +1,14 @@
+---
+
+- name: "longhorn: install packages"
+  apt:
+    name:
+    - lvm2
+    - scsitools
+    install_recommends: false
+    update_cache: true
+    autoclean: true
+    autoremove: true
+  register: apt_install_disktools
+  retries: 5
+  until: apt_install_disktools is success

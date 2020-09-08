@@ -1,0 +1,73 @@
+---
+
+- name: "cluster-meta: apply master taints"
+  become: false
+  delegate_to: localhost
+  command: kubectl taint --overwrite node {{ ansible_hostname }} node-role.kubernetes.io/master=true:NoSchedule
+  environment:
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
+  when:
+  - "'master' in group_names"
+  register: apply_master_taints
+  retries: 5
+  until: apply_master_taints is success
+
+- name: "cluster-meta: apply worker annotations"
+  become: false
+  delegate_to: localhost
+  command: kubectl label --overwrite node {{ ansible_hostname }} node-role.kubernetes.io/worker=true
+  environment:
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
+  when:
+  - "'worker' in group_names"
+  register: apply_worker_annotations
+  retries: 5
+  until: apply_worker_annotations is success
+
+- name: "cluster-meta: apply system-upgrade annotations"
+  become: false
+  delegate_to: localhost
+  command: kubectl label --overwrite node {{ ansible_hostname }} k3s-upgrade=true
+  environment:
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
+  when:
+  - k3s_system_upgrade == true
+  register: apply_system_upgrade_annotations
+  retries: 5
+  until: apply_system_upgrade_annotations is success
+
+- name: "cluster-meta: remove system-upgrade annotations"
+  become: false
+  delegate_to: localhost
+  command: kubectl label --overwrite node {{ ansible_hostname }} k3s-upgrade-
+  environment:
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
+  when:
+  - k3s_system_upgrade == false
+  register: remove_system_upgrade_annotations
+  retries: 5
+  until: remove_system_upgrade_annotations is success
+
+- name: "cluster-meta: apply longhorn annotations"
+  become: false
+  delegate_to: localhost
+  command: kubectl label --overwrite node {{ ansible_hostname }} node.longhorn.io/create-default-disk=true
+  environment:
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
+  when:
+  - longhorn.enabled is defined and longhorn.enabled == true
+  register: apply_longhorn_annotations
+  retries: 5
+  until: apply_longhorn_annotations is success
+
+- name: "cluster-meta: remove longhorn annotations"
+  become: false
+  delegate_to: localhost
+  command: kubectl label --overwrite node {{ ansible_hostname }} node.longhorn.io/create-default-disk-
+  environment:
+    KUBECONFIG: "{{ inventory_dir | dirname }}/kubeconfig"
+  when:
+  - longhorn.enabled is defined and longhorn.enabled == false
+  register: remove_longhorn_annotations
+  retries: 5
+  until: remove_longhorn_annotations is success

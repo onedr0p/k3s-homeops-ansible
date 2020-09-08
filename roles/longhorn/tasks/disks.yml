@@ -1,10 +1,39 @@
 ---
 
-- name: Create Longhorn LVM directory
+- name: "longhorn: create mount directory"
   file:
     path: /var/lib/longhorn
     state: directory
 
-- name: Include lvm
-  include_role:
-    name: mrlesmithjr.manage-lvm
+- name: "longhorn: create new LVM volume group"
+  become: true
+  lvg:
+    vg: "longhorn-vg"
+    pvs: "{{ longhorn.disks | join(',') }}"
+    state: present
+
+- name: "longhorn: create new LVM logical volume"
+  become: true
+  lvol:
+    vg: "longhorn-vg"
+    lv: "lv0"
+    size: "100%FREE"
+    shrink: false
+    opts: "{{ longhorn.opts | default('') }}"
+    state: present  
+
+- name: "longhorn: create new filesystem on new LVM logical volume"
+  become: true
+  filesystem:
+    fstype: "{{ longhorn.filesystem | default('ext4') }}"
+    dev: "/dev/longhorn-vg/lv0"
+    resizefs: yes
+  
+- name: "longhorn: mounting new filesystem"
+  become: true
+  mount:
+    path: "{{ longhorn.mountpoint }}"
+    src: "/dev/longhorn-vg/lv0"
+    fstype: "{{ longhorn.filesystem }}"
+    state: mounted
+    opts: "{{ longhorn.mount_opts | default('defaults') }}"

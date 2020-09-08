@@ -1,4 +1,4 @@
 ---
 
+- include: packages.yml
 - include: disks.yml
-  when: "'worker' in group_names"

@@ -3,7 +3,7 @@
 - name: "cluster-kubeconfig: copy config file to local directory"
   fetch:
     src: /etc/rancher/k3s/k3s.yaml
-    dest: "../kubeconfig"
+    dest: "{{ inventory_dir | dirname }}/kubeconfig"
     owner: "{{ lookup('env', 'USER') }}"
     flat: true
   when: "'master' in group_names"
@@ -13,7 +13,7 @@
   run_once: true
   delegate_to: localhost
   replace:
-    path: "../kubeconfig"
+    path: "{{ inventory_dir | dirname }}/kubeconfig"
     regexp: "https://127.0.0.1:6443"
     replace: "https://{{ k3s_control_node_address }}:6443"
 
@@ -32,7 +32,7 @@
   run_once: true
   delegate_to: localhost
   copy:
-    src: "../kubeconfig"
+    src: "{{ inventory_dir | dirname }}/kubeconfig"
     dest: "~/.kube/config"
     owner: "{{ lookup('env', 'USER') }}"
     flat: true
