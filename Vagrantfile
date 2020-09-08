@@ -24,6 +24,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       hostname = "k8s-node-#{i + 9}"
 
+      memory = case hostname
+        when "k8s-node-10" then 2048
+        else 1024
+      end
+
       # config.vm.box = "bento/ubuntu-20.04"
       config.vm.box = "bento/debian-10"
       config.vm.network "private_network", ip: "#{IP_BASE}#{i + 9}"
@@ -34,13 +39,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         v.gui = false
         v.customize [
           'modifyvm', :id,
-          "--memory", 1024,
           "--cpus", cpus,
+          "--memory", memory,
           "--name", hostname,
           "--ioapic", "on",
           '--audio', 'none',
-          # "--uartmode1", "file", File::NULL,
-          "--uartmode1", "disconnected",
+          "--uartmode1", "file", File::NULL,
         ]
 
         # Create a block device for Longhorn on the worker nodes

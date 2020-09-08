@@ -52,6 +52,8 @@ tasks:
     desc: Destroy
     cmds:
     - |
+      vboxmanage closemedium $(realpath k8s-node-11-block.vdi) --delete || true
+      vboxmanage closemedium $(realpath k8s-node-12-block.vdi) --delete || true
       for vm in {{.VMS}}; do
         VBoxManage controlvm "${vm}" poweroff
         VBoxManage unregistervm "${vm}" --delete
