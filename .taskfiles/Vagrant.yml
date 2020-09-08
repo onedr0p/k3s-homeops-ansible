@@ -5,35 +5,45 @@ vars:
   VMS: "k8s-node-10 k8s-node-11 k8s-node-12"
 
 tasks:
-  pull:
-    desc: Pull
-    cmds:
-    - vagrant box update
-    - vagrant box prune --keep-active-boxes
-  init:
-    desc: Init
-    cmds:
-    - ansible-galaxy install -r requirements.yml
-    - pip3 install -r requirement.txt || true
-    - vagrant plugin install vagrant-vbguest
-    - vagrant box update
+
   up:
-    desc: Up
+    desc: Create VMs
     cmds:
     - |
       vagrant status --machine-readable --no-color | grep metadata | cut -d, -f2 | {{if eq OS "linux"}}xargs{{else}}gxargs{{end}} --max-procs=4 -I {} vagrant up {}
+  
   snapshot:
-    desc: Snapshot
+    desc: Snapshot VMs
     cmds:
     - |
       for vm in {{.VMS}}; do
         VBoxManage snapshot "${vm}" take "baseline" --live
       done
+  
   build:
-    desc: Build
+    desc: Create and take a snapshot of VMs
     cmds:
     - task: up
     - task: snapshot
+  
+  rebuild:
+    desc: Rebuild
+    cmds:
+      - task: destroy
+      - task: build
+  
+  destroy:
+    desc: Destroy
+    cmds:
+    - |
+      vboxmanage closemedium $(realpath k8s-node-11-block.vdi) --delete > /dev/null 2>&1 || true
+      vboxmanage closemedium $(realpath k8s-node-12-block.vdi) --delete > /dev/null 2>&1 || true
+      for vm in {{.VMS}}; do
+        VBoxManage controlvm "${vm}" poweroff > /dev/null 2>&1
+        VBoxManage unregistervm "${vm}" --delete > /dev/null 2>&1
+      done
+      rm -rf *.vdi > /dev/null 2>&1 || true
+
   start:
     desc: Start
     cmds:
@@ -41,6 +51,7 @@ tasks:
       for vm in {{.VMS}}; do
         VBoxManage startvm "${vm}" --type headless
       done
+  
   stop:
     desc: Stop
     cmds:
@@ -48,17 +59,13 @@ tasks:
       for vm in {{.VMS}}; do
         VBoxManage controlvm "${vm}" poweroff
       done
-  destroy:
-    desc: Destroy
+  
+  restart:
+    desc: restart
     cmds:
-    - |
-      vboxmanage closemedium $(realpath k8s-node-11-block.vdi) --delete || true
-      vboxmanage closemedium $(realpath k8s-node-12-block.vdi) --delete || true
-      for vm in {{.VMS}}; do
-        VBoxManage controlvm "${vm}" poweroff
-        VBoxManage unregistervm "${vm}" --delete
-      done
-      rm -rf *.vdi || true
+      - task: stop
+      - task: start
+  
   restore:
     desc: Restore
     cmds:
@@ -68,13 +75,13 @@ tasks:
         VBoxManage snapshot "${vm}" restore "baseline"
         VBoxManage startvm "${vm}" --type headless
       done
-  restart:
-    desc: restart
+  
+  box:update:
+    desc: Update the Vagrant boxes
     cmds:
-      - task: stop
-      - task: start
-  rebuild:
-    desc: Rebuild
+    - vagrant box update
+  
+  box:prune:
+    desc: Prune inactive boxes
     cmds:
-      - task: destroy
-      - task: build
+    - vagrant box prune --keep-active-boxes
