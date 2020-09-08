@@ -24,8 +24,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       hostname = "k8s-node-#{i + 9}"
 
-      config.vm.box = "bento/ubuntu-20.04"
-      # config.vm.box = "bento/debian-10"
+      # config.vm.box = "bento/ubuntu-20.04"
+      config.vm.box = "bento/debian-10"
       config.vm.network "private_network", ip: "#{IP_BASE}#{i + 9}"
       config.vm.hostname = hostname
       config.vm.provider "virtualbox"
