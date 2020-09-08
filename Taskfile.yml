@@ -2,6 +2,6 @@
 version: '3'
 
 includes:
-  vagrant: ./.tasks/Vagrant.yml
-  ansible: ./.tasks/Ansible.yml
-  macos: ./.tasks/MacOS.yml
+  vagrant: ./.taskfiles/Vagrant.yml
+  ansible: ./.taskfiles/Ansible.yml
+  macos: ./.taskfiles/MacOS.yml
