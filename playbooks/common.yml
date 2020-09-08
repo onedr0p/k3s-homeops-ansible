@@ -10,7 +10,7 @@
   - package-prune
   - kernel
   - network
-  - swap
+  - filesystem
   - time
   - unattended-upgrades
   - user
