@@ -21,6 +21,7 @@
     - rsync
     - socat
     - software-properties-common
+    - sudo
     - vim
     - zip
     install_recommends: false
