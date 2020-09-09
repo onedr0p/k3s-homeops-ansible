@@ -31,18 +31,3 @@
   register: apt_install_common
   retries: 5
   until: apt_install_common is success
-
-# - name: "package-install: kubectl"
-#   become: true
-#   get_url:
-#     url: "https://storage.googleapis.com/kubernetes-release/release/v1.18.8/bin/linux/amd64/kubectl"
-#     dest: "/usr/local/bin/kubectl"
-#   when:
-#   - "'master' in group_names"
-
-# - name: "package-install: set kubectl permissions"
-#   file:
-#     path: "/usr/local/bin/kubectl"
-#     mode: "0755"
-#   when:
-#   - "'master' in group_names"
