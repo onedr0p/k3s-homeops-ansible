@@ -3,12 +3,12 @@ version: '3'
 
 tasks:
 
-  deps:
+  install:
     desc: Install required Homebrew apps
     cmds:
     - brew install ansible kubernetes-cli helm sshpass coreutils findutils
 
-  deps:dev:
+  install:dev:
     desc: Install required Homebrew apps for development
     cmds:
     - brew install pre-commit yamllint jq yq shellcheck
