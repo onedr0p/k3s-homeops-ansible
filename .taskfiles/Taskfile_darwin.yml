@@ -6,10 +6,11 @@ tasks:
   install:
     desc: Install required Homebrew apps
     cmds:
-    - brew install ansible kubernetes-cli helm sshpass coreutils findutils
+    - brew install ansible kubernetes-cli helm coreutils findutils
 
   install:dev:
     desc: Install required Homebrew apps for development
     cmds:
-    - brew install pre-commit yamllint jq yq shellcheck
+    - brew tap esolitos/ipa
+    - brew install pre-commit yamllint jq yq shellcheck sshpass
     - brew cask install virtualbox vagrant
