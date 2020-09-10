@@ -31,11 +31,19 @@ cp -r ./inventory/local ./inventory/custom
 
 ### Update the Ansible config files
 
-Update `./inventory/custom/hosts.yml` and `./inventory/custom/group_vars/all.yml` with the values that you want set. Each file it carefully documented.
+Update `./inventory/custom/hosts.yml` and `./inventory/custom/group_vars/all.yml` with the values that you want set. 
+
+Each file it carefully documented.
+
+### Get Ansible dependencies
+
+```bash
+ansible-galaxy install -r requirements.yml
+```
 
 ### Run the playbooks
 
-```
+```bash
 # This playbook will prepare your nodes for Kubernetes
 ansible-playbook -i ./inventory/custom/hosts.yml ./playbooks/common.yml
 # This playbook will install k3s
