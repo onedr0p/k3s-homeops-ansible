@@ -1,6 +1,6 @@
 # k3s-cluster-ansible
 
-This is an opinionated way to provision the OS and install k3s.
+This is an opinionated way to provision the OS and install k3s. Ansible playbooks are broken down into components.
 
 _Supported distros: **Debian 10.5** or **Ubuntu 20.04**_
 
@@ -31,7 +31,12 @@ cp -r ./inventory/local ./inventory/custom
 
 ### Update the Ansible config files
 
-Update `./inventory/custom/hosts.yml` and `./inventory/custom/group_vars/all.yml` with the values that you want set. 
+**Note:** This project uses [PyratLabs/ansible-role-k3s](https://github.com/PyratLabs/ansible-role-k3s) for installing k3s. Configuration options can be viewed in their README.md.
+
+After you have copied over the configuration files you will need to update the configuration in the files:
+
+- `./inventory/custom/hosts.yml`: IP addresses of your nodes and host level variables
+- `./inventory/custom/group_vars/all.yml`: Global variables for all hosts
 
 Each file it carefully documented.
 
