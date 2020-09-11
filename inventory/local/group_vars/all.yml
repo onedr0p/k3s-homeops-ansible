@@ -107,3 +107,5 @@ k3s_control_node_address: "172.16.20.10"
 k3s_become_for_all: true
 k3s_kubelet_args:
 - feature-gates: ExternalPolicyForExternalIP=true
+k3s_kube_apiserver_args:
+- feature-gates: EphemeralContainers=true
