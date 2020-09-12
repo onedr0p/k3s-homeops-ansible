@@ -1,7 +1,7 @@
 ---
 
 # IP address of node
-ansible_host: "172.16.20.12"
+ansible_host: "10.100.3.232"
 
 # IP Address to advertise for this node
 # for more k3s host variables, see

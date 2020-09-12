@@ -106,7 +106,7 @@ k3s_no_local_storage: true
 k3s_flannel_backend: "none"
 
 # Use a specific control node address
-k3s_control_node_address: "172.16.20.10"
+k3s_control_node_address: "10.100.3.230"
 k3s_become_for_all: true
 
 # Network CIDR to use for pod IPs

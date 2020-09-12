@@ -4,4 +4,4 @@
 controller:
   service:
     type: LoadBalancer
-    loadBalancerIP: 172.16.20.101
+    loadBalancerIP: 10.100.3.241

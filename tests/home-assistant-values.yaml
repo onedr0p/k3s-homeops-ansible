@@ -3,7 +3,7 @@
 
 service:
   type: LoadBalancer
-  loadBalancerIP: 172.16.20.102
+  loadBalancerIP: 10.100.3.242
   annotations:
     metallb.universe.tf/allow-shared-ip: "home-assistant"
 persistence:
