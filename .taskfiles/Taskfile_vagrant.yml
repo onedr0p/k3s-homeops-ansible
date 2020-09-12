@@ -10,7 +10,7 @@ tasks:
     desc: Create VMs
     cmds:
     - |
-      vagrant status --machine-readable --no-color | grep metadata | cut -d, -f2 | {{if eq OS "linux"}}xargs{{else}}gxargs{{end}} --max-procs=4 -I {} vagrant up {}
+      vagrant status --machine-readable --no-color | grep metadata | cut -d, -f2 | {{if eq OS "linux"}}xargs{{else}}gxargs{{end}} --max-procs=4 -I {} vagrant up --provider virtualbox {}
   
   snapshot:
     desc: Snapshot VMs
