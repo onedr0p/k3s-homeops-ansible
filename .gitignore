@@ -8,6 +8,6 @@ kubeconfig
 .vscode
 .tasks
 
-inventory/bare-metal
+inventory/custom
 
 roles/xanmanning.k3s
