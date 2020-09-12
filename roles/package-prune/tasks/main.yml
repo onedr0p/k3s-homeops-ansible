@@ -2,6 +2,7 @@
 
 - name: "package-prune: remove snap packages"
   become: true
+  ignore_errors: true
   command: snap remove {{ item }}
   with_items:
   - lxd
