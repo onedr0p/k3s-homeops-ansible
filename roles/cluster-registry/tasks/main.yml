@@ -1,6 +1,6 @@
 ---
 
-- name: "registry: create k3s config"
+- name: "cluster-registry: create k3s config"
   copy:
     content: |
       mirrors:
@@ -13,7 +13,7 @@
     dest: /etc/rancher/k3s/registries.yaml
   notify: k3s registry configuration changed
 
-- name: "registry: start k3s systemd service"
+- name: "cluster-registry: start k3s systemd service"
   systemd:
     name: k3s
     enabled: true

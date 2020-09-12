@@ -5,4 +5,4 @@
   become: true
   gather_facts: true
   roles:
-  - registry
+  - cluster-registry

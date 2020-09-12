@@ -1,6 +1,6 @@
 ---
 
-- name: "registry: restart k3s systemd service"
+- name: "cluster-registry: restart k3s systemd service"
   systemd:
     name: k3s
     state: restarted
