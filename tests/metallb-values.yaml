@@ -1,0 +1,9 @@
+# metallb-values.yaml
+---
+
+configInline:
+  address-pools:
+  - name: my-awesome-network
+    protocol: layer2
+    addresses:
+    - 172.16.20.100-172.16.20.110

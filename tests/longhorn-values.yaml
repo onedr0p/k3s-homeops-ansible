@@ -1,0 +1,17 @@
+# longhorn-values.yaml
+---
+
+persistence:
+  defaultClassReplicaCount: 1
+defaultSettings:
+  defaultReplicaCount: 1
+  createDefaultDiskLabeledNodes: true
+service:
+  ui:
+    type: NodePort
+    nodePort: 30234
+# ingress:
+#   enabled: true
+#   annotations:
+#     kubernetes.io/ingress.class: "nginx"
+#     host: "longhorn.devbu.io"

@@ -55,7 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
               "createhd",
               "--filename", disk,
               "--variant", "Fixed",
-              "--size", 1024
+              "--size", 5*1024
             ]
           end
           v.customize [

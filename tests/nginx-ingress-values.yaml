@@ -1,0 +1,7 @@
+# nginx-ingress-values.yaml
+---
+
+controller:
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 172.16.20.101

@@ -1,0 +1,30 @@
+# nginx-ingress-values.yaml
+---
+
+service:
+  type: LoadBalancer
+  loadBalancerIP: 172.16.20.102
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "home-assistant"
+persistence:
+  enabled: true
+  storageClass: "longhorn"
+  size: 250Mi
+vscode:
+  enabled: true
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 172.16.20.102
+    annotations:
+      metallb.universe.tf/allow-shared-ip: "home-assistant"
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      postgresqlUsername: home-assistant
+      postgresqlPassword: home-assistant-pass
+      postgresqlDatabase: home-assistant
+  persistence:
+    enabled: true
+    storageClass: "longhorn"
+    size: 250Mi
