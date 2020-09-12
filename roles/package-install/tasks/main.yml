@@ -21,9 +21,8 @@
     - rsync
     - socat
     - software-properties-common
-    - sudo
+    - unzip
     - vim
-    - zip
     install_recommends: false
     update_cache: true
     autoclean: true

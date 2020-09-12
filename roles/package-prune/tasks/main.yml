@@ -1,5 +1,14 @@
 ---
 
+- name: "package-prune: remove snap packages"
+  become: true
+  command: snap remove {{ item }}
+  with_items:
+  - lxd
+  - core18
+  - snapd
+  when: ansible_distribution == 'Ubuntu'
+
 - name: "package-prune: remove packages"
   become: true
   apt:
@@ -9,6 +18,7 @@
     - snapd
     - sosreport
     - ubuntu-advantage-tools
+    - cloud-init
     state: absent
     autoremove: true
 
@@ -23,6 +33,7 @@
   - snapd
   - sosreport
   - ubuntu-advantage-tools
+  - cloud-init
 
 - name: "package-prune: remove file and directory cruft"
   become: true
@@ -36,3 +47,5 @@
   - "/var/lib/snapd"
   - "/var/cache/snapd"
   - "/usr/lib/snapd"
+  - "/etc/cloud"
+  - "/var/lib/cloud"
