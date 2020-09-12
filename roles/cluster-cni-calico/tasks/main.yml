@@ -24,7 +24,7 @@
         calicoNetwork:
           ipPools:
           - blockSize: 26
-            cidr: 10.43.0.0/16
+            cidr: {{ k3s_service_cidr }}
             encapsulation: VXLANCrossSubnet
             natOutgoing: Enabled
             nodeSelector: all()
