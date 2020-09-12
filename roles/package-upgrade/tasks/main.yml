@@ -11,6 +11,11 @@
   apt:
     name: "*"
     state: latest
+    force_apt_get: yes
   register: apt_update
   retries: 5
   until: apt_update is success
+
+- name: "package-upgrade: clean packages"
+  apt:
+    autoclean: yes
