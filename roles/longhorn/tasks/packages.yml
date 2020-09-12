@@ -5,6 +5,7 @@
     name:
     - lvm2
     - scsitools
+    - open-iscsi
     install_recommends: false
     update_cache: true
     autoclean: true
