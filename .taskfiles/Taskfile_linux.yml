@@ -1,0 +1,30 @@
+---
+version: '3'
+
+tasks:
+
+  install:
+    desc: Install required apt-get apps
+    cmds:
+    - sudo apt-get install -y ansible 
+    - sudo apt-get update
+    - sudo apt-get install -y apt-transport-https gnupg2
+    - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    - echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+    - sudo apt-get update
+    - sudo apt-get install -y kubectl
+    - curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+    - echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+    - sudo apt-get update
+    - sudo apt-get install -y helm
+
+  install:dev:
+    desc: Install required apt-get apps for local development with Vagrant and Virtualbox
+    cmds:
+    - sudo apt-get install -y virtualbox-6.1
+    - sudo apt-get install -y vagrant
+    - sudo apt-get install -y yamllint jq shellcheck sshpass
+    - curl -L -o yq https://github.com/mikefarah/yq/releases/download/3.3.4/yq_linux_amd64
+    - chmod +x yq 
+    - sudo mv yq /usr/local/bin/
+    - pip install pre-commit
