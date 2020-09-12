@@ -78,12 +78,12 @@ calico:
 
 # Apply CRDs to the cluster
 crds:
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/crds/crd-alertmanager.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/crds/crd-podmonitor.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/crds/crd-prometheus.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/crds/crd-prometheusrules.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/crds/crd-servicemonitor.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/crds/crd-thanosrulers.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-alertmanager.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-podmonitor.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-prometheus.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-prometheusrules.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-servicemonitor.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-thanosrulers.yaml"
 - "https://raw.githubusercontent.com/fluxcd/helm-operator/v1.2.0/deploy/crds.yaml"
 - "https://github.com/jetstack/cert-manager/releases/download/v1.0.0/cert-manager.crds.yaml"
 
