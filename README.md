@@ -35,7 +35,8 @@ cp -r ./inventory/local ./inventory/custom
 
 After you have copied over the configuration files you will need to update the configuration in the files:
 
-- `./inventory/custom/hosts.yml`: IP addresses of your nodes and host level variables
+- `./inventory/custom/hosts.yml`: Host definitions
+- `./inventory/custom/host_vars/*.yml`: Host IP and host level variables
 - `./inventory/custom/group_vars/all.yml`: Global variables for all hosts
 
 Each file it carefully documented.
