@@ -1,6 +1,8 @@
 ---
 
 - name: "cluster-kubeconfig: copy config file to local directory"
+  become: true
+  run_once: true
   fetch:
     src: "/etc/rancher/k3s/k3s.yaml"
     dest: "{{ inventory_dir | dirname | dirname }}/kubeconfig"
