@@ -1,0 +1,14 @@
+vrrp_instance VI_1 {
+    state {{ 'MASTER' if groups['master'][0] == ansible_hostname else 'BACKUP' }}
+    interface {{ keepalived.interface }}
+    virtual_router_id 1
+    priority {{ '150' if groups['master'][0] == ansible_hostname else '100' }}
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass kubernetes
+    }
+    virtual_ipaddress {
+        {{ keepalived.vip }}
+    }
+}

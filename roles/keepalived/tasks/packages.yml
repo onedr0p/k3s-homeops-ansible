@@ -1,0 +1,14 @@
+---
+
+- name: "keepalived: install"
+  apt:
+    name: keepalived
+    install_recommends: false
+    update_cache: true
+    autoclean: true
+    autoremove: true
+  register: apt_install_keepalived
+  retries: 5
+  until: apt_install_keepalived is success
+  when:
+  - "'master' in group_names and keepalived.enabled is defined and keepalived.enabled == true"

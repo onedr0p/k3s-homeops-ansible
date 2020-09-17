@@ -1,0 +1,13 @@
+---
+
+- name: Display all variables/facts known for a host
+  debug:
+    var: hostvars[groups['master'][0]]
+
+- name: "keepalived: configure"
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+  notify: restart keepalived
+  when:
+  - "'master' in group_names and keepalived.enabled is defined and keepalived.enabled == true"
