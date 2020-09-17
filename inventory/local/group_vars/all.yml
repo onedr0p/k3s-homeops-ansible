@@ -59,6 +59,13 @@ registry_cache:
 # #   username: ""
 # #   password: ""
 
+# Install keepalived and set a VIP
+# ...only enabled if you are using HA masters 
+keepalived:
+  enabled: false
+  vip: "x.x.x.x"
+  interface: "{{ ansible_default_ipv4['interface'] }}"
+
 # Use the Calico CNI driver instead of Flannel
 # ...adjust 'k3s_flannel_backend' and 'k3s_no_flannel' if you want to use flannel
 calico:
@@ -74,7 +81,6 @@ calico:
     # this network should not exist or be defined anywhere in your network
     # e.g. 192.168.69.0/24
     externalIPs: x.x.x.0/24
-
 
 # Apply CRDs to the cluster
 crds:
