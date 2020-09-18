@@ -3,9 +3,9 @@
 - name: "network: install packages"
   apt:
     name:
-    # - arptables
+    - arptables
     - dnsutils
-    # - ebtables
+    - ebtables
     - ethtool
     - iperf3
     - iputils-ping
@@ -20,23 +20,23 @@
   retries: 5
   until: apt_install_network_packages is success
 
-# Still use legacy iptables
+# Still recommended use legacy iptables
 # https://rancher.com/docs/k3s/latest/en/known-issues/
-# - name: "network: configure nodes to use legacy iptables"
-#   alternatives:
-#     name: "{{ item }}"
-#     path: /usr/sbin/{{ item }}-legacy
-#   with_items:
-#     - "iptables"
-#     - "ip6tables"
-#     - "ebtables"
+- name: "network: configure nodes to use legacy iptables"
+  alternatives:
+    name: "{{ item }}"
+    path: /usr/sbin/{{ item }}-legacy
+  with_items:
+    - "iptables"
+    - "ip6tables"
+    - "ebtables"
 
-# - name: "network: update bridged IPv4 traffic to arptables chains"
-#   sysctl:
-#     name: net.bridge.bridge-nf-call-arptables
-#     value: "1"
-#     state: present
-#     sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
+- name: "network: update bridged IPv4 traffic to arptables chains"
+  sysctl:
+    name: net.bridge.bridge-nf-call-arptables
+    value: "1"
+    state: present
+    sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
 
 - name: "network: update bridged IPv4 traffic to iptables chains"
   sysctl:

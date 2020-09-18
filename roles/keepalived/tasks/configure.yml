@@ -1,9 +1,5 @@
 ---
 
-- name: Display all variables/facts known for a host
-  debug:
-    var: hostvars[groups['master'][0]]
-
 - name: "keepalived: configure"
   template:
     src: keepalived.conf.j2
