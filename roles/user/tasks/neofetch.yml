@@ -47,7 +47,7 @@
 
 - name: "user: enable neofetch on login"
   copy:
-    content: "neofetch --ascii_distro debian_small"
+    content: "neofetch --ascii_distro ubuntu_small"
     dest: "/home/{{ ansible_user }}/.bash_profile"
     owner: "{{ ansible_user }}"
     mode: "0775"
