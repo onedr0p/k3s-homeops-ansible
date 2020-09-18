@@ -1,5 +1,16 @@
 ---
 
+# Still use legacy iptables
+# https://rancher.com/docs/k3s/latest/en/known-issues/
+- name: "network: configure nodes to use legacy iptables"
+  alternatives:
+    name: "{{ item }}"
+    path: /usr/sbin/{{ item }}-legacy
+  with_items:
+    - "iptables"
+    - "ip6tables"
+    - "ebtables"
+
 - name: "network: install packages"
   apt:
     name:
