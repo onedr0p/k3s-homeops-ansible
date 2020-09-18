@@ -1,8 +1,18 @@
+global_defs {
+    router_id LVS_DEVEL
+}
+
+vrrp_script chk_k3s_server {
+    script "killall -0 k3s-server"
+    interval 2
+    weight 2
+}
+
 vrrp_instance VI_1 {
     state {{ 'MASTER' if groups['master'][0] == ansible_hostname else 'BACKUP' }}
     interface {{ keepalived.interface }}
     virtual_router_id 1
-    priority {{ '150' if groups['master'][0] == ansible_hostname else '100' }}
+    priority {{ '150' if groups['master'][0] == ansible_hostname else '149' }}
     advert_int 1
     authentication {
         auth_type PASS
@@ -10,5 +20,8 @@ vrrp_instance VI_1 {
     }
     virtual_ipaddress {
         {{ keepalived.vip }}
+    }
+    track_script {
+        chk_k3s_server
     }
 }
