@@ -28,3 +28,8 @@
     command:
       cmd: /usr/local/bin/k3s-agent-uninstall.sh
       removes: /usr/local/bin/k3s-agent-uninstall.sh
+
+  - name: "Reboot nodes"
+    reboot:
+      msg: "Nodes are being rebooted..."
+    ignore_errors: true
