@@ -6,6 +6,7 @@
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: "kubectl create -f {{ calico.operator_manifest }}"
+  retries: 5
   when:
   - "'master' in group_names"
 
@@ -28,6 +29,7 @@
             encapsulation: VXLANCrossSubnet
             natOutgoing: Enabled
             nodeSelector: all()
+  retries: 5
   when:
   - "'master' in group_names"
 
@@ -45,6 +47,7 @@
       spec:
         peerIP: {{ calico.bgp.peer }}
         asNumber: {{ calico.bgp.as }}
+  retries: 5
   when: "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled == true"
 
 - name: "cluster-calico: configure BGP-externalIPs"
@@ -61,4 +64,5 @@
       spec:
         serviceExternalIPs:
         - cidr: {{ calico.bgp.externalIPs }}
+  retries: 5
   when: "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled == true"
