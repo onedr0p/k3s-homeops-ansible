@@ -1,16 +1,5 @@
 ---
 
-# Still use legacy iptables
-# https://rancher.com/docs/k3s/latest/en/known-issues/
-# - name: "network: configure nodes to use legacy iptables"
-#   alternatives:
-#     name: "{{ item }}"
-#     path: /usr/sbin/{{ item }}-legacy
-#   with_items:
-#     - "iptables"
-#     - "ip6tables"
-#     - "ebtables"
-
 - name: "network: install packages"
   apt:
     name:
@@ -30,6 +19,17 @@
   register: apt_install_network_packages
   retries: 5
   until: apt_install_network_packages is success
+
+# Still use legacy iptables
+# https://rancher.com/docs/k3s/latest/en/known-issues/
+# - name: "network: configure nodes to use legacy iptables"
+#   alternatives:
+#     name: "{{ item }}"
+#     path: /usr/sbin/{{ item }}-legacy
+#   with_items:
+#     - "iptables"
+#     - "ip6tables"
+#     - "ebtables"
 
 # - name: "network: update bridged IPv4 traffic to arptables chains"
 #   sysctl:
