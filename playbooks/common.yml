@@ -14,4 +14,4 @@
   - time
   - unattended-upgrades
   - user
-  # - reboot
+  - keepalived
