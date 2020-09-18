@@ -36,12 +36,13 @@
       print_info() {
           prin
           info title
-          info "Uptime" uptime
+          info "OS" distro
+          info "Kernel" kernel
           info "CPU Usage" cpu_usage
           info "Memory Usage" memory
           info "Disk" disk
           info "Local IP" local_ip
-          info "Shell" shell
+          info "Uptime" uptime
       }
     dest: "/home/{{ ansible_user }}/.config/neofetch/config.conf"
 
