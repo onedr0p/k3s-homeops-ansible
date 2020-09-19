@@ -1,15 +1,15 @@
 ---
 
-- name: "cluster-meta: apply master taints"
-  become: true
-  run_once: true
-  environment:
-    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
-  command: kubectl taint --overwrite node {{ hostvars[item]['ansible_hostname'] }} node-role.kubernetes.io/master=true:NoSchedule
-  with_items:
-  - "{{ groups['master'] }}"
-  when:
-  - "'master' in group_names"
+# - name: "cluster-meta: apply master taints"
+#   become: true
+#   run_once: true
+#   environment:
+#     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
+#   command: kubectl taint --overwrite node {{ hostvars[item]['ansible_hostname'] }} node-role.kubernetes.io/master=true:NoSchedule
+#   with_items:
+#   - "{{ groups['master'] }}"
+#   when:
+#   - "'master' in group_names"
 
 - name: "cluster-meta: apply worker annotations"
   become: true
