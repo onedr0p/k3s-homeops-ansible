@@ -5,6 +5,7 @@
   become: true
   gather_facts: true
   roles:
+  - general
   - package-install
   - package-upgrade
   - package-prune
@@ -15,3 +16,4 @@
   - unattended-upgrades
   - user
   - keepalived
+  - reboot
