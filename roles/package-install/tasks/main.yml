@@ -19,7 +19,6 @@
     - python3-pip
     - python3-openssl
     - rsync
-    - socat
     - software-properties-common
     - unzip
     - vim

@@ -19,7 +19,7 @@ vrrp_instance VI_1 {
         auth_pass kubernetes
     }
     virtual_ipaddress {
-        {{ keepalived.vip }}
+        {{ keepalived.vip }}/24
     }
     track_script {
         chk_k3s_server

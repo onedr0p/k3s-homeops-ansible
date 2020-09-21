@@ -10,7 +10,9 @@
     - iperf3
     - iputils-ping
     - net-tools
+    - netcat
     - nmap
+    - socat
     - traceroute
     install_recommends: false
     update_cache: true
