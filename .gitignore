@@ -9,6 +9,6 @@ kubeconfig
 .tasks
 ignore
 
-inventory/custom
+inventory/custom*
 
-roles/xanmanning.k3s
+roles/xanmanning.k3s*
