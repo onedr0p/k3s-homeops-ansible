@@ -13,6 +13,7 @@
     - hdparm
     # - htop # outdated v2, see below
     - jq
+    - lvm2
     - nfs-common
     - psmisc
     - python3
