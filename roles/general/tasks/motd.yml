@@ -1,0 +1,8 @@
+---
+
+- name: "general: disable motd-news"
+  lineinfile:
+    dest: /etc/default/motd-news
+    state: present
+    regexp: '^ENABLED='
+    line: 'ENABLED=0'

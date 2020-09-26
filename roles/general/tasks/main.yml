@@ -2,3 +2,4 @@
 
 - include: power-button.yml
 - include: hostname.yml
+- include: motd.yml
