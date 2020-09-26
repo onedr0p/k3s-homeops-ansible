@@ -31,7 +31,7 @@
   
 - name: "longhorn: mounting new filesystem"
   become: true
-  mount:
+  ansible.posix.mount:
     path: "{{ longhorn.mountpoint }}"
     src: "/dev/longhorn-vg/lv0"
     fstype: "{{ longhorn.filesystem }}"

@@ -4,7 +4,7 @@
   when: ansible_swaptotal_mb > 0
 
 - name: "filesystem: disable swap in /etc/fstab"
-  mount:
+  ansible.posix.mount:
     name: "{{ item }}"
     fstype: swap
     state: absent

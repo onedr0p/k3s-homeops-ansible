@@ -14,7 +14,7 @@
 
 
 - name: "time: set timezone"
-  timezone:
+  community.general.timezone:
     name: "{{ timezone | default('America/New_York') }}"
   notify: systemd-timesyncd configuration changed
 

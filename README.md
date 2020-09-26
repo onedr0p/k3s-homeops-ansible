@@ -8,7 +8,7 @@ _Supported distros: **Debian 10.5** or **Ubuntu 20.04**_
 
 There's a couple things that will need to be done before you get starting running with Ansible.
 
-1) Install Ansible locally
+1) Install Ansible >= 2.10.0 on your local machine
 2) Install a supported OS on each of your nodes
 3) Set static IP for each node on the OS or in your router (you can use the IP assigned via DHCP, but it's not recommended)
 4) Copy your local public ssh key with `ssh-copy-id` to each node

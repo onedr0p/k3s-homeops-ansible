@@ -1,21 +1,21 @@
 ---
 
 - name: "filesystem: update max_user_watches"
-  sysctl:
+  ansible.posix.sysctl:
     name: fs.inotify.max_user_watches
     value: "999999"
     state: present
     sysctl_file: /etc/sysctl.d/98-kubernetes-fs.conf
 
 - name: "filesystem: update max_queued_events"
-  sysctl:
+  ansible.posix.sysctl:
     name: fs.inotify.max_queued_events
     value: "999999"
     state: present
     sysctl_file: /etc/sysctl.d/98-kubernetes-fs.conf
 
 - name: "filesystem: update max_user_instances"
-  sysctl:
+  ansible.posix.sysctl:
     name: fs.inotify.max_user_instances
     value: "999999"
     state: present

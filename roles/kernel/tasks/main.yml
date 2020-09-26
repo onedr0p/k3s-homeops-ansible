@@ -1,7 +1,7 @@
 ---
 
 - name: "kernel: enable modules"
-  modprobe:
+  community.general.modprobe:
     name: "{{ item }}"
     state: present
   with_items:
@@ -20,7 +20,7 @@
 
 # Blacklist for PiAware: https://hub.docker.com/r/mikenye/piaware
 - name: "kernel: blacklist modules"
-  kernel_blacklist:
+  community.general.kernel_blacklist:
     name: "{{ item }}"
     state: present
   with_items:
