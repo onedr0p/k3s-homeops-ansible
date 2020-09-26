@@ -24,6 +24,7 @@
   become: true
   apt:
     name:
+    - apparmor
     - apport
     - bcache-tools
     - btrfs-progs
