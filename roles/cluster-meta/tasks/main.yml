@@ -54,31 +54,3 @@
   register: remove_system_upgrade_annotations
   retries: 5
   until: remove_system_upgrade_annotations is success
-
-- name: "cluster-meta: apply longhorn annotations"
-  become: true
-  run_once: true
-  environment:
-    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
-  command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/create-default-disk=true
-  with_items:
-  - "{{ groups['worker'] }}"
-  when:
-  - "'master' in group_names and (hostvars[item].longhorn.enabled is defined and hostvars[item].longhorn.enabled == true)"
-  register: apply_longhorn_annotations
-  retries: 5
-  until: apply_longhorn_annotations is success
-
-- name: "cluster-meta: remove longhorn annotations"
-  become: true
-  run_once: true
-  environment:
-    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
-  command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/create-default-disk-
-  with_items:
-  - "{{ groups['worker'] }}"
-  when:
-  - "'master' in group_names and (hostvars[item].longhorn.enabled is not defined or hostvars[item].longhorn.enabled == false)"
-  register: remove_longhorn_annotations
-  retries: 5
-  until: remove_longhorn_annotations is success
