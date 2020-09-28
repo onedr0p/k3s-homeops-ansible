@@ -1,0 +1,56 @@
+---
+- hosts:
+  - master
+  - worker
+  become: true
+  gather_facts: false
+  vars_prompt:
+    name: "nuke_confirmation"
+    prompt: "This will DESTROY rook-ceph in your cluster. Do you wish to continue? [Y/n]"
+    default: "n"
+    private: no
+  any_errors_fatal: yes
+  pre_tasks:
+  - name: check confirmation
+    fail: msg="Abort."
+    when: nuke_confirmation != "Y"
+  
+  # tasks:
+  # - name: Remove /var/lib/rook
+  #   ignore_errors: yes
+  #   file:
+  #     state: absent
+  #     path: "/var/lib/rook"
+
+  # - name: Zap the drives
+  #   become: true
+  #   command: "{{ item }}"
+  #   ignore_errors: yes
+  #   with_items:
+  #     - sgdisk --zap-all /dev/sdb
+  #     - sgdisk --zap-all /dev/sdc
+  #     - sgdisk --zap-all /dev/sdd
+
+  # - name: Remove LVM partitions
+  #   become: true
+  #   shell: "{{ item }}"
+  #   ignore_errors: yes
+  #   with_items:
+  #     - ls /dev/mapper/ceph--* | xargs -I% -- fuser --kill %
+  #     - ls /dev/mapper/ceph--* | xargs -I% -- dmsetup clear %
+  #     - ls /dev/mapper/ceph--* | xargs -I% -- dmsetup remove -f %
+  #     - ls /dev/mapper/ceph--* | xargs -I% -- rm -rf %
+
+  # - name: Wipe the block device
+  #   become: true
+  #   command: "{{ item }}"
+  #   ignore_errors: yes
+  #   with_items:
+  #     - wipefs -af /dev/sdb
+  #     - wipefs -af /dev/sdc
+  #     - wipefs -af /dev/sdd
+
+  # - name: "Reboot nodes"
+  #   reboot:
+  #     msg: "Nodes are being rebooted..."
+  #   ignore_errors: true
