@@ -1,0 +1,30 @@
+---
+
+- name: "cluster-cni: mount bpffs"
+  ansible.posix.mount:
+    src: bpffs
+    path: /sys/fs/bpf
+    fstype: bpf
+    state: mounted
+
+- name: "cluster-cni: deploy cilium configuration to k3s manifest directory"
+  become: true
+  template:
+    src: "{{ item }}"
+    dest: "{{ k3s_server_manifests_dir }}/{{ item | basename | replace('.j2','') }}"
+    mode: 0644
+  with_items:
+  - "cilium-helmchart.yaml.j2"
+  when:
+  - "'master' in group_names and cilium.enabled is defined and cilium.enabled"
+
+- name: "cluster-cni: deploy kube-router"
+  become: true
+  template:
+    src: "{{ item }}"
+    dest: "{{ k3s_server_manifests_dir }}/{{ item | basename | replace('.j2','') }}"
+    mode: 0644
+  with_items:
+  - "kube-router.yaml.j2"
+  when:
+  - "'master' in group_names and cilium.enabled is defined and cilium.enabled"

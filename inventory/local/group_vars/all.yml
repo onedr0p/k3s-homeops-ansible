@@ -67,7 +67,7 @@ keepalived:
   vip: "x.x.x.x"
   interface: "{{ ansible_default_ipv4['interface'] }}"
 
-# Use the Calico CNI driver instead of Flannel
+# Use the Calico CNI driver instead of flannel
 # ...adjust 'k3s_flannel_backend' and 'k3s_no_flannel' if you want to use flannel
 calico:
   enabled: true
@@ -83,6 +83,15 @@ calico:
     # e.g. 192.168.69.0/24
     externalIPs: x.x.x.0/24
 
+# Use the cilium CNI driver instead of flannel
+# ...adjust 'k3s_flannel_backend' and 'k3s_no_flannel' if you want to use flannel
+cilium:
+  enabled: false
+  version: 1.8.3
+  peerRouterIP: 192.168.42.1
+  peerRouterASNS: 64512
+  clusterASN: 64512
+
 # Apply CRDs to the cluster
 crds:
 - "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-alertmanager.yaml"
@@ -92,7 +101,7 @@ crds:
 - "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-servicemonitor.yaml"
 - "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-thanosrulers.yaml"
 - "https://raw.githubusercontent.com/fluxcd/helm-operator/v1.2.0/deploy/crds.yaml"
-- "https://github.com/jetstack/cert-manager/releases/download/v1.0.0/cert-manager.crds.yaml"
+- "https://github.com/jetstack/cert-manager/releases/download/v1.0.2/cert-manager.crds.yaml"
 
 #
 #
@@ -119,6 +128,7 @@ k3s_flannel_backend: "none"
 # Use a specific control node address
 # ... set to "{{ keepalived.vip }}" if using keepalived
 k3s_control_node_address: "172.16.20.10"
+
 k3s_become_for_all: true
 
 # Network CIDR to use for pod IPs
@@ -127,8 +137,12 @@ k3s_cluster_cidr: "10.42.0.0/16"
 # Network CIDR to use for service IPs
 k3s_service_cidr: "10.43.0.0/16"
 
-# Cluster IP for CoreDNS service. Should be in your service-cidr range.
-k3s_cluster_dns: "10.43.0.10"
+# Disable kube-proxy (only enable if you are using cilium)
+k3s_disable_kube_proxy: false
 
+# Enable any feature-gates
 k3s_kubelet_args:
 - feature-gates: ExternalPolicyForExternalIP=true
+
+# Enable debugging
+k3s_debug: true

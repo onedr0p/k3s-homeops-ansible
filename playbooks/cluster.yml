@@ -6,6 +6,6 @@
   roles:
   - { role: xanmanning.k3s }
   - cluster-kubeconfig
-  - cluster-cni-calico
+  - cluster-cni
   - cluster-meta
   - cluster-crds
