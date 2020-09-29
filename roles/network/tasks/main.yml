@@ -9,6 +9,7 @@
     - ethtool
     - iperf3
     - iputils-ping
+    - ipvsadm
     - net-tools
     - netcat
     - nmap

@@ -1,7 +1,0 @@
----
-- hosts:
-  - master
-  - worker
-  become: true
-  roles:
-  - { role: xanmanning.k3s }

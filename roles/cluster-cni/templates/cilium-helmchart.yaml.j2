@@ -7,17 +7,31 @@ metadata:
 spec:
   chart: cilium
   repo: https://helm.cilium.io/
-  version: 1.8.3
+  version: {{ cilium.version }}
   targetNamespace: kube-system
   bootstrap: true
   valuesContent: |-
     global:
       registry: docker.io/cilium
-      tag: v1.8.3
+      tag: v{{ cilium.version }}
       k8sServiceHost: {{ k3s_control_node_address }}
+      # k8sServiceHost: 192.168.42.200
       k8sServicePort: 6443
-      tunnel: vxlan
+      tunnel: disabled
+      bpf:
+        preallocateMaps: true
+      autoDirectNodeRoutes: true
+      kubeProxyReplacement: strict
       nativeRoutingCIDR: "{{ k3s_cluster_cidr }}"
+      endpointRoutes:
+        enabled: true
+      hostServices:
+        enabled: true
+      nodePort:
+        enabled: true
+        mode: dsr
+      hostPort:
+        enabled: true
       externalIPs:
         enabled: true
       ipam:
@@ -27,18 +41,18 @@ spec:
       containerRuntime:
         integration: containerd
         socketPath: /var/run/k3s/containerd/containerd.sock
-    hubble:
-      enabled: true
-      ui:
+      hubble:
         enabled: true
-      relay:
-        enabled: true
-      metrics:
-        enabled:
-        - dns
-        - drop
-        - tcp
-        - flow
-        - port-distribution
-        - icmp
-        - http
+        ui:
+          enabled: true
+        relay:
+          enabled: true
+        metrics:
+          enabled:
+          - dns
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http

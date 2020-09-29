@@ -23,21 +23,23 @@ spec:
       containers:
       - name: kube-router
         image: docker.io/cloudnativelabs/kube-router:v1.0.1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         args:
         - "--run-router=true"
         - "--run-firewall=false"
         - "--run-service-proxy=false"
-        - "--bgp-graceful-restart=true"
         - "--enable-cni=false"
+        - "--enable-pod-egress=false"
+        - "--bgp-graceful-restart=true"
         - "--enable-ibgp=true"
-        - "--enable-overlay=false"
-        - "--peer-router-ips={{ cilium.peerRouterIP }}"
-        - "--peer-router-asns={{ cilium.peerRouterASNS }}"
-        - "--cluster-asn={{ cilium.clusterASN }}"
+        - "--enable-overlay=true"
         - "--advertise-cluster-ip=true"
         - "--advertise-external-ip=true"
         - "--advertise-loadbalancer-ip=true"
+        - "--peer-router-ips={{ cilium.peerRouterIP }}"
+        - "--peer-router-asns={{ cilium.peerRouterASNS }}"
+        - "--cluster-asn={{ cilium.clusterASN }}"
+        - "--cluster-cidr={{ k3s_cluster_cidr }}"
         env:
         - name: NODE_NAME
           valueFrom:
