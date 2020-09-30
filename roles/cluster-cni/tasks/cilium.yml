@@ -1,12 +1,5 @@
 ---
 
-- name: "cluster-cni: mount bpffs"
-  ansible.posix.mount:
-    src: bpffs
-    path: /sys/fs/bpf
-    fstype: bpf
-    state: mounted
-
 - name: "cluster-cni: deploy cilium configuration to k3s manifest directory"
   become: true
   template:

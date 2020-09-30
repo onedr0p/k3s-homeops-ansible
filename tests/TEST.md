@@ -5,8 +5,8 @@ https://github.com/bitnami/charts/tree/master/bitnami/metallb
 ```
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm install metallb --kubeconfig ./kubeconfig --namespace default --version "0.1.23" --values ./tests/metallb-values.yaml bitnami/metallb
-helm uninstall metallb --kubeconfig ./kubeconfig --namespace default
+helm install metallb --kubeconfig ./kubeconfig --namespace kube-system --version "0.1.23" --values ./tests/metallb-values.yaml bitnami/metallb
+helm uninstall metallb --kubeconfig ./kubeconfig --namespace kube-system
 ```
 
 ---

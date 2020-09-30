@@ -6,4 +6,7 @@ configInline:
   - name: my-awesome-network
     protocol: layer2
     addresses:
-    - 172.16.20.100-172.16.20.110
+    # - 172.16.20.100-172.16.20.110
+    - 192.168.169.0/24
+    # Cilium + Kube-router:
+    # k delete ds/metallb-speaker -n kube-system

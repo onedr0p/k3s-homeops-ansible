@@ -11,28 +11,35 @@ spec:
   targetNamespace: kube-system
   bootstrap: true
   valuesContent: |-
+    config:
+    #   svcSourceRangeCheck: false
+    #   ipam: kubernetes
+    #   enableIdentityMark: false
+      bpfMasquerade: false
     global:
-      registry: docker.io/cilium
+      registry: {{ cilium.registry }}
       tag: v{{ cilium.version }}
+      pullPolicy: IfNotPresent
       k8sServiceHost: {{ k3s_control_node_address }}
-      # k8sServiceHost: 192.168.42.200
       k8sServicePort: 6443
       tunnel: disabled
-      bpf:
-        preallocateMaps: true
+      masquerade: false
       autoDirectNodeRoutes: true
       kubeProxyReplacement: strict
-      nativeRoutingCIDR: "{{ k3s_cluster_cidr }}"
+      # nativeRoutingCIDR: "192.168.42.0/24"
       endpointRoutes:
         enabled: true
       hostServices:
         enabled: true
+      enableHealthCheckNodeport: true
       nodePort:
         enabled: true
         mode: dsr
       hostPort:
         enabled: true
       externalIPs:
+        enabled: true
+      sockops:
         enabled: true
       ipam:
         operator:
@@ -41,6 +48,8 @@ spec:
       containerRuntime:
         integration: containerd
         socketPath: /var/run/k3s/containerd/containerd.sock
+      # bpf:
+      #   preallocateMaps: true
       hubble:
         enabled: true
         ui:

@@ -72,6 +72,8 @@ keepalived:
 calico:
   enabled: true
   operator_manifest: "https://docs.projectcalico.org/manifests/tigera-operator.yaml"
+  # https://docs.projectcalico.org/networking/mtu#operator
+  mtu: 1500
   bgp:
     # enabling bgp requires your router set up to handle it
     enabled: false

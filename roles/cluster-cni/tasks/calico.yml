@@ -9,6 +9,19 @@
   when:
   - "'master' in group_names and calico.enabled is defined and calico.enabled"
 
+# In tech preview, still a few kinks to work out...
+# https://docs.projectcalico.org/maintenance/enabling-bpf
+# - name: "cluster-cni: deploy calico eBPF configuration to k3s manifest directory"
+#   become: true
+#   template:
+#     src: "{{ item }}"
+#     dest: "{{ k3s_server_manifests_dir }}/{{ item | basename | replace('.j2','') }}"
+#     mode: 0644
+#   with_items:
+#   - "calico-ebpf-configmap.yaml.j2"
+#   when:
+#   - "'master' in group_names and calico.enabled is defined and calico.enabled"
+
 - name: "cluster-cni: deploy calico configuration to k3s manifest directory"
   become: true
   template:
@@ -27,9 +40,9 @@
     dest: "{{ k3s_server_manifests_dir }}/{{ item | basename | replace('.j2','') }}"
     mode: 0644
   with_items:
-  - "calico-bgpeer.yaml.j2"
+  - "calico-bgppeer.yaml.j2"
   when:
-  - "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled == true"
+  - "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled"
 
 - name: "cluster-cni: deploy calico configure BGP-configuration to k3s manifest directory"
   become: true
@@ -40,4 +53,4 @@
   with_items:
   - "calico-bgpconfiguration.yaml.j2"
   when:
-  - "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled == true"
+  - "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled"

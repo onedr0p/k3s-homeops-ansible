@@ -18,10 +18,15 @@ metadata:
   name: banana-service
 spec:
   externalIPs:
-  - 192.168.120.40
+  - 192.168.169.40
   selector:
     app: banana
   ports:
-    - port: 5678
+  - name: http
+    port: 5678
+    targetPort: 5678
+  # - port: 5678
   type: LoadBalancer
-  # loadBalancerIP: 192.168.120.40
+  # type: ClusterIP
+  # externalTrafficPolicy: Local
+  # loadBalancerIP: 192.168.169.40

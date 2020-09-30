@@ -11,3 +11,11 @@
   loop:
     - swap
     - none
+
+- name: "filesystem: mount bpffs"
+  ansible.posix.mount:
+    src: bpffs
+    path: /sys/fs/bpf
+    fstype: bpf
+    state: mounted
+    opts: rw,nosuid,nodev,noexec,relatime,mode=700
