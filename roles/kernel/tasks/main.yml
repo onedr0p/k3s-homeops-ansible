@@ -1,20 +1,36 @@
 ---
 
 - name: "kernel: disable apparmor"
-  lineinfile:
-    state: present
-    dest: /etc/default/grub
-    backrefs: yes
-    regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?!.*apparmor)\"[^\"]+)(\".*)'
-    line: '\1 apparmor=0\2'
+  replace:
+    path: /etc/default/grub
+    regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
+    replace: '\1 {{ option }}={{ value }}\2'
+  vars:
+    option: apparmor
+    value: 0
+
+#   lineinfile:
+#     state: present
+#     dest: /etc/default/grub
+#     backrefs: yes
+#     regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?!.*apparmor)\"[^\"]+)(\".*)'
+#     line: '\1 apparmor=0\2'
 
 - name: "kernel: disable mitigations"
-  lineinfile:
-    state: present
-    dest: /etc/default/grub
-    backrefs: yes
-    regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?!.*mitigations)\"[^\"]+)(\".*)'
-    line: '\1 mitigations=off\2'
+  replace:
+    path: /etc/default/grub
+    regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
+    replace: '\1 {{ option }}={{ value }}\2'
+  vars:
+    option: mitigations
+    value: off
+
+#   lineinfile:
+#     state: present
+#     dest: /etc/default/grub
+#     backrefs: yes
+#     regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?!.*mitigations)\"[^\"]+)(\".*)'
+#     line: '\1 mitigations=off\2'
 
 - name: "kernel: enable modules"
   community.general.modprobe:
