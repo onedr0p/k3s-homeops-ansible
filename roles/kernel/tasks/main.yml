@@ -1,5 +1,21 @@
 ---
 
+- name: "kernel: disable apparmor"
+  lineinfile:
+    state: present
+    dest: /etc/default/grub
+    backrefs: yes
+    regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?!.*apparmor)\"[^\"]+)(\".*)'
+    line: '\1 apparmor=0\2'
+
+- name: "kernel: disable mitigations"
+  lineinfile:
+    state: present
+    dest: /etc/default/grub
+    backrefs: yes
+    regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?!.*mitigations)\"[^\"]+)(\".*)'
+    line: '\1 mitigations=off\2'
+
 - name: "kernel: enable modules"
   community.general.modprobe:
     name: "{{ item }}"
