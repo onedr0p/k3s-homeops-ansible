@@ -1,0 +1,170 @@
+---
+
+#
+# Vars for this role
+#
+
+# Ansible user to ssh into servers with
+ansible_user: "ubuntu"
+ansible_ssh_pass: "ubuntu"
+ansible_ssh_common_args: "-o UserKnownHostsFile=/dev/null"
+ansible_become_pass: "ubuntu"
+
+# Timezone for the servers
+timezone: "America/New_York"
+
+# Set custom ntp servers
+ntp_servers:
+  primary:
+  - "time.cloudflare.com"
+  - "time.google.com"
+  fallback:
+  - "0.us.pool.ntp.org"
+  - "1.us.pool.ntp.org"
+  - "2.us.pool.ntp.org"
+  - "3.us.pool.ntp.org"
+
+# Enable coping kubeconfig to ~/.kube
+# ...otherwise a kubeconfig will be left in the root of the repo
+kubeconfig: false
+
+# Additional ssh public keys to add to the nodes
+ssh_authorized_keys:
+- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCzsu/AuBZkK5J9hZLya9ood8RuXqnN0Eo4hEeFvibuhQKyUerwLG1COa8d1QDXSJR37c/JjXKRzYX5JE347P48hU7dN+vnoi9uKuhHu7NILaLeo2QrQKTuWKygj23ee4EHj0B/XP562seqv9/zLmbaTZO3J1lXFugTVo0kXGbzCWQnOZyEEY+cUHhHVSu4/ugmkkUvV744CYo7TmcMwBjfrOnvamWVD09dYcX6wq0KLDU59BzVj6GNs8TbwUNR52EAYv0PXDPeKUkrMx5YaEGoc286kFWGiIJYSKMOukuZYPOSkgwONQSGt6Hvzft+eCxvR93J1vNcMIV1PjTfRdZvPa1mvJ1/uzWWWGQfODGKmBaDMZ4e2o4ItLJcopAUWbpr/bQIadCpt4ckKPJJ9km+qhYz+Np0ZfQ1Ay5NOTLZx3IhBuXHIxLIr0PialTig9+MXf1ZCwW2SI7kPrVVB5IwysA8R9Z/p7cnv0uOVNNfFMyIsI8jVnsqeRN4GFMweBY1kJwK4X7dnsKfoYWkjQ9DUaZ62wTk0u4P4zSGxEVx43rk/f2b+nXZbl1IhgA/2SV2b2eHIGHE6aSMSjUHXrZ7ZVJhAwqDFoN18NvBKOHQo6CKHG5jyvII4I8+NbnAGPG320VbvQoAA8nlUO8rsy05KdBU0U9UI3gq7bYWFJaKew== devin.kray@gmail.com"
+- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDO1R1i7dP0dY3f3rnlIQjVPsg3p0Xvz/16oZq+cUmE+O3An9qKQNUwWA98EdnMfq09qLpU1OBSafrLjZ8rd4+4KZJNhFgOCX1qq9GDo+o87toYZUvZ6ftdokpgYlYh0sSUxCjbEnaYAr9W2ZYs32fSJAZdoSydUp9gsTlYQJtq4OYKeQd4gd0oJ2F+L3Rv/HwY1U2+ynW4XnsnbfYky9DkQJIgirFwhwsuDot7VMW14mvI1T4IN+rGHfvHsEqsKrVCOUwfsgnNEXR4R5lSE0mNgZiEFnh/F7pA8QGmcKrNv/Fd4cZRdWxtDdrmEVVtbVnlnRrtV0NS9VqJiJm6Rm9QQ9LLemHAGJHT90hUknSB5qw1pxJ/uZ5hCQzOAzfABQ+Jgj4VzT4PpwaGF529v9VSsV6KPPyF0pP8YNKgRaSBxFqFTwIBLH9eBiE0neIHDGBBi3H9pbYtlMHoy9pnepSPPhD4vSiVbFVSFxwKJ9hoVpRKt3gZuhtIMuDVFpgiAHYE9VYSKbfH0FuBLqrNzF0inkn0Luo+wWyCUNO2y+mZZKpm61huCgdWGL4HfSNLKqwxBtG0oKI1GISGzipay9m0u0JrPjeNr0bD0Sg28aDhjEeds6P9Xe/j/QZg6YWW11rUH33GFljHo6Llu9rBfoiM9BJqXDyInkzfYcq91cojmw== devin.kray@gmail.com"
+- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDBB8yES+Os3okY1TwOgfaRsIffAWwPxkgCO1BDfY7Ynno7YxmYgyRaxUnOrkuWfMwiWcYwLgk+yipBf5ctYRsEQkK4cVn1VYR3a0YeMa8tBDa36EyR+A0IcJ1GOOq24+l9N9Y/a/3kz8lC7eIope67WOIikccRrbiP89nP1FicAsDMpPLfcXFKb0G4MQHrY1w8zcd9lJFQkqwBCFaoZKW2tCaE21zYuqhv3gLAUcSiUF6FNZSnwvpFwC1s9jFqvrrOiLsXD61hHqO/Muo6xiPaSsjHBy72kfvHM4vKK8au99TX4sMwZ+f1QJqyvzWqG52HfMNLD14Wf3dChgZRkBUGu8MY+jGpX23VmcmypPFBwTB1+jm4n5XlgpeuqG4BumS5gdrRsHNX0tfRRftzaSnLeAEOGQz6SCXor0m/FOXdYBDiVihdsCrKwFZK6AmPF5XwMnCMJIC3RCIKgRxYW/Pxd3fLlD0WlM10MYdJLxK0wBiLbugFS5iRBHLwn0MgJxEkRY7+j46/Ds5RRiFrYOqFG0A7GQj/mZKxSVeYuHUAnRIfaWlZ71TGqf3RRCsPbrTkeFCPToqPLxOEpj+IXMAB3adI+R6OmtRoZV4HaiWDfHDxNj0lsS2w2AyhrWPeyAz84yRmhcB5tA7hi/KYCNT/c7Wt7EdcjlGA5Z20urlfhw== devin.kray@gmail.com"
+
+# Enable rsyslog
+# ...requires a rsyslog server already set up
+rsyslog:
+  enabled: false
+  ip: x.x.x.x
+  port: 1514
+
+# Configure a pull thru cache using an existing registry
+# ...requires a registry cache already set up
+registry:
+  cache:
+    enabled: false
+    address: "http://x.x.x.x:5000"
+  custom:
+  # - name: ""
+  #   enabled: false
+  #   address: "http://x.x.x.x:5000"
+  #   username: ""
+  #   password: ""
+  # # - name: ""
+  # #   enabled: false
+  # #   address: "http://x.x.x.x:5000"
+  # #   username: ""
+  # #   password: ""
+
+# Install keepalived and set a VIP
+# ...only enabled if you are using HA masters
+keepalived:
+  enabled: true
+  vip: "192.168.42.199"
+  interface: "{{ ansible_default_ipv4['interface'] }}"
+
+# Use the Calico CNI driver instead of Flannel
+# ...adjust 'k3s_flannel_backend' and 'k3s_no_flannel' if you want to use flannel
+calico:
+  enabled: false
+  operator_manifest: "https://docs.projectcalico.org/manifests/tigera-operator.yaml"
+  # https://docs.projectcalico.org/networking/mtu#operator
+  mtu: 1500
+  bgp:
+    # enabling bgp requires your router set up to handle it
+    enabled: false
+    # peer is usually your router e.g. 192.168.1.1
+    peer: 192.168.1.1
+    as: 64512
+    # externalIPs is the network you want services to consume
+    # this network should not exist or be defined anywhere in your network
+    # e.g. 192.168.169.0/24
+    externalIPs: 192.168.169.0/24
+
+# Use the cilium CNI driver w/ kube-router, disables kube-proxy
+cilium_kube_router:
+  enabled: true
+  cilium:
+    registry: docker.io/cilium
+    version: 1.9.0-rc0
+    # Use the embedded ectd from k3s for the kvstore
+    # https://docs.cilium.io/en/v1.8/gettingstarted/k8s-install-external-etcd
+    etcd: true
+  # BGP settings for kube-router
+  kube_router:
+    registry: docker.io/cloudnativelabs/kube-router
+    version: 1.1.0-rc1
+    # peerRouterIP is usually your router e.g. 192.168.1.1
+    peerRouterIP: 192.168.1.1
+    peerRouterASNS: 64512
+    clusterASN: 64512
+
+# Apply CRDs to the cluster
+crds:
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-alertmanager.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-podmonitor.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-prometheus.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-prometheusrules.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-servicemonitor.yaml"
+- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-thanosrulers.yaml"
+- "https://raw.githubusercontent.com/fluxcd/helm-operator/v1.2.0/deploy/crds.yaml"
+- "https://github.com/jetstack/cert-manager/releases/download/v1.0.2/cert-manager.crds.yaml"
+
+#
+#
+# Vars for the xanmanning.k3s role
+# ...see https://github.com/PyratLabs/ansible-role-k3s#group-variables
+#
+#
+
+# Use a specific version of k3s
+# k3s_release_version: "48ed47c4a3e420fa71c18b2ec97f13dc0659778b"
+k3s_release_version: "v1.19"
+
+# Install using hard links rather than symbolic links.
+# ... If you are using the system-upgrade-controller you will need to use hard links rather than symbolic links as the controller will not be able to follow symbolic links.
+k3s_install_hard_links: true
+
+# Do not deploy the following
+k3s_no_traefik: true
+k3s_no_servicelb: true
+k3s_no_metrics_server: true
+k3s_no_flannel: true
+k3s_no_local_storage: true
+k3s_flannel_backend: "none"
+
+# k3s_default_local_storage_path: "/dev/shm/k8s"
+
+# Use a specific control node address
+# ... set to "{{ keepalived.vip }}" if using keepalived
+k3s_control_node_address: "{{ keepalived.vip }}"
+# k3s_control_node_address: "k8s-api.lan"
+
+k3s_become_for_all: true
+
+# Network CIDR to use for pod IPs
+# k3s_cluster_cidr: "10.90.0.0/16"
+k3s_cluster_cidr: "10.69.0.0/16"
+
+# Network CIDR to use for service IPs
+# k3s_service_cidr: "10.96.0.0/16"
+k3s_service_cidr: "10.96.0.0/16"
+
+# Disable kube-proxy (only enable if you know what you are doing)
+k3s_disable_kube_proxy: "{{ true if cilium_kube_router.enabled is defined and cilium_kube_router.enabled else false }}"
+
+# Disable k3s default cloud controller manager.
+k3s_disable_cloud_controller: true
+
+# Use experimental features (spooky!)
+k3s_use_experimental: true
+
+# Enable any feature-gates
+k3s_kubelet_args:
+- feature-gates: ExternalPolicyForExternalIP=true
+
+# Enable debugging
+k3s_debug: true
