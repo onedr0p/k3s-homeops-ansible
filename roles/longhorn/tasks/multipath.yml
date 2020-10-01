@@ -1,0 +1,25 @@
+---
+
+#
+# https://github.com/longhorn/longhorn/issues/1210#issuecomment-671689746
+#
+
+- name: "multipath: create config directory"
+  become: true
+  file:
+    path: "/etc/multipath/conf.d"
+    state: directory
+  when:
+  - longhorn.enabled is defined and longhorn.enabled
+
+- name: "multipath: blacklist multipath for sd*"
+  become: true
+  copy:
+    content: |
+      blacklist {
+        devnode "^sd[a-z0-9]+"
+      }
+    dest: /etc/multipath/conf.d/longhorn.conf
+  when:
+  - longhorn.enabled is defined and longhorn.enabled
+  notify: restart multipathd

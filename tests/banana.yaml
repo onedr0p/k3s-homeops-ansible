@@ -22,10 +22,10 @@ spec:
   selector:
     app: banana
   ports:
-  - name: http
-    port: 5678
-    targetPort: 5678
-  # - port: 5678
+  # - name: http
+  #   port: 5678
+  #   targetPort: 5678
+  - port: 5678
   type: LoadBalancer
   # type: ClusterIP
   # externalTrafficPolicy: Local

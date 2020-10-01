@@ -1,0 +1,13 @@
+---
+
+- name: "longhorn: restart multipathd"
+  systemd:
+    name: multipathd.service
+    daemon_reload: no
+    enabled: yes
+    state: restarted
+  listen: restart multipathd
+
+- name: "longhorn: check if multipathd ignores sd*"
+  shell: multipath -t | grep 'devnode "^sd\[a-z0-9\]+'
+  listen: restart multipathd

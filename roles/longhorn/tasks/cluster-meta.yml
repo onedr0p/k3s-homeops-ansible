@@ -1,11 +1,24 @@
 ---
+- name: "cluster-meta: apply longhorn labels"
+  become: true
+  run_once: true
+  environment:
+    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
+  command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/create-default-disk=config
+  with_items:
+  - "{{ groups['worker'] }}"
+  when:
+  - "'master' in group_names and (hostvars[item].longhorn.enabled is defined and hostvars[item].longhorn.enabled == true)"
+  register: apply_longhorn_labels
+  retries: 5
+  until: apply_longhorn_labels is success
 
 - name: "cluster-meta: apply longhorn annotations"
   become: true
   run_once: true
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
-  command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/create-default-disk=true
+  command: kubectl annotate --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/default-disks-config='[{"path":"{{ hostvars[item]['longhorn']['mointpoint'] }}", "name":"longhorn", "allowScheduling":true}]'
   with_items:
   - "{{ groups['worker'] }}"
   when:
@@ -14,12 +27,26 @@
   retries: 5
   until: apply_longhorn_annotations is success
 
-- name: "cluster-meta: remove longhorn annotations"
+- name: "cluster-meta: remove longhorn labels"
   become: true
   run_once: true
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/create-default-disk-
+  with_items:
+  - "{{ groups['worker'] }}"
+  when:
+  - "'master' in group_names and (hostvars[item].longhorn.enabled is not defined or hostvars[item].longhorn.enabled == false)"
+  register: remove_longhorn_labels
+  retries: 5
+  until: remove_longhorn_labels is success
+
+- name: "cluster-meta: remove longhorn annotations"
+  become: true
+  run_once: true
+  environment:
+    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
+  command: kubectl annotate --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/default-disks-config-
   with_items:
   - "{{ groups['worker'] }}"
   when:

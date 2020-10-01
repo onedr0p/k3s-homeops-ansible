@@ -3,4 +3,4 @@
 - include: calico.yml
   when: "'master' in group_names and calico.enabled is defined and calico.enabled"
 - include: cilium.yml
-  when: "'master' in group_names and cilium.enabled is defined and cilium.enabled"
+  when: "'master' in group_names and cilium_kube_router.enabled is defined and cilium_kube_router.enabled"

@@ -22,7 +22,8 @@ spec:
       serviceAccountName: kube-router
       containers:
       - name: kube-router
-        image: docker.io/cloudnativelabs/kube-router:v1.1.0-rc1
+        # image: {{ cilium_kube_router.kube_router.registry }}:v{{ cilium_kube_router.kube_router.version }}
+        image: docker.io/onedr0p/kube-router:latest
         imagePullPolicy: IfNotPresent
         args:
         - "--run-router=true"
@@ -35,10 +36,9 @@ spec:
         - "--advertise-cluster-ip=true"
         - "--advertise-external-ip=true"
         - "--advertise-loadbalancer-ip=true"
-        - "--peer-router-ips={{ cilium.kube_router.peerRouterIP }}"
-        - "--peer-router-asns={{ cilium.kube_router.peerRouterASNS }}"
-        - "--cluster-asn={{ cilium.kube_router.clusterASN }}"
-        # - "--bgp-graceful-restart=true"
+        - "--peer-router-ips={{ cilium_kube_router.kube_router.peerRouterIP }}"
+        - "--peer-router-asns={{ cilium_kube_router.kube_router.peerRouterASNS }}"
+        - "--cluster-asn={{ cilium_kube_router.kube_router.clusterASN }}"
         env:
         - name: NODE_NAME
           valueFrom:
