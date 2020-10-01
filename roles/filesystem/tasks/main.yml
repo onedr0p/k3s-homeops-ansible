@@ -2,3 +2,4 @@
 
 - include: swap.yml
 - include: sysctl.yml
+- include: bpffs.yml

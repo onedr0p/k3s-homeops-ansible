@@ -1,6 +1,6 @@
 ---
 
-- name: "kernel: disable apparmor"
+- name: kernel | disable apparmor
   replace:
     path: /etc/default/grub
     regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
@@ -9,7 +9,7 @@
     option: apparmor
     value: 0
 
-- name: "kernel: disable mitigations"
+- name: kernel | disable mitigations
   replace:
     path: /etc/default/grub
     regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
@@ -18,7 +18,7 @@
     option: mitigations
     value: "off"
 
-- name: "kernel: increase loop device count"
+- name: kernel | increase loop device count
   replace:
     path: /etc/default/grub
     regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
@@ -27,7 +27,7 @@
     option: max_loop
     value: 32
 
-- name: "kernel: enable modules"
+- name: kernel | enable modules
   community.general.modprobe:
     name: "{{ item }}"
     state: present
@@ -37,7 +37,7 @@
   - rbd
   - ip_vs
 
-- name: "kernel: enable modules on boot"
+- name: kernel | enable modules on boot
   copy:
     content: "{{ item }}"
     dest: "/etc/modules-load.d/{{ item }}.conf"
@@ -48,7 +48,7 @@
   - ip_vs
 
 # Blacklist for PiAware: https://hub.docker.com/r/mikenye/piaware
-- name: "kernel: blacklist modules"
+- name: kernel | blacklist modules
   community.general.kernel_blacklist:
     name: "{{ item }}"
     state: present
@@ -58,7 +58,7 @@
   - rtl2832_sdr
 
 # Blacklist for PiAware: https://hub.docker.com/r/mikenye/piaware
-- name: "kernel: blacklist modules on boot"
+- name: kernel | blacklist modules on boot
   copy:
     content: "blacklist {{ item }}"
     dest: "/etc/modprobe.d/{{ item }}.conf"

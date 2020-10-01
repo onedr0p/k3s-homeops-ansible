@@ -1,56 +1,44 @@
 ---
 
-- name: "cluster-cni: deploy tigera operator to k3s manifest directory"
+- name: cluster-cni | calico | deploy tigera operator to k3s manifest directory
   become: true
   get_url:
     url: "{{ calico.operator_manifest }}"
     dest: "{{ k3s_server_manifests_dir }}/tigera-operator.yaml"
     mode: 0644
-  when:
-  - "'master' in group_names and calico.enabled is defined and calico.enabled"
 
-# In tech preview, still a few kinks to work out...
+# Enable eBPF - in tech preview, still a few kinks to work out...
 # https://docs.projectcalico.org/maintenance/enabling-bpf
-# - name: "cluster-cni: deploy calico eBPF configuration to k3s manifest directory"
-#   become: true
-#   template:
-#     src: "{{ item }}"
-#     dest: "{{ k3s_server_manifests_dir }}/{{ item | basename | replace('.j2','') }}"
-#     mode: 0644
-#   with_items:
-#   - "calico-ebpf-configmap.yaml.j2"
-#   when:
-#   - "'master' in group_names and calico.enabled is defined and calico.enabled"
-
-- name: "cluster-cni: deploy calico configuration to k3s manifest directory"
+- name: cluster-cni | calico | deploy eBPF configuration to k3s manifest directory
   become: true
   template:
-    src: "{{ item }}"
-    dest: "{{ k3s_server_manifests_dir }}/{{ item | basename | replace('.j2','') }}"
+    src: "calico-ebpf-configmap.yaml.j2"
+    dest: "{{ k3s_server_manifests_dir }}/calico-ebpf-configmap.yaml"
     mode: 0644
-  with_items:
-  - "calico-installation.yaml.j2"
-  when:
-  - "'master' in group_names and calico.enabled is defined and calico.enabled"
+  when: calico.ebpf.enabled is defined
+        and calico.ebpf.enabled
 
-- name: "cluster-cni: deploy calico configure BGP-peer to k3s manifest directory"
+- name: cluster-cni | calico | deploy configuration to k3s manifest directory
   become: true
   template:
-    src: "{{ item }}"
-    dest: "{{ k3s_server_manifests_dir }}/{{ item | basename | replace('.j2','') }}"
+    src: "calico-installation.yaml.j2"
+    dest: "{{ k3s_server_manifests_dir }}/calico-installation.yaml"
     mode: 0644
-  with_items:
-  - "calico-bgppeer.yaml.j2"
-  when:
-  - "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled"
 
-- name: "cluster-cni: deploy calico configure BGP-configuration to k3s manifest directory"
+- name: cluster-cni | calico | deploy configure BGP-peer to k3s manifest directory
   become: true
   template:
-    src: "{{ item }}"
-    dest: "{{ k3s_server_manifests_dir }}/{{ item | basename | replace('.j2','') }}"
+    src: "calico-bgppeer.yaml.j2"
+    dest: "{{ k3s_server_manifests_dir }}/calico-bgppeer.yaml"
     mode: 0644
-  with_items:
-  - "calico-bgpconfiguration.yaml.j2"
-  when:
-  - "'master' in group_names and calico.bgp.enabled is defined and calico.bgp.enabled"
+  when: calico.bgp.enabled is defined 
+        and calico.bgp.enabled
+
+- name: cluster-cni | calico | deploy configure BGP-configuration to k3s manifest directory
+  become: true
+  template:
+    src: "calico-bgpconfiguration.yaml.j2"
+    dest: "{{ k3s_server_manifests_dir }}/calico-bgpconfiguration.yaml"
+    mode: 0644
+  when: calico.bgp.enabled is defined 
+        and calico.bgp.enabled

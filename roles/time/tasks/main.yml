@@ -1,6 +1,6 @@
 ---
 
-- name: "time: install packages"
+- name: time | install packages
   apt:
     name:
     - ntpdate
@@ -12,13 +12,12 @@
   retries: 5
   until: apt_install_time is success
 
-
-- name: "time: set timezone"
+- name: time | set timezone
   community.general.timezone:
     name: "{{ timezone | default('America/New_York') }}"
   notify: systemd-timesyncd configuration changed
 
-- name: "time: copy timesyncd config"
+- name: time | copy timesyncd config
   copy:
     content: |
       [Time]
@@ -27,18 +26,18 @@
     dest: /etc/systemd/timesyncd.conf
   notify: systemd-timesyncd configuration changed
 
-- name: "time: start systemd service"
+- name: time | start systemd service
   systemd:
     name: systemd-timesyncd
     enabled: true
     state: started
 
-- name: "time: run timedatectl status"
+- name: time | run timedatectl status
   command: /usr/bin/timedatectl show
   changed_when: false
   check_mode: false
   register: timedatectl_result
 
-- name: "time: enable ntp"
+- name: time | enable ntp
   command: /usr/bin/timedatectl set-ntp true
   when: "'NTP=no' in timedatectl_result.stdout"

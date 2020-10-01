@@ -1,6 +1,6 @@
 ---
 
-- name: "user: add additional SSH public keys"
+- name: user | ssh | add additional SSH public keys
   ansible.posix.authorized_key:
     user: "{{ ansible_user }}"
     key: "{{ item }}"

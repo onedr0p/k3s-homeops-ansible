@@ -1,6 +1,6 @@
 ---
 
-- name: "keepalived: restart"
+- name: keepalived | restart service
   systemd:
     name: keepalived
     daemon_reload: yes

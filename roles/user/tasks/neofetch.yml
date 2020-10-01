@@ -1,6 +1,6 @@
 ---
 
-- name: "user: install neofetch"
+- name: user | neofetch | install neofetch
   apt:
     name:
     - neofetch
@@ -12,7 +12,7 @@
   retries: 5
   until: apt_install_neofetch is success
 
-- name: "user: create config directory"
+- name: user | neofetch | create config directory
   file:
     path: "/home/{{ ansible_user }}/.config"
     state: directory
@@ -20,7 +20,7 @@
     owner: "{{ ansible_user }}"
     mode: "0775"
 
-- name: "user: create neofetch directory"
+- name: user | neofetch | create neofetch directory
   file:
     path: "/home/{{ ansible_user }}/.config/neofetch"
     state: directory
@@ -28,7 +28,7 @@
     owner: "{{ ansible_user }}"
     mode: "0775"
 
-- name: "user: copy neofetch config"
+- name: user | neofetch | copy neofetch config
   copy:
     owner: "{{ ansible_user }}"
     mode: "0775"
@@ -46,7 +46,7 @@
       }
     dest: "/home/{{ ansible_user }}/.config/neofetch/config.conf"
 
-- name: "user: enable neofetch on login"
+- name: user | neofetch | enable neofetch on login
   copy:
     content: "neofetch --ascii_distro ubuntu_small"
     dest: "/home/{{ ansible_user }}/.bash_profile"

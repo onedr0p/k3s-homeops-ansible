@@ -1,6 +1,6 @@
 ---
 
-- name: "rsyslog: copy config"
+- name: rsyslog | copy configuration
   copy:
     content: |
       module(load="omprog")
@@ -9,10 +9,13 @@
       action(type="omfwd" protocol="tcp" target="{{ remote_syslog.ip }}" port="{{ remote_syslog.port }}" Template="RSYSLOG_SyslogProtocol23Format" TCP_Framing="octet-counted" KeepAlive="on")
     dest: /etc/rsyslog.d/50-promtail.conf
   notify: rsyslog configuration changed
+  when: rsyslog.enabled is defined 
+        and rsyslog.enabled
 
-- name: "rsyslog: start systemd service"
+- name: rsyslog | start systemd service
   systemd:
     name: rsyslog
     enabled: true
     state: started
-  # when: remote_syslog.enabled is defined and remote_syslog.enabled == true
+  when: rsyslog.enabled is defined 
+        and rsyslog.enabled

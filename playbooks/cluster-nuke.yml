@@ -10,38 +10,39 @@
     default: "n"
     private: no
   any_errors_fatal: yes
+  
   pre_tasks:
-  - name: check confirmation
+  - name: cluster-nuke | check confirmation
     fail: msg="Abort."
     when: nuke_confirmation != "Y"
   
   tasks:
-  - name: "Run k3s-killall.sh"
+  - name: cluster-nuke | kill k3s
     command: /usr/local/bin/k3s-killall.sh
 
-  - name: "Run k3s-uninstall.sh"
+  - name: cluster-nuke | uninstall k3s
     command:
       cmd: /usr/local/bin/k3s-uninstall.sh
       removes: /usr/local/bin/k3s-uninstall.sh
 
-  - name: "Run k3s-agent-uninstall.sh"
+  - name: cluster-nuke | uninstall k3s agent
     command:
       cmd: /usr/local/bin/k3s-agent-uninstall.sh
       removes: /usr/local/bin/k3s-agent-uninstall.sh
 
-  - name: "Gather list of CNI configs to delete"
+  - name: cluster-nuke | gather list of CNI files to delete
     find:
       paths: /etc/cni/net.d
       patterns: "*"
     register: files_to_delete
 
-  - name: "Delete CNI configs"
+  - name: cluster-nuke | delete CNI files
     file:
       path: "{{ item.path }}"
       state: absent
     with_items: "{{ files_to_delete.files }}"
 
-  - name: "Reboot nodes"
+  - name: cluster-nuke | reboot
     reboot:
       msg: "Nodes are being rebooted..."
     ignore_errors: true

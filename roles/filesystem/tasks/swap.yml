@@ -1,9 +1,9 @@
 ---
-- name: "filesystem: disable swap"
+- name: filesystem | swap | disable
   command: swapoff -a
   when: ansible_swaptotal_mb > 0
 
-- name: "filesystem: disable swap in /etc/fstab"
+- name: filesystem | swap | disable in /etc/fstab
   ansible.posix.mount:
     name: "{{ item }}"
     fstype: swap
@@ -11,11 +11,3 @@
   loop:
     - swap
     - none
-
-- name: "filesystem: mount bpffs"
-  ansible.posix.mount:
-    src: bpffs
-    path: /sys/fs/bpf
-    fstype: bpf
-    state: mounted
-    opts: rw,nosuid,nodev,noexec,relatime,mode=700

@@ -1,6 +1,6 @@
 ---
 
-- name: "keepalived: install"
+- name: keepalived | packages | install
   apt:
     name: keepalived
     install_recommends: false
@@ -10,5 +10,7 @@
   register: apt_install_keepalived
   retries: 5
   until: apt_install_keepalived is success
-  when:
-  - "'master' in group_names and keepalived.enabled is defined and keepalived.enabled == true"
+  when: k3s_control_node is defined
+        and k3s_control_node 
+        and keepalived.enabled is defined
+        and keepalived.enabled

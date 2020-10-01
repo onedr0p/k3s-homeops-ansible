@@ -1,6 +1,6 @@
 ---
 
-- name: "user: add to sudoers"
+- name: user | sudo | add to sudoers
   copy:
     content: "{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
     dest: "/etc/sudoers.d/{{ ansible_user }}_nopasswd"

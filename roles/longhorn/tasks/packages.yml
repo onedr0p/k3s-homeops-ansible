@@ -1,6 +1,6 @@
 ---
 
-- name: "longhorn: install packages"
+- name: longhorn | packages | install packages
   apt:
     name:
     - lvm2

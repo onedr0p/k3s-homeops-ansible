@@ -1,13 +1,14 @@
 ---
-# - name: "user: remove motd"
+
+# - name: user | motd | remove motd"
 #   command: update-rc.d motd remove
 
-- name: "user: check if hushlogin exists"
+- name: user | motd | check if hushlogin exists
   stat:
     path: "/home/{{ ansible_user }}/.hushlogin"
   register: hushlogin
 
-- name: "user: silence the login prompt"
+- name: user | motd | silence the login prompt
   file:
     dest: "/home/{{ ansible_user }}/.hushlogin"
     state: touch

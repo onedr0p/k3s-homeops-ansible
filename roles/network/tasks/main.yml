@@ -1,6 +1,6 @@
 ---
 
-- name: "network: install packages"
+- name: network | install packages
   apt:
     name:
     - arptables
@@ -25,7 +25,7 @@
 
 # Still recommended use legacy iptables
 # https://rancher.com/docs/k3s/latest/en/known-issues/
-- name: "network: configure nodes to use legacy iptables"
+- name: network | configure nodes to use legacy iptables
   community.general.alternatives:
     name: "{{ item }}"
     path: /usr/sbin/{{ item }}-legacy
@@ -34,28 +34,28 @@
     - "ip6tables"
     - "ebtables"
 
-- name: "network: update bridged IPv4 traffic to arptables chains"
+- name: network | update bridged IPv4 traffic to arptables chains
   ansible.posix.sysctl:
     name: net.bridge.bridge-nf-call-arptables
     value: "1"
     state: present
     sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
 
-- name: "network: update bridged IPv4 traffic to iptables chains"
+- name: network | update bridged IPv4 traffic to iptables chains
   ansible.posix.sysctl:
     name: net.bridge.bridge-nf-call-iptables
     value: "1"
     state: present
     sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
 
-- name: "network: update bridged IPv4 traffic to ip6tables chains"
+- name: network | update bridged IPv4 traffic to ip6tables chains
   ansible.posix.sysctl:
     name: net.bridge.bridge-nf-call-ip6tables
     value: "1"
     state: present
     sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
 
-- name: "network: update bridged IPv4 traffic forwarding"
+- name: network | update bridged IPv4 traffic forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
     value: "1"

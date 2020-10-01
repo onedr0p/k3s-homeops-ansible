@@ -45,19 +45,13 @@ rsyslog:
 # ...requires a registry cache already set up
 registry:
   cache:
+    enabled: true
+    address: "http://192.168.1.39:8082"
+  custom:
     enabled: false
     address: "http://x.x.x.x:5000"
-  custom:
-  # - name: ""
-  #   enabled: false
-  #   address: "http://x.x.x.x:5000"
-  #   username: ""
-  #   password: ""
-  # # - name: ""
-  # #   enabled: false
-  # #   address: "http://x.x.x.x:5000"
-  # #   username: ""
-  # #   password: ""
+    username: "username"
+    password: "password"
 
 # Install keepalived and set a VIP
 # ...only enabled if you are using HA masters
@@ -73,8 +67,8 @@ calico:
   operator_manifest: "https://docs.projectcalico.org/manifests/tigera-operator.yaml"
   # https://docs.projectcalico.org/networking/mtu#operator
   mtu: 1500
+  # Enabling BGP requires your router set up to handle it
   bgp:
-    # enabling bgp requires your router set up to handle it
     enabled: false
     # peer is usually your router e.g. 192.168.1.1
     peer: 192.168.1.1
@@ -83,8 +77,12 @@ calico:
     # this network should not exist or be defined anywhere in your network
     # e.g. 192.168.169.0/24
     externalIPs: 192.168.169.0/24
+  # Enable the eBPF dataplane - disables kube-proxy
+  # https://docs.projectcalico.org/maintenance/enabling-bpf
+  ebpf:
+    enabled: false
 
-# Use the cilium CNI driver w/ kube-router, disables kube-proxy
+# Use the cilium CNI driver w/ kube-router - disables kube-proxy
 cilium_kube_router:
   enabled: true
   cilium:
@@ -121,8 +119,8 @@ crds:
 #
 
 # Use a specific version of k3s
-# k3s_release_version: "48ed47c4a3e420fa71c18b2ec97f13dc0659778b"
-k3s_release_version: "v1.19"
+# k3s_release_version: "v1.19"
+k3s_release_version: "48ed47c4a3e420fa71c18b2ec97f13dc0659778b"
 
 # Install using hard links rather than symbolic links.
 # ... If you are using the system-upgrade-controller you will need to use hard links rather than symbolic links as the controller will not be able to follow symbolic links.
@@ -153,8 +151,8 @@ k3s_cluster_cidr: "10.69.0.0/16"
 # k3s_service_cidr: "10.96.0.0/16"
 k3s_service_cidr: "10.96.0.0/16"
 
-# Disable kube-proxy (only enable if you know what you are doing)
-k3s_disable_kube_proxy: "{{ true if cilium_kube_router.enabled is defined and cilium_kube_router.enabled else false }}"
+# Disable kube-proxy
+k3s_disable_kube_proxy: "{{ true if ((cilium_kube_router.enabled is defined and cilium_kube_router.enabled) or (calico.ebpf.enabled is defined and calico.ebpf.enabled)) else false }}"
 
 # Disable k3s default cloud controller manager.
 k3s_disable_cloud_controller: true

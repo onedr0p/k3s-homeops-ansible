@@ -1,18 +1,18 @@
 ---
 
-- name: "longhorn: create mount directory"
+- name: longhorn | disks | create mount directory
   file:
     path: /var/lib/longhorn
     state: directory
 
-- name: "longhorn: create new LVM volume group"
+- name: longhorn | disks | create new LVM volume group
   become: true
   lvg:
     vg: "longhorn-vg"
     pvs: "{{ longhorn.disks | join(',') }}"
     state: present
 
-- name: "longhorn: create new LVM logical volume"
+- name: longhorn | disks | create new LVM logical volume
   become: true
   lvol:
     vg: "longhorn-vg"
@@ -22,14 +22,14 @@
     opts: "{{ longhorn.opts | default('') }}"
     state: present  
 
-- name: "longhorn: create new filesystem on new LVM logical volume"
+- name: longhorn | disks | create new filesystem on new LVM logical volume
   become: true
   filesystem:
     fstype: "{{ longhorn.filesystem | default('ext4') }}"
     dev: "/dev/longhorn-vg/lv0"
     resizefs: yes
   
-- name: "longhorn: mounting new filesystem"
+- name: longhorn | disks | mounting new filesystem
   become: true
   ansible.posix.mount:
     path: "{{ longhorn.mountpoint }}"

@@ -1,12 +1,11 @@
 ---
 
-- name: "general: update hostname to inventory hostname"
+- name: general | hostname | update hostname to inventory hostname
   hostname:
     name: "{{ inventory_hostname }}"
-  when:
-  - ansible_hostname != inventory_hostname
+  when: ansible_hostname != inventory_hostname
 
-- name: "general: update etc hosts"
+- name: general | hostname | update etc hosts
   become: true
   blockinfile:
       path: /etc/hosts

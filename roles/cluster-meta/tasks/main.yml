@@ -1,6 +1,6 @@
 ---
 
-# - name: "cluster-meta: apply master taints"
+# - name: cluster-meta | apply master taints
 #   become: true
 #   run_once: true
 #   environment:
@@ -11,7 +11,7 @@
 #   when:
 #   - "'master' in group_names"
 
-- name: "cluster-meta: apply worker annotations"
+- name: cluster-meta | apply worker annotations
   become: true
   run_once: true
   environment:
@@ -19,13 +19,13 @@
   command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} node-role.kubernetes.io/worker=true
   with_items:
   - "{{ groups['worker'] }}"
-  when:
-  - "'master' in group_names"
   register: apply_worker_annotations
-  retries: 5
+  retries: 3
   until: apply_worker_annotations is success
+  when: k3s_control_node is defined
+        and k3s_control_node
 
-- name: "cluster-meta: apply system-upgrade annotations"
+- name: cluster-meta | apply system-upgrade annotations
   become: true
   run_once: true
   environment:
@@ -34,13 +34,15 @@
   with_items:
   - "{{ groups['master'] }}"
   - "{{ groups['worker'] }}"
-  when:
-  - "'master' in group_names and (hostvars[item].k3s_system_upgrade is defined and hostvars[item].k3s_system_upgrade == true)"
   register: apply_system_upgrade_annotations
-  retries: 5
+  retries: 3
   until: apply_system_upgrade_annotations is success
+  when: k3s_control_node is defined
+        and k3s_control_node
+        and hostvars[item].k3s_system_upgrade is defined 
+        and hostvars[item].k3s_system_upgrade
 
-- name: "cluster-meta: remove system-upgrade annotations"
+- name: cluster-meta | remove system-upgrade annotations
   become: true
   run_once: true
   environment:
@@ -49,8 +51,10 @@
   with_items:
   - "{{ groups['master'] }}"
   - "{{ groups['worker'] }}"
-  when:
-  - "'master' in group_names and (hostvars[item].k3s_system_upgrade is not defined or hostvars[item].k3s_system_upgrade == false)"
   register: remove_system_upgrade_annotations
-  retries: 5
+  retries: 3
   until: remove_system_upgrade_annotations is success
+  when: k3s_control_node is defined
+        and k3s_control_node
+        and (hostvars[item].k3s_system_upgrade is not defined 
+          or not hostvars[item].k3s_system_upgrade)

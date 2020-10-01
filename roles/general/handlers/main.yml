@@ -1,6 +1,6 @@
 ---
 
-- name: "general: restart logind"
+- name: general | restart logind
   systemd:
     name: systemd-logind
     daemon_reload: yes
