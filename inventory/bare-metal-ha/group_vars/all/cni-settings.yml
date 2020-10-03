@@ -1,0 +1,37 @@
+# Use the Calico CNI driver instead of Flannel
+# ...adjust 'k3s_flannel_backend' and 'k3s_no_flannel' if you want to use flannel
+calico:
+  enabled: false
+  operator_manifest: "https://docs.projectcalico.org/manifests/tigera-operator.yaml"
+  # Enabling BGP requires your router set up to handle it
+  bgp:
+    enabled: false
+    # peer is usually your router e.g. 192.168.1.1
+    peer: 192.168.1.1
+    as: 64512
+    # externalIPs is the network you want services to consume
+    # this network should not exist or be defined anywhere in your network
+    # e.g. 192.168.169.0/24
+    externalIPs: 192.168.169.0/24
+  # Enable the eBPF dataplane - disables kube-proxy
+  # https://docs.projectcalico.org/maintenance/enabling-bpf
+  ebpf:
+    enabled: false
+
+# Use the cilium CNI driver w/ kube-router - disables kube-proxy
+cilium_kube_router:
+  enabled: true
+  cilium:
+    registry: docker.io/cilium
+    version: 1.9.0-rc0
+    # Use the embedded ectd from k3s for the kvstore
+    # https://docs.cilium.io/en/v1.8/gettingstarted/k8s-install-external-etcd
+    etcd: true
+  # BGP settings for kube-router
+  kube_router:
+    registry: docker.io/cloudnativelabs/kube-router
+    version: 1.1.0
+    # peerRouterIP is usually your router e.g. 192.168.1.1
+    peerRouterIP: 192.168.1.1
+    peerRouterASNS: 64512
+    clusterASN: 64512

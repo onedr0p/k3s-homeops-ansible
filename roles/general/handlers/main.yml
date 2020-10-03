@@ -1,9 +1,0 @@
----
-
-- name: general | restart logind
-  systemd:
-    name: systemd-logind
-    daemon_reload: yes
-    enabled: yes
-    state: restarted
-  listen: restart logind

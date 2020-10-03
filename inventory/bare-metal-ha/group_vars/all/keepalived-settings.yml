@@ -1,0 +1,10 @@
+# Install keepalived and set a VIP
+# ...only enabled if you are using HA masters
+keepalived:
+  enabled: true
+  vip: "192.168.42.199"
+  interface: "{{ ansible_default_ipv4['interface'] }}"
+
+# keepalived_enabled: true
+# keepalived_vip: "192.168.42.199"
+# keepalived_interface: "{{ ansible_default_ipv4['interface'] }}"

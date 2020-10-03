@@ -1,7 +1,0 @@
----
-
-- name: rsyslog | restart systemd service
-  systemd:
-    name: rsyslog
-    state: restarted
-  listen: rsyslog configuration changed

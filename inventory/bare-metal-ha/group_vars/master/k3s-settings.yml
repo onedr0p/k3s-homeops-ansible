@@ -1,0 +1,17 @@
+k3s_taint_master: false
+
+#
+# Below vars are for the xanmanning.k3s role
+# ...see https://github.com/PyratLabs/ansible-role-k3s#group-variables
+#
+
+# Define the host as a control plane node
+k3s_control_node: true
+
+# Add additional hosname or IP as Subject Alternate Name in the TLS cert
+k3s_tls_san:
+- "{{ keepalived.vip }}"
+- "k8s-api.lan"
+
+# Use embedded etcd
+k3s_etcd_datastore: true

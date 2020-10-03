@@ -6,22 +6,4 @@ ansible_host: "192.168.42.200"
 # IP Address to advertise for this node
 # for more k3s host variables, see
 # https://github.com/PyratLabs/ansible-role-k3s#host-variables
-k3s_control_node: true
-
-# Add additional hosname or IP as Subject Alternate Name in the TLS cert
-k3s_tls_san:
-- "{{ keepalived.vip }}"
-- "k8s-api.lan"
-# k3s_tls_san: "{{ ansible_host }}"
-
-# IP Address to advertise for this node
-# for more k3s host variables, see
-# https://github.com/PyratLabs/ansible-role-k3s#host-variables
 k3s_node_ip_address: "{{ ansible_host }}"
-
-# Apply system-upgrade label, for use with
-# https://rancher.com/docs/k3s/latest/en/upgrades/automated/
-k3s_system_upgrade: true
-
-# Use embedded etcd
-k3s_etcd_datastore: true

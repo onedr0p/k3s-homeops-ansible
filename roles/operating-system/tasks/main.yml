@@ -1,0 +1,17 @@
+---
+
+- include: host.yml
+- include: time.yml
+- include: packages.yml
+- include: power-button.yml
+- include: motd.yml
+- include: kernel.yml
+- include: network.yml
+- include: filesystem.yml
+- include: unattended-upgrades.yml
+- include: user.yml
+- include: keepalived.yml
+  when: k3s_control_node is defined
+        and k3s_control_node 
+        and keepalived.enabled is defined
+        and keepalived.enabled

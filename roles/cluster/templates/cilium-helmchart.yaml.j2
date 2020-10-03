@@ -1,0 +1,72 @@
+#jinja2:lstrip_blocks: True
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: cilium
+  namespace: kube-system
+spec:
+  chart: cilium
+  repo: https://helm.cilium.io/
+  version: {{ cilium_kube_router.cilium.version }}
+  targetNamespace: kube-system
+  bootstrap: true
+  valuesContent: |-
+    config:
+      bpfMasquerade: false
+    global:
+      registry: {{ cilium_kube_router.cilium.registry }}
+      tag: v{{ cilium_kube_router.cilium.version }}
+      pullPolicy: IfNotPresent
+      k8sServiceHost: {{ k3s_control_node_address }}
+      k8sServicePort: 6443
+      {% if cilium_kube_router.cilium.etcd is defined and cilium_kube_router.cilium.etcd %}
+      etcd:
+        enabled: true
+        ssl: true
+        endpoints:
+        {% for host in groups['master'] %}
+        - "https://{{ hostvars[host].ansible_default_ipv4.address }}:2379"
+        {% endfor %}
+      {% endif %}
+      tunnel: disabled
+      masquerade: false
+      autoDirectNodeRoutes: true
+      kubeProxyReplacement: strict
+      nativeRoutingCIDR: "192.168.42.0/24"
+      endpointRoutes:
+        enabled: true
+      hostServices:
+        enabled: true
+      enableHealthCheckNodeport: true
+      nodePort:
+        enabled: true
+        mode: dsr
+      hostPort:
+        enabled: true
+      externalIPs:
+        enabled: true
+      sockops:
+        enabled: true
+      ipam:
+        operator:
+          clusterPoolIPv4PodCIDR: "{{ k3s_cluster_cidr }}"
+          clusterPoolIPv4MaskSize: 24
+      containerRuntime:
+        integration: containerd
+        socketPath: /var/run/k3s/containerd/containerd.sock
+      hubble:
+        enabled: true
+        ui:
+          enabled: true
+        relay:
+          enabled: true
+        metrics:
+          enabled:
+          - dns
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http

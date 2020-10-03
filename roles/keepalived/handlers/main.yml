@@ -1,9 +1,0 @@
----
-
-- name: keepalived | restart service
-  systemd:
-    name: keepalived
-    daemon_reload: yes
-    enabled: yes
-    state: restarted
-  listen: restart keepalived

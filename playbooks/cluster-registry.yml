@@ -1,8 +1,0 @@
----
-- hosts:
-  - master
-  - worker
-  become: true
-  gather_facts: true
-  roles:
-  - cluster-registry

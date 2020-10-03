@@ -1,0 +1,21 @@
+---
+
+- name: rsyslog
+  become: true
+  block:
+  - name: copy configuration
+    copy:
+      content: |
+        module(load="omprog")
+        module(load="mmutf8fix")
+        action(type="mmutf8fix" replacementChar="?")
+        action(type="omfwd" protocol="tcp" target="{{ rsyslog.ip }}" port="{{ rsyslog.port }}" Template="RSYSLOG_SyslogProtocol23Format" TCP_Framing="octet-counted" KeepAlive="on")
+      dest: /etc/rsyslog.d/50-promtail.conf
+  - name: start systemd service
+    systemd:
+      name: rsyslog
+      enabled: true
+      state: started
+  notify: rsyslog configuration changed
+  when: rsyslog.enabled is defined 
+        and rsyslog.enabled

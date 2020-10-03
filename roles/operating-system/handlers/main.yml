@@ -1,0 +1,48 @@
+---
+
+- name: logind | restart systemd service
+  systemd:
+    name: systemd-logind.service
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+  listen: restart logind
+
+- name: keepalived | restart systemd service
+  systemd:
+    name: keepalived.service
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+  listen: restart keepalived
+
+- name: rsyslog | restart systemd service
+  systemd:
+    name: rsyslog.service
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+  listen: rsyslog configuration changed
+
+- name: unattended-upgrades | restart systemd service
+  service:
+    name: unattended-upgrades.service
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+  listen: unattended-upgrades configuration changed
+
+- name: time | restart systemd service
+  service:
+    name: systemd-timesyncd.service
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+  listen: systemd-timesyncd configuration changed
+
+- name: time | write to system clock
+  command: hwclock --systohc
+  listen: systemd-timesyncd configuration changed
+  when: ansible_virtualization_role == "host" 
+        or ansible_virtualization_role == "NA"
+  
