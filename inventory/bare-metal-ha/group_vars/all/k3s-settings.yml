@@ -5,7 +5,9 @@
 
 # Use a specific version of k3s
 # k3s_release_version: "v1.19"
-k3s_release_version: "48ed47c4a3e420fa71c18b2ec97f13dc0659778b"
+# k3s_release_version: "48ed47c4a3e420fa71c18b2ec97f13dc0659778b"
+# k3s_release_version: "c3c983198f4c8c7480c486032ac7a70b267f69da"
+k3s_release_version: "43cb200fd0540b416ddec1216e371d41be2dadf2"
 
 # Install using hard links rather than symbolic links.
 # ... If you are using the system-upgrade-controller you will need to use hard links rather than symbolic links as the controller will not be able to follow symbolic links.
@@ -45,7 +47,8 @@ k3s_disable_cloud_controller: true
 # Disable k3s default network policy controller.
 # kube-router has it's own network-policy controller (or so it seems)
 # https://github.com/rancher/k3s/issues/1308
-k3s_disable_network_policy: "{{ true if cilium_kube_router.enabled is defined and cilium_kube_router.enabled else false }}"
+# k3s_disable_network_policy: "{{ true if cilium_kube_router.enabled is defined and cilium_kube_router.enabled else false }}"
+k3s_disable_network_policy: false
 
 # Use experimental features (spooky!)
 k3s_use_experimental: true

@@ -12,8 +12,6 @@ spec:
   targetNamespace: kube-system
   bootstrap: true
   valuesContent: |-
-    config:
-      bpfMasquerade: false
     global:
       registry: {{ cilium_kube_router.cilium.registry }}
       tag: v{{ cilium_kube_router.cilium.version }}
@@ -30,7 +28,6 @@ spec:
         {% endfor %}
       {% endif %}
       tunnel: disabled
-      masquerade: false
       autoDirectNodeRoutes: true
       kubeProxyReplacement: strict
       nativeRoutingCIDR: "{{ cilium_kube_router.cilium.nativeRoutingCIDR }}"
@@ -38,15 +35,10 @@ spec:
         enabled: true
       hostServices:
         enabled: true
-      enableHealthCheckNodeport: true
       nodePort:
         enabled: true
         mode: dsr
-      hostPort:
-        enabled: true
       externalIPs:
-        enabled: true
-      sockops:
         enabled: true
       ipam:
         operator:

@@ -3,7 +3,7 @@
   - master
   - worker
   become: true
-  gather_facts: true
+  gather_facts: false
   vars_prompt:
     - name: "run_confirmation"
       prompt: "Restart nodes when complete? [Y/n]"

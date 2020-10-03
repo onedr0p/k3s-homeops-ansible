@@ -3,6 +3,6 @@
   - master
   - worker
   become: true
-  gather_facts: true
+  gather_facts: false
   roles:
   - rsyslog

@@ -3,6 +3,8 @@
   - master
   - worker
   become: true
+  # facts required
+  gather_facts: true
   vars_prompt:
     - name: "run_confirmation"
       prompt: "Are you sure you want to run this over the cluster? [Y/n]"

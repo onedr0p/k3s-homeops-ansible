@@ -1,7 +1,7 @@
 - hosts:
   - worker
   become: true
-  gather_facts: true
+  gather_facts: false
   vars_prompt:
     name: "nuke_confirmation"
     prompt: "This will DESTROY your longhorn volumes. Do you wish to continue? [Y/n]"

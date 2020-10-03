@@ -54,6 +54,10 @@
   retries: 5
   until: apt_install_common is success
 
+- name: packages | gather install packages
+  package_facts:
+    manager: auto
+
 # Until focal has https://launchpad.net/ubuntu/+source/htop
 - name: packages | install latest htop
   become: true
@@ -62,17 +66,13 @@
   register: apt_install_htop
   retries: 5
   until: apt_install_htop is success
-
-- name: packages | gather install packages
-  package_facts:
-    manager: auto
+  when: "'htop' not in ansible_facts.packages"
 
 - name: packages | check if snap is installed
   debug:
-    msg: 'snapd is installed'
+    msg: "snapd is installed"
   register: snapd_check
-  when:
-  - '"snapd" in ansible_facts.packages'
+  when: "'snapd' in ansible_facts.packages"
 
 - name: packages | remove snap packages
   become: true
