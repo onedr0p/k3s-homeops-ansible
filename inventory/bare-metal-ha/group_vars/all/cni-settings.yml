@@ -24,6 +24,10 @@ cilium_kube_router:
   cilium:
     registry: docker.io/cilium
     version: 1.9.0-rc0
+    # Specify the CIDR for native routing
+    # usually the network CIDR that your master and worker nodes are on
+    # https://docs.cilium.io/en/v1.8/concepts/networking/routing/
+    nativeRoutingCIDR: 192.168.42.0/24
     # Use the embedded ectd from k3s for the kvstore
     # https://docs.cilium.io/en/v1.8/gettingstarted/k8s-install-external-etcd
     etcd: true

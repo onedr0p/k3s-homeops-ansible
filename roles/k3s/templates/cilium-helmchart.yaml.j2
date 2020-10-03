@@ -33,7 +33,7 @@ spec:
       masquerade: false
       autoDirectNodeRoutes: true
       kubeProxyReplacement: strict
-      nativeRoutingCIDR: "192.168.42.0/24"
+      nativeRoutingCIDR: "{{ cilium_kube_router.cilium.nativeRoutingCIDR }}"
       endpointRoutes:
         enabled: true
       hostServices:
@@ -55,6 +55,12 @@ spec:
       containerRuntime:
         integration: containerd
         socketPath: /var/run/k3s/containerd/containerd.sock
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      operatorPrometheus:
+        enabled: true
       hubble:
         enabled: true
         ui:
@@ -70,3 +76,5 @@ spec:
           - port-distribution
           - icmp
           - http
+          serviceMonitor:
+            enabled: true

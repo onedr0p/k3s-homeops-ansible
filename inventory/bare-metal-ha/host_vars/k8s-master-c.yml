@@ -3,7 +3,7 @@
 # IP address of node
 ansible_host: "192.168.42.202"
 
-# IP Address to advertise for this node
+# IP Address to advertise for this node.
 # for more k3s host variables, see
 # https://github.com/PyratLabs/ansible-role-k3s#host-variables
 k3s_node_ip_address: "{{ ansible_host }}"

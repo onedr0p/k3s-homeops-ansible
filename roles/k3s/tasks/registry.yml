@@ -12,10 +12,10 @@
     src: "registries.yaml.j2"
     dest: "/etc/rancher/k3s/registries.yaml"
     mode: 0644
-  notify: k3s registry configuration changed
 
-- name: cluster-registry | start k3s systemd service
+- name: cluster-registry | restart k3s systemd service
   systemd:
-    name: k3s
-    enabled: true
-    state: started
+    name: k3s.service
+    daemon_reload: yes
+    enabled: yes
+    state: restarted

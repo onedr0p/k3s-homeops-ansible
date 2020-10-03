@@ -2,18 +2,21 @@
 
 - include: kubeconfig.yml
 - include: meta.yml
+- include: prometheus-operator-crds.yml
 - include: registry.yml
   when: (registry.cache.enabled is defined 
           and registry.cache.enabled) 
         or (registry.custom.enabled is defined 
           and registry.custom.enabled)
 - include: cni-calico.yml
-  when: k3s_control_node is defined
-        and k3s_control_node
-        and calico.enabled is defined 
-        and calico.enabled
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node
+  - calico.enabled is defined 
+  - calico.enabled
 - include: cni-cilium-kube-router.yml
-  when: k3s_control_node is defined
-        and k3s_control_node
-        and cilium_kube_router.enabled is defined
-        and cilium_kube_router.enabled
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node
+  - cilium_kube_router.enabled is defined
+  - cilium_kube_router.enabled

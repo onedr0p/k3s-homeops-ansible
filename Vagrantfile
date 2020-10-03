@@ -15,7 +15,6 @@ end
 
 NODES_NUM = 3
 IP_BASE_PRIVATE = "172.16.20."
-IP_BASE_PUBLIC = "10.100.3."
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
@@ -30,17 +29,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         else 1024
       end
 
-      # config.vm.box = "bento/ubuntu-20.04"
-      config.vm.box = "bento/debian-10"
-      config.vm.network "public_network",
-        ip: "#{IP_BASE_PUBLIC}#{i + 239}",
-        bridge: [
-          "en1: Wi-Fi (AirPort)",
-          "eno2",
-        ],
-        use_dhcp_assigned_default_route: true
-
-      config.vm.network "private_network", ip: "#{IP_BASE_PRIVATE}#{i + 9}"
+      config.vm.box = "bento/ubuntu-20.04"
+      config.vm.network "private_network", ip: "#{IP_BASE}#{i + 9}"
       config.vm.hostname = hostname
       config.vm.provider "virtualbox"
       config.vm.provider :virtualbox do |v|

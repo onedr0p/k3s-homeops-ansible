@@ -1,0 +1,16 @@
+---
+
+- name: cluster | apply prometheus-operator CRDs
+  become: true
+  run_once: true
+  environment:
+    KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
+  command: "kubectl apply -f {{ item }}"
+  with_items:
+  - "{{ prometheus_operator_crds }}"
+  register: apply_prometheus_operator_crds
+  retries: 3
+  until: apply_prometheus_operator_crds is success
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node

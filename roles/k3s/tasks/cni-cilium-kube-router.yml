@@ -5,24 +5,27 @@
   slurp:
     src: "/var/lib/rancher/k3s/server/tls/etcd/server-ca.crt"
   register: slurped_etcd_ca_file
-  when: cilium_kube_router.cilium.etcd is defined
-        and cilium_kube_router.cilium.etcd
+  when:
+  - cilium_kube_router.cilium.etcd is defined
+  - cilium_kube_router.cilium.etcd
 
 - name: cluster | cilium | load etcd cert file
   become: true
   slurp:
     src: "/var/lib/rancher/k3s/server/tls/etcd/server-client.crt"
   register: slurped_etcd_cert_file
-  when: cilium_kube_router.cilium.etcd is defined
-        and cilium_kube_router.cilium.etcd
+  when:
+  - cilium_kube_router.cilium.etcd is defined
+  - cilium_kube_router.cilium.etcd
 
 - name: cluster | cilium | load etcd cert key file
   become: true
   slurp:
     src: "/var/lib/rancher/k3s/server/tls/etcd/server-client.key"
   register: slurped_etcd_cert_key_file
-  when: cilium_kube_router.cilium.etcd is defined
-        and cilium_kube_router.cilium.etcd
+  when:
+  - cilium_kube_router.cilium.etcd is defined
+  - cilium_kube_router.cilium.etcd
 
 - name: cluster | cilium | deploy etcd secret to k3s manifest directory
   become: true
@@ -30,8 +33,9 @@
     src: "cilium-etcd-secrets.yaml.j2"
     dest: "{{ k3s_server_manifests_dir }}/cilium-etcd-secrets.yaml"
     mode: 0644
-  when: cilium_kube_router.cilium.etcd is defined
-        and cilium_kube_router.cilium.etcd
+  when:
+  - cilium_kube_router.cilium.etcd is defined
+  - cilium_kube_router.cilium.etcd
 
 # - name: cluster | cilium | deploy secret for etcd to k3s manifest directory
 #   become: true
@@ -45,8 +49,9 @@
 #     --dry-run=client
 #     --output=yaml
 #     > "{{ k3s_server_manifests_dir }}/cilium-etcd-secrets.yaml"
-#   when: cilium_kube_router.cilium.etcd is defined
-#         and cilium_kube_router.cilium.etcd
+#   when:
+#   - cilium_kube_router.cilium.etcd is defined
+#   - cilium_kube_router.cilium.etcd
 
 - name: cluster | cilium | deploy configuration to k3s manifest directory
   become: true

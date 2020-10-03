@@ -5,15 +5,15 @@
   become: true
   gather_facts: true
   vars_prompt:
-    - name: "restart_confirmation"
+    - name: "run_confirmation"
       prompt: "Restart nodes when complete? [Y/n]"
       default: "n"
       private: no
   roles:
-  - operating-system
+  - os
   tasks:
   - name: reboot
     reboot:
       msg: "Nodes are being rebooted..."
     ignore_errors: true
-    when: restart_confirmation == "Y"
+    when: run_confirmation == "Y"

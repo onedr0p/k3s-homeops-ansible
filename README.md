@@ -1,8 +1,6 @@
-# k3s-cluster-ansible
+# k3s-homeops-ansible
 
-This is an opinionated way to provision the OS and install k3s. Ansible playbooks are broken down into components.
-
-_Supported distros: **Debian 10.5** or **Ubuntu 20.04**_
+This is an opinionated way to provision Ubuntu 20.04 and install k3s on top.
 
 ## Prerequisites
 
@@ -22,22 +20,22 @@ Get started by cloning this repository and copying the hosts and config into a n
 
 ```bash
 # clone this repo
-git clone https://github.com/k8s-at-home/k3s-cluster-ansible
+git clone https://github.com/onedr0p/k3s-homeops-ansible
 # change into the directory
-cd k3s-cluster-ansible
+cd k3s-homeops-ansible
 # copy the hosts and config to a new folder
 cp -r ./inventory/local ./inventory/custom
 ```
 
 ### Update the Ansible config files
 
-**Note:** This project uses [PyratLabs/ansible-role-k3s](https://github.com/PyratLabs/ansible-role-k3s) for installing k3s. Configuration options can be viewed in their README.md.
+**Note:** This project uses [PyratLabs/ansible-role-k3s](https://github.com/PyratLabs/ansible-role-k3s) for installing k3s. Configuration options can be viewed in their README.
 
 After you have copied over the configuration files you will need to update the configuration in the files:
 
 - `./inventory/custom/hosts.yml`: Host definitions
 - `./inventory/custom/host_vars/*.yml`: Host IP and host level variables
-- `./inventory/custom/group_vars/all.yml`: Global variables for all hosts
+- `./inventory/custom/group_vars/*.yml`: Global variables for all hosts
 
 Each file it carefully documented.
 
@@ -51,9 +49,9 @@ ansible-galaxy install -r requirements.yml
 
 ```bash
 # This playbook will prepare your nodes for Kubernetes
-ansible-playbook -i ./inventory/custom/hosts.yml ./playbooks/common.yml
+ansible-playbook -i ./inventory/custom/hosts.yml ./playbooks/os-build.yml
 # This playbook will install k3s
-ansible-playbook -i ./inventory/custom/hosts.yml ./playbooks/cluster.yml
+ansible-playbook -i ./inventory/custom/hosts.yml ./playbooks/cluster-build.yml
 ```
 
 ### Verify the cluster is up and running

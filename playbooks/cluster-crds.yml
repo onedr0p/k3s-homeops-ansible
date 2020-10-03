@@ -1,7 +1,0 @@
----
-- hosts:
-  - master
-  - worker
-  become: true
-  roles:
-  - cluster-crds

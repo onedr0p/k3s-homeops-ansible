@@ -10,10 +10,13 @@
   - "{{ groups['master'] }}"
   register: apply_master_taints
   retries: 3
-  when: k3s_control_node is defined
-        and k3s_control_node
-        and k3s_taint_master is defined
-        and k3s_taint_master
+  until: apply_master_taints is success
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node
+  - k3s_taint_master is defined
+  - k3s_taint_master
+  - groups['worker'] | length > 0
 
 - name: cluster | meta | apply worker annotations
   become: true
@@ -26,8 +29,9 @@
   register: apply_worker_annotations
   retries: 3
   until: apply_worker_annotations is success
-  when: k3s_control_node is defined
-        and k3s_control_node
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node
 
 - name: cluster | meta | apply system-upgrade annotations
   become: true
@@ -41,10 +45,11 @@
   register: apply_system_upgrade_annotations
   retries: 3
   until: apply_system_upgrade_annotations is success
-  when: k3s_control_node is defined
-        and k3s_control_node
-        and hostvars[item].k3s_system_upgrade is defined 
-        and hostvars[item].k3s_system_upgrade
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node
+  - hostvars[item].k3s_system_upgrade is defined 
+  - hostvars[item].k3s_system_upgrade
 
 - name: cluster | meta | remove system-upgrade annotations
   become: true
@@ -58,7 +63,7 @@
   register: remove_system_upgrade_annotations
   retries: 3
   until: remove_system_upgrade_annotations is success
-  when: k3s_control_node is defined
-        and k3s_control_node
-        and (hostvars[item].k3s_system_upgrade is not defined 
-          or not hostvars[item].k3s_system_upgrade)
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node
+  - (hostvars[item].k3s_system_upgrade is not defined or not hostvars[item].k3s_system_upgrade)

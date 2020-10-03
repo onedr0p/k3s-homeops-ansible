@@ -4,7 +4,8 @@
   become: true
   hostname:
     name: "{{ inventory_hostname }}"
-  when: ansible_hostname != inventory_hostname
+  when:
+  - ansible_hostname != inventory_hostname
 
 - name: host | update etc hosts
   become: true

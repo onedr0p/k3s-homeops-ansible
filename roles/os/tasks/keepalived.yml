@@ -11,10 +11,11 @@
   register: apt_install_keepalived
   retries: 5
   until: apt_install_keepalived is success
-  when: k3s_control_node is defined
-        and k3s_control_node 
-        and keepalived.enabled is defined
-        and keepalived.enabled
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node 
+  - keepalived.enabled is defined
+  - keepalived.enabled
 
 - name: keepalived | copy configuration
   become: true
@@ -22,7 +23,8 @@
     src: keepalived.conf.j2
     dest: /etc/keepalived/keepalived.conf
   notify: restart keepalived
-  when: k3s_control_node is defined
-        and k3s_control_node 
-        and keepalived.enabled is defined
-        and keepalived.enabled
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node 
+  - keepalived.enabled is defined
+  - keepalived.enabled

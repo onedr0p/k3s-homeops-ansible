@@ -17,5 +17,6 @@
       enabled: true
       state: started
   notify: rsyslog configuration changed
-  when: rsyslog.enabled is defined 
-        and rsyslog.enabled
+  when:
+  - rsyslog.enabled is defined 
+  - rsyslog.enabled
