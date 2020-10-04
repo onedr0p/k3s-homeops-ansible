@@ -3,7 +3,6 @@
   - master
   - worker
   become: true
-  # facts required
   gather_facts: true
   vars_prompt:
     - name: "run_confirmation"
@@ -13,7 +12,8 @@
   any_errors_fatal: yes
   pre_tasks:
   - name: cluster | check confirmation
-    fail: msg="Abort."
+    fail: 
+      msg: "Abort."
     when: run_confirmation != "Y"
   roles:
   - xanmanning.k3s

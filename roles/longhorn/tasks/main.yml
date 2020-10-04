@@ -2,5 +2,4 @@
 
 - include: cluster-meta.yml
 - include: multipath.yml
-- include: packages.yml
 - include: disks.yml

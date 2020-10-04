@@ -19,5 +19,7 @@ longhorn:
   # mount_opts: ""
 
 # Set enabled to true to mark this host as running a distributed storage rook-ceph
-rookceph:
-  enabled: false
+rook_ceph:
+  enabled: true
+  devices:
+  - /dev/nvme0n1

@@ -23,6 +23,12 @@
       ff02::1 ip6-allnodes
       ff02::2 ip6-allrouters
 
+      {% if keepalived.enabled is defined and keepalived.enabled %}
+      # keepalived vip
+      {{ keepalived.vip }}  k8s-master-vip
+      {% endif %}
+
+      # k8s hosts
       {% for host in groups['all'] %}
       {{ hostvars[host].ansible_default_ipv4.address }}  {{ host }}
       {% endfor %}

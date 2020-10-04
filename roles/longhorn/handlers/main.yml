@@ -1,9 +1,0 @@
----
-
-- name: longhorn | restart multipathd
-  systemd:
-    name: multipathd.service
-    daemon_reload: no
-    enabled: yes
-    state: restarted
-  listen: restart multipathd

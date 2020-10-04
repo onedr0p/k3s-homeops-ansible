@@ -45,4 +45,3 @@
   listen: systemd-timesyncd configuration changed
   when: ansible_virtualization_role == "host" 
         or ansible_virtualization_role == "NA"
-  

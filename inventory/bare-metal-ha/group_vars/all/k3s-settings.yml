@@ -10,7 +10,7 @@
 k3s_release_version: "43cb200fd0540b416ddec1216e371d41be2dadf2"
 
 # Install using hard links rather than symbolic links.
-# ... If you are using the system-upgrade-controller you will need to use hard links rather than symbolic links as the controller will not be able to follow symbolic links.
+# ...if you are using the system-upgrade-controller you will need to use hard links rather than symbolic links as the controller will not be able to follow symbolic links.
 k3s_install_hard_links: true
 
 # Do not deploy the following
@@ -18,15 +18,14 @@ k3s_no_traefik: true
 k3s_no_servicelb: true
 k3s_no_metrics_server: true
 k3s_no_flannel: true
-k3s_no_local_storage: true
+# k3s_no_local_storage: true
 k3s_flannel_backend: "none"
 
-# k3s_default_local_storage_path: "/dev/shm/k8s"
+k3s_default_local_storage_path: "/dev/shm/k8s"
 
-# Use a specific control node address
-# ... set to "{{ keepalived.vip }}" if using keepalived
-k3s_control_node_address: "{{ keepalived.vip }}"
-# k3s_control_node_address: "k8s-api.lan"
+# Use a specific control node address. IP or FQDN.
+# ...k8s-master-vip is defined in /etc/hosts of all nodes if you are using keepalived
+k3s_control_node_address: "{{ 'k8s-master-vip' if keepalived.enabled is defined and keepalived.enabled else groups['master'][0] }}"
 
 k3s_become_for_all: true
 

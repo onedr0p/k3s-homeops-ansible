@@ -5,3 +5,21 @@ ansible_host: "192.168.42.200"
 # for more k3s host variables, see
 # https://github.com/PyratLabs/ansible-role-k3s#host-variables
 k3s_node_ip_address: "{{ ansible_host }}"
+
+# Format and mount a device for longhorn
+longhorn:
+  enabled: false
+  disks:
+  - "/dev/sdb"
+  filesystem: "ext4"
+  mountpoint: "/var/lib/longhorn"
+  # Defines additional lvcreate options (e.g. stripes, stripesize, etc)
+  # lvcreate_opts: ""
+  # Defines additional mount options (e.g. noatime, noexec, etc)
+  # mount_opts: ""
+
+# Set enabled to true to mark this host as running a distributed storage rook-ceph
+rook_ceph:
+  enabled: false
+  devices:
+  - /dev/nvme0n1

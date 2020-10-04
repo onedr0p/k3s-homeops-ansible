@@ -3,17 +3,30 @@
   - master
   - worker
   become: true
-  gather_facts: false
+  gather_facts: true
   vars_prompt:
     - name: "run_confirmation"
-      prompt: "Restart nodes when complete? [Y/n]"
+      prompt: "1) Are you sure you want to run this over the cluster? [Y/n]"
       default: "n"
       private: no
+    - name: "restart_confirmation"
+      prompt: "2) Restart nodes when complete? [Y/n]"
+      default: "n"
+      private: no
+  pre_tasks:
+  - name: os-prepare | check confirmation
+    fail:
+      msg: "Abort."
+    when: run_confirmation != "Y"
+    tags:
+    - always
   roles:
   - os
   tasks:
-  - name: reboot
+  - name: os-prepare | reboot
+    ignore_errors: true
     reboot:
       msg: "Nodes are being rebooted..."
-    ignore_errors: true
-    when: run_confirmation == "Y"
+    when: restart_confirmation == "Y"
+    tags:
+    - always

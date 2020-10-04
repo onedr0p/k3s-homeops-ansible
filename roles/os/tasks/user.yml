@@ -61,9 +61,24 @@
       }
     dest: "/home/{{ ansible_user }}/.config/neofetch/config.conf"
 
+- name: user | copy ascii art
+  copy:
+    owner: "{{ ansible_user }}"
+    mode: "0775"
+    content: |
+      ${c1}
+      :::    ::: ::::::::   ::::::::
+      :+:   :+: :+:    :+: :+:    :+:
+      +:+  +:+  +:+    +:+ +:+
+      +#++:++    +#++:++#  +#++:++#++
+      +#+  +#+  +#+    +#+        +#+
+      #+#   #+# #+#    #+# #+#    #+#
+      ###    ### ########   ########
+    dest: "/home/{{ ansible_user }}/.config/neofetch/k8s.art"
+
 - name: user | enable neofetch on login
   copy:
-    content: "neofetch --ascii_distro ubuntu_small"
+    content: "neofetch --source /home/{{ ansible_user }}/.config/neofetch/k8s.art --ascii_colors 5 --colors 5 --separator ' :'"
     dest: "/home/{{ ansible_user }}/.bash_profile"
     owner: "{{ ansible_user }}"
     mode: "0775"

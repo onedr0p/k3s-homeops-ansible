@@ -10,10 +10,11 @@
   register: apply_longhorn_labels
   retries: 5
   until: apply_longhorn_labels is success
-  when: k3s_control_node is defined
-        and k3s_control_node
-        and hostvars[item].longhorn.enabled is defined
-        and hostvars[item].longhorn.enabled == true
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node
+  - hostvars[item].longhorn.enabled is defined
+  - hostvars[item].longhorn.enabled == true
 
 - name: longhorn | meta | apply annotations
   become: true
@@ -26,10 +27,11 @@
   register: apply_longhorn_annotations
   retries: 5
   until: apply_longhorn_annotations is success
-  when: k3s_control_node is defined
-        and k3s_control_node
-        and hostvars[item].longhorn.enabled is defined
-        and hostvars[item].longhorn.enabled == true
+  when: 
+  - k3s_control_node is defined
+  - k3s_control_node
+  - hostvars[item].longhorn.enabled is defined
+  - hostvars[item].longhorn.enabled == true
 
 - name: longhorn | meta | remove labels
   become: true
@@ -42,10 +44,10 @@
   register: remove_longhorn_labels
   retries: 5
   until: remove_longhorn_labels is success
-  when: k3s_control_node is defined
-        and k3s_control_node
-        and (hostvars[item].longhorn.enabled is not defined 
-          or not hostvars[item].longhorn.enabled)
+  when: 
+  - k3s_control_node is defined
+  - k3s_control_node
+  - (hostvars[item].longhorn.enabled is not defined or not hostvars[item].longhorn.enabled)
 
 - name: longhorn | meta | remove annotations
   become: true
@@ -58,7 +60,7 @@
   register: remove_longhorn_annotations
   retries: 5
   until: remove_longhorn_annotations is success
-  when: k3s_control_node is defined
-        and k3s_control_node
-        and (hostvars[item].longhorn.enabled is not defined 
-          or not hostvars[item].longhorn.enabled)
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node
+  - (hostvars[item].longhorn.enabled is not defined or not hostvars[item].longhorn.enabled)

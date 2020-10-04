@@ -33,4 +33,4 @@
   become: true
   command: /usr/bin/timedatectl set-ntp true
   when:
-  - '"NTP=no" in timedatectl_result.stdout'
+  - "'NTP=no' in timedatectl_result.stdout"

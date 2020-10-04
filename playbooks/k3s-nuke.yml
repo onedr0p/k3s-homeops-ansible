@@ -3,7 +3,7 @@
   - master
   - worker
   become: true
-  gather_facts: false
+  gather_facts: true
   vars_prompt:
     name: "run_confirmation"
     prompt: "This will DESTROY your cluster. Do you wish to continue? [Y/n]"
@@ -13,7 +13,8 @@
   
   pre_tasks:
   - name: cluster-nuke | check confirmation
-    fail: msg="Abort."
+    fail:
+      msg: "Abort."
     when: run_confirmation != "Y"
   
   tasks:
