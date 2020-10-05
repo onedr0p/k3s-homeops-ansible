@@ -5,7 +5,8 @@
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/create-default-disk=config
-  loop:
+  # Cannot use loop w/ hostvars in when... https://github.com/ansible/ansible/issues/68364
+  with_items:
   - "{{ groups['worker'] }}"
   register: apply_longhorn_labels
   retries: 5
@@ -22,7 +23,8 @@
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: kubectl annotate --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/default-disks-config='[{"path":"{{ hostvars[item]['longhorn']['mointpoint'] }}", "name":"longhorn", "allowScheduling":true}]'
-  loop:
+  # Cannot use loop w/ hostvars in when... https://github.com/ansible/ansible/issues/68364
+  with_items:
   - "{{ groups['worker'] }}"
   register: apply_longhorn_annotations
   retries: 5
@@ -39,7 +41,8 @@
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/create-default-disk-
-  loop:
+  # Cannot use loop w/ hostvars in when... https://github.com/ansible/ansible/issues/68364
+  with_items:
   - "{{ groups['worker'] }}"
   register: remove_longhorn_labels
   retries: 5
@@ -55,7 +58,8 @@
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: kubectl annotate --overwrite node {{ hostvars[item]['ansible_hostname'] }} node.longhorn.io/default-disks-config-
-  loop:
+  # Cannot use loop w/ hostvars in when... https://github.com/ansible/ansible/issues/68364
+  with_items:
   - "{{ groups['worker'] }}"
   register: remove_longhorn_annotations
   retries: 5
