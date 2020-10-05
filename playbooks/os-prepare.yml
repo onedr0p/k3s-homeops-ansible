@@ -5,21 +5,10 @@
   become: true
   gather_facts: true
   vars_prompt:
-    - name: "run_confirmation"
-      prompt: "1) Are you sure you want to run this over the cluster? [Y/n]"
-      default: "n"
-      private: no
     - name: "restart_confirmation"
-      prompt: "2) Restart nodes when complete? [Y/n]"
+      prompt: "Restart nodes when complete? [Y/n]"
       default: "n"
       private: no
-  pre_tasks:
-  - name: os-prepare | check confirmation
-    fail:
-      msg: "Abort."
-    when: run_confirmation != "Y"
-    tags:
-    - always
   roles:
   - os
   tasks:

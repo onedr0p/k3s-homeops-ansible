@@ -6,8 +6,7 @@
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: kubectl taint --overwrite node {{ hostvars[item]['ansible_hostname'] }} node-role.kubernetes.io/master=true:NoSchedule
-  with_items:
-  - "{{ groups['master'] }}"
+  loop: "{{ groups['master'] }}"
   register: apply_master_taints
   retries: 3
   until: apply_master_taints is success
@@ -24,8 +23,7 @@
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} node-role.kubernetes.io/worker=true
-  with_items:
-  - "{{ groups['worker'] }}"
+  loop: "{{ groups['worker'] }}"
   register: apply_worker_annotations
   retries: 3
   until: apply_worker_annotations is success
@@ -39,6 +37,7 @@
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} k3s-upgrade=true
+  # Cannot use loop w/ hostvars in when... https://github.com/ansible/ansible/issues/68364
   with_items:
   - "{{ groups['master'] }}"
   - "{{ groups['worker'] }}"
@@ -57,6 +56,7 @@
   environment:
     KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
   command: kubectl label --overwrite node {{ hostvars[item]['ansible_hostname'] }} k3s-upgrade-
+  # Cannot use loop w/ hostvars in when... https://github.com/ansible/ansible/issues/68364
   with_items:
   - "{{ groups['master'] }}"
   - "{{ groups['worker'] }}"

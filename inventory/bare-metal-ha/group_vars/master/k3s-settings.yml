@@ -9,7 +9,7 @@ k3s_control_node: true
 # Add additional hosname or IP as Subject Alternate Name in the TLS cert
 k3s_tls_san:
 - "{{ keepalived.vip }}"
-- "k8s-api.lan"
+- "k8s-master-vip"
 
 # Use embedded etcd
 k3s_etcd_datastore: true

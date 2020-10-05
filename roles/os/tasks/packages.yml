@@ -2,127 +2,98 @@
 
 - name: packages | upgrade all packages
   apt:
-    name: "*"
-    state: latest
-  register: apt_update
+    upgrade: full
+    update_cache: yes
+    cache_valid_time: 3600
+    autoclean: yes
+    autoremove: yes
+  register: apt_upgrade
   retries: 5
-  until: apt_update is success
+  until: apt_upgrade is success
 
 - name: packages | install common
   become: true
   apt:
-    name:
-    - apt-transport-https
-    - arptables
-    - ca-certificates
-    - curl
-    - dnsutils
-    - ebtables
-    - ethtool
-    - git
-    - gnupg-agent
-    - gnupg2
-    - haveged
-    - hdparm
-    - iperf3
-    - iputils-ping
-    - ipvsadm
-    - jq
-    - lvm2
-    - neofetch
-    - net-tools
-    - netcat
-    - nfs-common
-    - nmap
-    - ntpdate
-    - open-iscsi
-    - psmisc
-    - python3
-    - python3-openssl
-    - python3-pip
-    - rsync
-    - scsitools
-    - socat
-    - software-properties-common
-    - traceroute
-    - unattended-upgrades
-    - unzip
-    - vim
+    name: "{{ packages.install }}"
     install_recommends: false
     update_cache: true
+    cache_valid_time: 3600
     autoclean: true
     autoremove: true
   register: apt_install_common
   retries: 5
   until: apt_install_common is success
+  when:
+  - packages.install is defined
+  - packages.install is iterable
+  - packages.install | length > 0
 
 - name: packages | gather install packages
   package_facts:
     manager: auto
+  when:
+  - packages.remove is defined
+  - packages.remove is iterable
+  - packages.remove | length > 0
+  - "'snapd' in packages.remove"
 
 # Until focal has https://launchpad.net/ubuntu/+source/htop
 - name: packages | install latest htop
   become: true
   apt:
-    deb: "https://launchpad.net/ubuntu/+archive/primary/+files/htop_{{ packages.htop.version | default('3.0.2-1') }}_amd64.deb"
+    deb: "https://launchpad.net/ubuntu/+archive/primary/+files/htop_{{ packages.deb.htop_version | default('3.0.2-1') }}_amd64.deb"
   register: apt_install_htop
   retries: 5
   until: apt_install_htop is success
-  when: "'htop' not in ansible_facts.packages"
+  when: 
+  - "'htop' not in ansible_facts.packages"
+  - "'htop' not in packages.install"
+  - packages.deb.htop_version is defined
+  - packages.deb.htop_version
 
 - name: packages | check if snap is installed
   debug:
     msg: "snapd is installed"
   register: snapd_check
-  when: "'snapd' in ansible_facts.packages"
+  when:
+  - "'snapd' in ansible_facts.packages"
+  - packages.remove is defined
+  - packages.remove is iterable
+  - packages.remove | length > 0
+  - "'snapd' in packages.remove"
 
 - name: packages | remove snap packages
   become: true
   command: snap remove {{ item }}
-  with_items:
+  loop:
   - lxd
   - core18
   - snapd
   when:
   - ansible_distribution == 'Ubuntu'
   - snapd_check.failed is defined
+  - packages.remove is defined
+  - packages.remove is iterable
+  - packages.remove | length > 0
+  - "'snapd' in packages.remove"
 
 - name: packages | remove packages
   become: true
   apt:
-    name:
-    - apparmor
-    - apport
-    - bcache-tools
-    - btrfs-progs
-    - byobu
-    - cloud-init
-    - cloud-guest-utils
-    - cloud-initramfs-copymods
-    - cloud-initramfs-dyn-netconf
-    - friendly-recovery
-    - fwupd
-    - landscape-common
-    - lxd-agent-loader
-    - ntfs-3g
-    - open-vm-tools
-    - plymouth
-    - plymouth-theme-ubuntu-text
-    - popularity-contest
-    - snapd
-    - sosreport
-    - tmux
-    - ubuntu-advantage-tools
-    - ufw
+    name: "{{ packages.remove }}"
     state: absent
     autoremove: true
+  when:
+  - packages.remove is defined
+  - packages.remove is iterable
+  - packages.remove | length > 0
 
 - name: packages | remove file and directory cruft
   become: true
   file:
     state: absent
     path: "{{ item }}"
-  with_items:
+  loop:
   - "/home/{{ ansible_user }}/.snap"
   - "/snap"
   - "/var/snap"
@@ -131,3 +102,9 @@
   - "/usr/lib/snapd"
   - "/etc/cloud"
   - "/var/lib/cloud"
+  when:
+  - packages.remove is defined
+  - packages.remove is iterable
+  - packages.remove | length > 0
+  - "'snapd' in packages.remove"
+  - "'cloud-init' in packages.remove"

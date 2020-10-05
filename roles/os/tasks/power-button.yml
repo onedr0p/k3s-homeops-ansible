@@ -5,6 +5,6 @@
     path: /etc/systemd/logind.conf
     regexp: "{{ item.setting }}"
     line: "{{ item.setting }}={{ item.value }}"
-  with_items:
+  loop:
     - { setting: HandlePowerKey, value: ignore }
   notify: restart logind

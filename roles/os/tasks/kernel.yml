@@ -35,7 +35,7 @@
   community.general.modprobe:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
   - br_netfilter
   - overlay
   - rbd
@@ -46,7 +46,7 @@
   copy:
     content: "{{ item }}"
     dest: "/etc/modules-load.d/{{ item }}.conf"
-  with_items:
+  loop:
   - br_netfilter
   - overlay
   - rbd
@@ -58,7 +58,7 @@
   community.general.kernel_blacklist:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
   - dvb_usb_rtl28xxu
   - rtl2832
   - rtl2832_sdr
@@ -69,7 +69,7 @@
   copy:
     content: "blacklist {{ item }}"
     dest: "/etc/modprobe.d/{{ item }}.conf"
-  with_items:
+  loop:
   - dvb_usb_rtl28xxu
   - rtl2832
   - rtl2832_sdr

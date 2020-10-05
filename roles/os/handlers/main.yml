@@ -16,14 +16,6 @@
     state: restarted
   listen: restart keepalived
 
-- name: rsyslog | restart systemd service
-  systemd:
-    name: rsyslog.service
-    daemon_reload: yes
-    enabled: yes
-    state: restarted
-  listen: rsyslog configuration changed
-
 - name: unattended-upgrades | restart systemd service
   service:
     name: unattended-upgrades.service

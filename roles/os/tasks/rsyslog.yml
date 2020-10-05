@@ -16,7 +16,12 @@
       name: rsyslog
       enabled: true
       state: started
-  notify: rsyslog configuration changed
+  - name: restart systemd service
+    systemd:
+      name: rsyslog.service
+      daemon_reload: yes
+      enabled: yes
+      state: restarted
   when:
   - rsyslog.enabled is defined 
   - rsyslog.enabled
