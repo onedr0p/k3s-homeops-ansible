@@ -37,3 +37,7 @@
   listen: systemd-timesyncd configuration changed
   when: ansible_virtualization_role == "host" 
         or ansible_virtualization_role == "NA"
+
+- name: grub | mkconfig
+  command: grub-mkconfig -o /boot/grub/grub.cfg
+  listen: grub configuration changed

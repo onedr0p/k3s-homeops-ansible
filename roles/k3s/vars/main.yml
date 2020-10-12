@@ -1,8 +1,15 @@
+---
+
+# Prometheus Operator version from:
+# https://github.com/prometheus-operator/prometheus-operator/releases
+prometheus_operator_version: "0.42"
+
 # URLs to the  Prometheus Operator CRDs
 prometheus_operator_crds:
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-alertmanager.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-podmonitor.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-prometheus.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-prometheusrules.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-servicemonitor.yaml"
-- "https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/crds/crd-thanosrulers.yaml"
+- "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml"
+- "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml"
+- "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml"
+- "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml"
+- "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml"
+- "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml"
+- "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml"
