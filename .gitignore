@@ -2,13 +2,9 @@
 *.log
 .vagrant
 .DS_Store
-inventory/group_vars/vault.yml
-VBoxGuestAdditions_*
 kubeconfig
 .vscode
 .tasks
 ignore
-
-inventory/custom*
 
 roles/xanmanning.k3s*
